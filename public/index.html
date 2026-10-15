@@ -650,6 +650,16 @@ input{font:inherit;color:inherit}
   background:color-mix(in srgb,var(--mark) 18%,transparent);
   border:1px solid color-mix(in srgb,var(--mark) 45%,transparent);
   padding:3px 10px;border-radius:99px;margin-top:8px}
+.pendchip{
+  display:inline-block;margin-left:6px;font-family:var(--f-mono);font-size:10.5px;font-weight:600;
+  letter-spacing:.04em;color:var(--mark-deep);vertical-align:middle;
+  background:color-mix(in srgb,var(--mark) 20%,transparent);
+  border:1px solid color-mix(in srgb,var(--mark) 50%,transparent);
+  padding:2px 8px;border-radius:99px;
+}
+.mode-resume{background:color-mix(in srgb,var(--mark) 12%,transparent)}
+.mode-resume .mode-ico{background:color-mix(in srgb,var(--mark) 24%,transparent);color:var(--mark-deep);font-size:15px}
+.resume-meta{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
 .cloudchip{font-size:15px;padding:0 4px;cursor:default;line-height:34px}
 .teacherlink{
   font-family:var(--f-mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;
@@ -1055,7 +1065,7 @@ const TKEY="cuaderno-arcade-theme";
 const LASTKEY="cuaderno-arcade-last";
 function skey(){ return "cuaderno-arcade-v3-"+PROFILE; }
 function blank(){
-  return {xp:0, tokens:3, lvl:0, ex:{}, wrong:[],
+  return {xp:0, tokens:3, lvl:0, ex:{}, wrong:[], resume:{},
     stats:{answers:0, correct:0, bestStreak:0, bestMult:1, saves:0, tokensSpent:0,
            byUnit:{}, sessions:[], selfmarks:[]}};
 }
@@ -1234,6 +1244,7 @@ function go(v){ view=v; glossEl.hidden=true; render(); window.scrollTo({top:0,be
 function render(){
   syncTop();
   if(view.name==="teacher") return renderTeacher();
+  if(view.name==="resume" && PROFILE) return renderResume();
   if(view.name==="profiles" || !PROFILE) return renderProfiles();
   if(view.name==="home") return renderHome();
   if(view.name==="unit") return renderUnit(view.unit);
@@ -1457,6 +1468,7 @@ function renderHome(){
   const mine=myItems();
   const mastered=mine.filter(it=>S.ex[it.id]==="ok").length;
   const list=myUnits();
+  const pend=pendingList()[0];
   app.innerHTML=`
   <section class="hero">
     <div class="eyebrow">${me().name} · ${me().level}</div>
@@ -1470,6 +1482,11 @@ function renderHome(){
   </section>
 
   <div class="modes">
+    ${pend?`<button class="mode mode-resume" data-act="resume">
+      <span class="mode-ico">▶</span>
+      <span><span class="mode-t">Retomar donde lo dejaste</span><br><span class="mode-d">${esc(pend.meta.title||"Tu ronda")} · pregunta ${Math.min(pend.i+1,pend.ids.length)} de ${pend.ids.length}</span></span>
+      <span class="mode-n">${Math.min(pend.i,pend.ids.length)} / ${pend.ids.length}</span>
+    </button>`:""}
     <button class="mode" data-act="exam">
       <span class="mode-ico">🎯</span>
       <span><span class="mode-t">Examen mixto</span><br><span class="mode-d">${Math.min(20,mine.length)} preguntas al azar de las unidades de ${me().name}. Nota sobre 10.</span></span>
@@ -1511,6 +1528,7 @@ function renderHome(){
   <p class="footnote">El progreso de cada alumno se guarda por separado en este navegador.</p>`;
 
   app.querySelectorAll("[data-unit]").forEach(b=>b.onclick=()=>go({name:"unit",unit:UNITS.find(u=>u.id===b.dataset.unit)}));
+  const rs=app.querySelector('[data-act="resume"]'); if(rs&&pend) rs.onclick=()=>resumeRun(pend.key);
   const ex=app.querySelector('[data-act="exam"]'); if(ex) ex.onclick=startExam;
   const wr=app.querySelector('[data-act="wrong"]'); if(wr&&wrongN) wr.onclick=startWrong;
   app.querySelector('[data-act="stats"]').onclick=()=>go({name:"stats"});
@@ -1531,7 +1549,7 @@ function renderUnit(u){
       ${(u.lex||[]).map(g=>`<span class="tag2 v">${g}</span>`).join("")}
     </div>
     <div style="display:flex;gap:9px;flex-wrap:wrap;margin-top:8px">
-      <button class="btn small" id="playall">▶ Jugar la unidad entera</button>
+      <button class="btn small" id="playall">${resumeValid(S.resume&&S.resume["unit:"+u.id])?"▶ Continuar la unidad":"▶ Jugar la unidad entera"}</button>
       <button class="btn ghost small" id="theory">📖 Ver la chuleta</button>
     </div>
   </section>
@@ -1551,7 +1569,10 @@ function renderUnit(u){
       const ok=ex.items.filter(i=>S.ex[i.id]==="ok").length;
       return `<button class="ex" data-ex="${ex.id}" style="animation-delay:${40+ix*55}ms">
         <span class="ex-n">${String(ex.no||ex.n).padStart(2,"0")}</span>
-        <span class="ex-body"><span class="ex-t">${ex.title}${ex.vocab?" 🔤":""}</span><br><span class="ex-d">${ex.instr}</span></span>
+        <span class="ex-body"><span class="ex-t">${ex.title}${ex.vocab?" 🔤":""}</span>${(()=>{
+          const r=S.resume&&S.resume["ex:"+ex.id];
+          return resumeValid(r)?` <span class="pendchip">A medias · ${Math.min(r.i,r.ids.length)}/${r.ids.length}</span>`:"";
+        })()}<br><span class="ex-d">${ex.instr}</span></span>
         <span class="ex-score">
           <span class="dotrow">${ex.items.map(i=>`<span class="dot ${S.ex[i.id]==="ok"?"on":(S.ex[i.id]?"mid":"")}"></span>`).join("")}</span>
           ${done?ok+"/"+ex.items.length:ex.items.length+" preg."}
@@ -1586,10 +1607,99 @@ function openTheory(u){
 /* =====================================================================
    PARTIDA
    ===================================================================== */
+/* ---------- rondas a medias ----------
+   Cada ronda tiene una clave (un ejercicio, una unidad entera, el examen o el
+   repaso de fallos) y, tras cada pregunta contestada, se guarda por dónde va.
+   Se guarda junto al resto del progreso, así que también viaja a la nube. */
+function roundKey(m){
+  if(m.key!==undefined) return m.key;
+  return m.exam?"exam":m.review?"wrong":m.ex?"ex:"+m.ex.id:m.unit?"unit:"+m.unit.id:null;
+}
+function metaToStore(m){
+  return {title:m.title||"", unit:m.unit?m.unit.id:null, ex:m.ex?m.ex.id:null, exam:!!m.exam, review:!!m.review};
+}
+function metaFromStore(s){
+  const unit=s.unit?UNITS.find(u=>u.id===s.unit):null;
+  let ex=null;
+  if(s.ex) UNITS.forEach(u=>u.exercises.forEach(e=>{ if(e.id===s.ex) ex=e; }));
+  return {title:s.title, unit, ex, exam:s.exam||undefined, review:s.review||undefined};
+}
+function saveResume(){
+  if(!run) return;
+  const key=roundKey(run.meta); if(!key) return;
+  S.resume=S.resume||{};
+  S.resume[key]={at:Date.now(), ids:run.items.map(x=>x.id), i:run.i+1,
+    correct:run.correct, xp:run.xp||0, streak:run.streak, best:run.best, bestMult:run.bestMult,
+    selfUsed:run.selfUsed, saves:run.saves,
+    misses:run.misses.map(m=>({id:m.it.id,given:m.given,model:m.model})),
+    meta:metaToStore(run.meta)};
+  /* como mucho 8 rondas guardadas: se descartan las más antiguas */
+  const keys=Object.keys(S.resume).sort((a,b)=>S.resume[b].at-S.resume[a].at);
+  keys.slice(8).forEach(k=>delete S.resume[k]);
+}
+function clearResume(key){ if(key && S.resume && S.resume[key]){ delete S.resume[key]; } }
+/* una ronda guardada solo vale si todas sus preguntas siguen existiendo */
+function resumeValid(r){ return !!r && Array.isArray(r.ids) && r.ids.length && r.ids.every(id=>INDEX[id]); }
+function pendingList(){
+  return Object.keys(S.resume||{}).filter(k=>resumeValid(S.resume[k]))
+    .map(k=>Object.assign({key:k},S.resume[k]))
+    .sort((a,b)=>b.at-a.at);
+}
+function resumeRun(key){
+  const r=S.resume&&S.resume[key];
+  if(!resumeValid(r)){ clearResume(key); save(); return false; }
+  const items=r.ids.map(id=>INDEX[id]);
+  run={items, i:Math.min(r.i,items.length), correct:r.correct||0, xp:r.xp||0, streak:r.streak||0,
+       best:r.best||0, bestMult:r.bestMult||1, selfUsed:r.selfUsed||0, saves:r.saves||0,
+       misses:(r.misses||[]).map(m=>({it:INDEX[m.id],given:m.given,model:m.model})).filter(m=>m.it),
+       answered:false, meta:metaFromStore(r.meta||{}), t0:Date.now()};
+  go({name:run.i>=items.length?"done":"play"});
+  return true;
+}
+
 function startRun(items,meta){
+  meta=meta||{};
+  const key=roundKey(meta);
+  /* si esa ronda estaba a medias, se pregunta antes de empezar de cero */
+  if(key && !meta.fresh && resumeValid(S.resume&&S.resume[key])){
+    go({name:"resume", key, items, meta});
+    return;
+  }
+  if(key) clearResume(key);
   run={items:items.slice(),i:0,correct:0,xp:0,streak:0,best:0,bestMult:1,misses:[],
-       answered:false,selfUsed:0,saves:0,meta:meta||{},t0:Date.now()};
+       answered:false,selfUsed:0,saves:0,meta:meta,t0:Date.now()};
   go({name:"play"});
+}
+function renderResume(){
+  const {key,items,meta}=view, r=S.resume[key];
+  const total=r.ids.length, doneN=Math.min(r.i,total), finished=r.i>=total;
+  app.innerHTML=`
+  <section class="hero" style="padding:44px 0 6px;text-align:center;justify-items:center">
+    <div class="eyebrow">Ronda a medias</div>
+    <h1 style="font-size:clamp(24px,4.2vw,34px)">${esc(r.meta.title||"Tu ronda")}</h1>
+    <p class="lede" style="margin:0 auto">${finished
+      ?"Ya contestaste todas las preguntas. Puedes ver cómo te salió."
+      :"La dejaste en la pregunta "+(doneN+1)+" de "+total+"."}</p>
+  </section>
+  <div class="lockbox" style="max-width:420px">
+    <div class="track" style="width:100%"><i style="width:${Math.round(doneN/total*100)}%"></i></div>
+    <div class="resume-meta">
+      <span class="chip">${doneN} / ${total}</span>
+      <span class="chip">Aciertos <b>${r.correct}</b></span>
+      <span class="chip streak">🔥 <b>${r.streak}</b></span>
+    </div>
+    <div class="lockacts">
+      <button class="btn" id="res-go">${finished?"Ver resultados":"Continuar"}</button>
+      <button class="btn ghost" id="res-new">Empezar de nuevo</button>
+    </div>
+    <button class="back" id="res-back" style="margin-top:2px">← Volver</button>
+  </div>`;
+  document.getElementById("res-go").onclick=()=>resumeRun(key);
+  document.getElementById("res-new").onclick=()=>{
+    clearResume(key); save();
+    startRun(items, Object.assign({}, meta, {fresh:true}));
+  };
+  document.getElementById("res-back").onclick=()=>{ meta.unit?go({name:"unit",unit:meta.unit}):go({name:"home"}); };
 }
 function startExam(){
   const pool=myItems();
@@ -2142,7 +2252,7 @@ function finish(it,ok,model,given,near,selfmarkable,revealed){
     S.stats.bestStreak=Math.max(S.stats.bestStreak,run.streak);
     S.stats.bestMult=Math.max(S.stats.bestMult,mult);
     S.stats.correct++; S.stats.byUnit[uid].ok++;
-    gained=addXP(10,mult);
+    gained=addXP(10,mult); run.xp=(run.xp||0)+gained;
     S.ex[it.id]="ok";
     S.wrong=S.wrong.filter(x=>x!==it.id);
   } else {
@@ -2152,6 +2262,7 @@ function finish(it,ok,model,given,near,selfmarkable,revealed){
     if(S.ex[it.id]!=="ok") S.ex[it.id]="ko";
     if(!S.wrong.includes(it.id)) S.wrong.push(it.id);
   }
+  saveResume();
   save(); syncTop();
   reactCard(ok);
   if(ok&&run.streak>=2) bumpChip(".chip.streak");
@@ -2212,7 +2323,7 @@ function finish(it,ok,model,given,near,selfmarkable,revealed){
     S.stats.selfmarks.push({ts:Date.now(),unit:it.ex.unit.short,unitTitle:it.ex.unit.title,
       exN:it.ex.n,exTitle:it.ex.title,q:it.q.replace(/\n/g," "),given:given,model:model});
     run.misses=run.misses.filter(m=>m.it!==it);
-    addXP(5,1); save(); syncTop();
+    run.xp=(run.xp||0)+addXP(5,1); saveResume(); save(); syncTop();
     toast("Cuenta como acierto, pero queda anotada para que la revise tu profe.");
   };
 }
@@ -2226,6 +2337,7 @@ function renderDone(){
   S.stats.sessions.push({ts:Date.now(),title:m.title||"Ronda",total,correct:run.correct,
     xp:run.xp||0,pct,best:run.best,self:run.selfUsed,saves:run.saves});
   if(S.stats.sessions.length>60) S.stats.sessions=S.stats.sessions.slice(-60);
+  clearResume(roundKey(m));
   save();
   const msg=pct===100?"Pleno. Esto ya lo tienes dominado."
     :pct>=80?"Muy buen control. Solo quedan detalles."
@@ -2265,9 +2377,9 @@ function renderDone(){
   </div>`;
   document.getElementById("home").onclick=()=>go({name:"home"});
   document.getElementById("stats").onclick=()=>go({name:"stats"});
-  document.getElementById("again").onclick=()=>startRun(run.items,run.meta);
+  document.getElementById("again").onclick=()=>startRun(run.items,Object.assign({},run.meta,{fresh:true}));
   const rt=document.getElementById("retry");
-  if(rt) rt.onclick=()=>startRun(run.misses.map(x=>x.it),Object.assign({},run.meta,{title:"Repaso de fallos"}));
+  if(rt) rt.onclick=()=>startRun(run.misses.map(x=>x.it),Object.assign({},run.meta,{title:"Repaso de fallos",key:null}));
 }
 
 /* =====================================================================
