@@ -767,6 +767,7 @@ input{font:inherit;color:inherit}
       <div class="chip xp"><span class="lab">XP</span><b id="s-xp">0</b></div>
       <span class="cloudchip" id="cloudchip" hidden title="Sincronización">☁︎</span>
       <button class="iconbtn" id="statsbtn" title="Estadísticas" aria-label="Estadísticas">📊</button>
+      <button class="iconbtn" id="sndbtn" title="Sonido" aria-label="Activar o silenciar el sonido" aria-pressed="true">🔊</button>
       <button class="iconbtn" id="themebtn" title="Cambiar tema" aria-label="Cambiar tema">◐</button>
     </div>
   </div>
@@ -854,6 +855,100 @@ function fecha(ts){const d=new Date(ts);return d.toLocaleDateString("es-ES",{day
 /* =====================================================================
    PERFILES
    ===================================================================== */
+/* =====================================================================
+   SONIDOS — sintetizados con Web Audio, sin archivos de audio.
+   Se pueden silenciar con el altavoz de la barra; se recuerda por dispositivo.
+   ===================================================================== */
+const SFX=(()=>{
+  const KEY="cuaderno-arcade-sound";
+  let ctx=null, master=null, filt=null, on=true;
+  try{ on=localStorage.getItem(KEY)!=="off"; }catch(e){}
+
+  /* El navegador solo deja sonar tras un gesto del usuario: el contexto se
+     crea y se despierta en el primer toque, y desde entonces ya vale siempre. */
+  function ensure(){
+    if(!ctx){
+      const AC=window.AudioContext||window.webkitAudioContext; if(!AC) return false;
+      try{
+        ctx=new AC();
+        master=ctx.createGain(); master.gain.value=.55;
+        filt=ctx.createBiquadFilter(); filt.type="lowpass"; filt.frequency.value=7000;
+        const comp=ctx.createDynamicsCompressor();
+        master.connect(filt); filt.connect(comp); comp.connect(ctx.destination);
+      }catch(e){ ctx=null; return false; }
+    }
+    if(ctx.state==="suspended") ctx.resume();
+    return true;
+  }
+  /* una nota: frecuencia, momento, duración, forma de onda, volumen, y un
+     deslizamiento opcional hacia otra frecuencia */
+  function tone(o){
+    const f=o.f, t0=ctx.currentTime+(o.t||0), d=o.d||.15, v=o.v==null?.2:o.v;
+    const osc=ctx.createOscillator(), g=ctx.createGain();
+    osc.type=o.type||"sine";
+    osc.frequency.setValueAtTime(f,t0);
+    if(o.to) osc.frequency.exponentialRampToValueAtTime(o.to,t0+d);
+    g.gain.setValueAtTime(0.0001,t0);
+    g.gain.exponentialRampToValueAtTime(v,t0+(o.a||.006));
+    g.gain.exponentialRampToValueAtTime(0.0001,t0+d);
+    osc.connect(g); g.connect(master);
+    osc.start(t0); osc.stop(t0+d+.03);
+  }
+  const seq=(notes,gap,o)=>notes.forEach((f,i)=>tone(Object.assign({f,t:i*gap},o)));
+  const C5=523.25,D5=587.33,E5=659.25,G5=783.99,A5=880,C6=1046.5,E6=1318.5,G6=1568,C7=2093;
+
+  const SOUNDS={
+    tick:   ()=>tone({f:1100,d:.035,type:"triangle",v:.07}),
+    pop:    ()=>tone({f:520,to:760,d:.08,type:"sine",v:.13}),
+    pick:   ()=>tone({f:700,d:.06,type:"sine",v:.12}),
+    good:   ()=>seq([C5,E5],.075,{d:.2,type:"triangle",v:.2}),
+    good2:  ()=>seq([C5,E5,G5],.07,{d:.22,type:"triangle",v:.2}),
+    good3:  ()=>{ seq([C5,E5,G5,C6],.065,{d:.26,type:"triangle",v:.2}); tone({f:C7,t:.3,d:.3,type:"sine",v:.06}); },
+    near:   ()=>seq([440,415],.09,{d:.2,type:"sine",v:.17}),
+    bad:    ()=>{ tone({f:220,to:150,d:.26,type:"sawtooth",v:.12}); tone({f:165,to:110,t:.12,d:.3,type:"sawtooth",v:.1}); },
+    reveal: ()=>tone({f:330,to:300,d:.2,type:"sine",v:.15}),
+    matchOk:()=>seq([G5,C6],.06,{d:.14,type:"triangle",v:.17}),
+    matchBad:()=>tone({f:200,to:140,d:.16,type:"square",v:.08}),
+    token:  ()=>seq([C6,E6,G6,C7],.055,{d:.16,type:"sine",v:.13}),
+    levelup:()=>{ seq([C5,E5,G5,C6,E6],.09,{d:.34,type:"triangle",v:.2});
+                  [C5,E5,G5].forEach(f=>tone({f,t:.5,d:.7,type:"sine",v:.09})); },
+    win:    ()=>{ seq([C5,E5,G5,C6],.11,{d:.3,type:"triangle",v:.2});
+                  [E5,G5,C6].forEach(f=>tone({f,t:.5,d:.6,type:"sine",v:.09})); },
+    ok:     ()=>seq([C5,G5],.13,{d:.28,type:"triangle",v:.18}),
+    meh:    ()=>seq([G5,E5],.14,{d:.3,type:"sine",v:.15}),
+    login:  ()=>seq([E5,A5],.08,{d:.22,type:"triangle",v:.17}),
+    bye:    ()=>seq([G5,D5],.08,{d:.2,type:"sine",v:.13}),
+    swoosh: ()=>tone({f:300,to:900,d:.12,type:"sine",v:.07})
+  };
+
+  return {
+    play(name){
+      if(!on) return;
+      try{ if(!ensure()) return; const f=SOUNDS[name]; if(f) f(); }catch(e){}
+    },
+    unlock(){ try{ ensure(); }catch(e){} },
+    isOn(){ return on; },
+    toggle(){
+      on=!on;
+      try{ localStorage.setItem(KEY,on?"on":"off"); }catch(e){}
+      if(on){ try{ ensure(); SOUNDS.pop(); }catch(e){} }
+      return on;
+    }
+  };
+})();
+/* se despierta el audio en el primer toque, y así los sonidos que llegan
+   después de una espera (iniciar sesión, la nube…) también suenan */
+["pointerdown","keydown","touchstart"].forEach(ev=>
+  document.addEventListener(ev,()=>SFX.unlock(),{capture:true,passive:true}));
+/* un tic suave al pulsar cualquier botón; las respuestas y los emparejados
+   tienen sus propios sonidos, así que no se duplican */
+document.addEventListener("click",e=>{
+  const b=e.target.closest&&e.target.closest("button");
+  if(!b||b.disabled) return;
+  if(b.matches(".opt,.mitem,#check,#sndbtn,.voc,.vrb")) return;
+  SFX.play("tick");
+},true);
+
 const PROFILES=[
   {id:"alvaro", name:"Álvaro", level:"6.º de Primaria", initial:"Á", hue:"var(--pen)"},
   {id:"marcos", name:"Marcos", level:"3.º de ESO",      initial:"M", hue:"var(--viol)"}
@@ -1211,7 +1306,7 @@ function addXP(base, mult){
   S.xp+=g;
   const nl=levelIdx(S.xp);
   const up=nl>S.lvl?2*(nl-S.lvl):0;
-  if(up){ S.tokens+=up; S.lvl=nl; toast("¡Nivel "+LEVELS[nl].name+"! +"+up+" 🎟️"); }
+  if(up){ S.tokens+=up; S.lvl=nl; toast("¡Nivel "+LEVELS[nl].name+"! +"+up+" 🎟️"); setTimeout(()=>SFX.play("levelup"),380); }
   setTimeout(()=>{
     if(g) flyXP("+"+g+" XP");
     bumpChip(".chip.xp");
@@ -1354,7 +1449,7 @@ function renderUnlock(id){
   (em||pw).focus();
 
   const fail=text=>{
-    msg.textContent=text; msg.hidden=false;
+    msg.textContent=text; msg.hidden=false; SFX.play("bad");
     form.classList.remove("wrong"); void form.offsetWidth; form.classList.add("wrong");
     pw.value=""; pw.focus();
   };
@@ -1367,6 +1462,7 @@ function renderUnlock(id){
     try{
       const email=isT?em.value.trim():id+AUTH_DOMAIN;
       await CLOUD.login(email, pw.value);
+      SFX.play("login");
       if(isT){ PROFILE=null; go({name:"teacher"}); }
       else { useProfile(id); go({name:"home"}); toast("¡Hola, "+p.name+"!"); }
     }catch(err){
@@ -1379,6 +1475,7 @@ function renderUnlock(id){
 
 /* Cerrar sesión: antes de soltarla, sube lo último que se haya hecho. */
 async function leave(){
+  SFX.play("bye");
   try{ await pushUp(); }catch(e){}
   try{ if(window.CLOUD) await CLOUD.logout(); }catch(e){}
   PROFILE=null; S=blank();
@@ -1635,7 +1732,7 @@ function openTheory(u){
       ${t.p?`<p>${t.p}</p>`:""}
       ${t.dl?`<dl class="trow">${t.dl.map(([a,b])=>`<dt>${a}</dt><dd>${b}</dd>`).join("")}</dl>`:""}
     </div>`).join("");
-  drawer.hidden=false;
+  drawer.hidden=false; SFX.play("swoosh");
 }
 
 /* =====================================================================
@@ -2083,7 +2180,7 @@ function bindGloss(card){
   card.querySelectorAll(".voc, .vrb").forEach(b=>b.onclick=e=>{
     e.stopPropagation();
     card.querySelectorAll(".open").forEach(x=>x.classList.remove("open"));
-    b.classList.add("open");
+    b.classList.add("open"); SFX.play("pop");
     const isVerb=b.classList.contains("vrb");
     if(isVerb){
       const v=VERBS[b.dataset.v], f=b.dataset.f;
@@ -2225,15 +2322,16 @@ function resolveWrite(it){
 function setupMatch(it,card){
   let sel=null,errs=0,left=it.pairs.length;
   card.querySelectorAll(".mitem").forEach(b=>b.onclick=()=>{
-    if(!sel){ sel=b; b.classList.add("sel"); return; }
+    if(!sel){ sel=b; b.classList.add("sel"); SFX.play("pick"); return; }
     if(sel===b){ b.classList.remove("sel"); sel=null; return; }
-    if(sel.dataset.side===b.dataset.side){ sel.classList.remove("sel"); sel=b; b.classList.add("sel"); return; }
+    if(sel.dataset.side===b.dataset.side){ sel.classList.remove("sel"); sel=b; b.classList.add("sel"); SFX.play("pick"); return; }
     if(sel.dataset.i===b.dataset.i){
       sel.classList.remove("sel"); sel.classList.add("done"); b.classList.add("done");
       sel=null; left--;
+      if(left>0) SFX.play("matchOk");   /* la última pareja suena como acierto de la pregunta */
       if(left===0) finish(it,errs===0,"Todas emparejadas",errs+" fallo(s) por el camino",false,false);
     } else {
-      errs++; b.classList.add("shake"); sel.classList.add("shake");
+      errs++; SFX.play("matchBad"); b.classList.add("shake"); sel.classList.add("shake");
       const a=sel; setTimeout(()=>{a.classList.remove("shake","sel");b.classList.remove("shake");},320);
       sel=null;
     }
@@ -2299,6 +2397,8 @@ function finish(it,ok,model,given,near,selfmarkable,revealed){
   saveResume();
   save(); syncTop();
   reactCard(ok);
+  /* el acierto suena más rico cuanto más larga es la racha */
+  SFX.play(ok?(run.streak>=6?"good3":run.streak>=3?"good2":"good"):near?"near":revealed?"reveal":"bad");
   if(ok&&run.streak>=2) bumpChip(".chip.streak");
 
   const cls=ok?"good":(near?"near":"bad");
@@ -2345,6 +2445,7 @@ function finish(it,ok,model,given,near,selfmarkable,revealed){
     tk.disabled=true; tk.textContent="Racha salvada 🎟️ ("+prevStreak+")";
     save(); syncTop();
     bumpChip(".chip.tok"); bumpChip(".chip.streak"); flyXP("−1 🎟️","tok");
+    SFX.play("token");
     reactCard(true);
     toast("Racha restaurada: "+prevStreak+" · multiplicador "+fmtMult(multOf(prevStreak+1)));
   };
@@ -2373,6 +2474,7 @@ function renderDone(){
   if(S.stats.sessions.length>60) S.stats.sessions=S.stats.sessions.slice(-60);
   clearResume(roundKey(m));
   save();
+  setTimeout(()=>SFX.play(pct>=80?"win":pct>=60?"ok":"meh"),450);  /* tras el sonido de la última respuesta */
   const msg=pct===100?"Pleno. Esto ya lo tienes dominado."
     :pct>=80?"Muy buen control. Solo quedan detalles."
     :pct>=60?"Vas bien: repasa los fallos y vuelve a intentarlo."
@@ -2602,6 +2704,18 @@ function renderStats(){
    ARRANQUE
    ===================================================================== */
 document.getElementById("statsbtn").onclick=()=>{ if(PROFILE) go({name:"stats"}); };
+(function(){
+  const b=document.getElementById("sndbtn");
+  const paint=()=>{
+    const on=SFX.isOn();
+    b.textContent=on?"🔊":"🔇";
+    b.title=on?"Sonido activado: pulsa para silenciar":"Sonido silenciado: pulsa para activar";
+    b.setAttribute("aria-pressed",String(on));
+    b.style.opacity=on?"1":".6";
+  };
+  b.onclick=()=>{ SFX.toggle(); paint(); toast(SFX.isOn()?"Sonido activado":"Sonido silenciado"); };
+  paint();
+})();
 document.getElementById("whobtn").onclick=()=>leave();
 paintWho();
 const tb=document.getElementById("themebtn");
