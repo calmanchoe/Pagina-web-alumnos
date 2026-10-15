@@ -811,23 +811,26 @@ function fecha(ts){const d=new Date(ts);return d.toLocaleDateString("es-ES",{day
    PERFILES
    ===================================================================== */
 const PROFILES=[
-  {id:"alvaro", name:"Álvaro", level:"6.º de Primaria", initial:"Á", hue:"var(--pen)",  pass:"b1c93268"},
-  {id:"marcos", name:"Marcos", level:"3.º de ESO",      initial:"M", hue:"var(--viol)", pass:"30fddb32"}
+  {id:"alvaro", name:"Álvaro", level:"6.º de Primaria", initial:"Á", hue:"var(--pen)"},
+  {id:"marcos", name:"Marcos", level:"3.º de ESO",      initial:"M", hue:"var(--viol)"}
 ];
-/* La contraseña no se guarda en claro: solo su huella. No da mayúsculas
-   ni espacios por error, y sirve para que un alumno no entre en el perfil
-   del otro — no es seguridad frente a quien sepa mirar el código. */
-function h32(s){
-  let h=0x811c9dc5;
-  for(let i=0;i<s.length;i++){ h^=s.charCodeAt(i); h=Math.imul(h,0x01000193)>>>0; }
-  return h.toString(16);
+/* Acceso con Firebase Authentication. La contraseña la comprueba el servidor
+   de Firebase; aquí no hay ninguna guardada.
+   Cada alumno es una cuenta con correo interno <id>@cuaderno.local (no es un
+   buzón real, solo un identificador). El profesor entra con su correo real. */
+const AUTH_DOMAIN="@cuaderno.local";
+const TEACHER={id:"profe", name:"Profesor", level:"Panel del profe", initial:"P", hue:"var(--green)"};
+function studentFromEmail(email){
+  const m=String(email||"").toLowerCase().match(/^([a-z0-9]+)@cuaderno\.local$/);
+  return m && PROFILES.some(p=>p.id===m[1]) ? m[1] : null;
 }
-/* Perfil del profesor: no sale entre los alumnos, se entra por el enlace
-   discreto del selector. Contraseña provisional: profe2026 */
-const TEACHER={id:"profe", name:"Profesor", level:"Panel del profe", initial:"P", hue:"var(--green)", pass:"f0b61e9b"};
-function passOk(id, value){
-  const p=id===TEACHER.id?TEACHER:PROFILES.find(x=>x.id===id);
-  return !!p && h32(String(value||"").trim().toLowerCase())===p.pass;
+function authMsg(e){
+  const c=(e&&e.code)||"";
+  if(/invalid-credential|wrong-password|user-not-found|invalid-email/.test(c)) return "Esa no es. Vuelve a intentarlo.";
+  if(/too-many-requests/.test(c)) return "Demasiados intentos. Espera unos minutos.";
+  if(/network/.test(c)) return "No hay conexión a internet.";
+  if(/operation-not-allowed|configuration-not-found/.test(c)) return "El acceso con contraseña no está activado en Firebase todavía.";
+  return "No se ha podido entrar ("+(c||"error")+").";
 }
 
 /* =====================================================================
@@ -1089,6 +1092,7 @@ function setCloud(st){
   const map={ok:["☁︎","Guardado en la nube","var(--green)"],
               wait:["⟳","Guardando…","var(--ink-faint)"],
               off:["⚠","Sin conexión: se guardará al volver","var(--mark-deep)"],
+              deny:["🔒","Sin permiso para guardar: cierra sesión y vuelve a entrar","var(--red)"],
               none:["☁︎","Solo en este dispositivo","var(--ink-faint)"]};
   const [ico,title,col]=map[st]||map.none;
   c.textContent=ico; c.title=title; c.style.color=col;
@@ -1106,7 +1110,7 @@ async function syncDown(id){
     } else if(!remote || (S.updatedAt||0) > (remote.updatedAt||0)){
       await pushUp();
     } else setCloud("ok");
-  }catch(e){ setCloud("off"); }
+  }catch(e){ setCloud(e&&e.code==="permission-denied"?"deny":"off"); }
 }
 function schedulePush(){
   if(!window.CLOUD) return setCloud("none");
@@ -1118,9 +1122,20 @@ async function pushUp(){
   if(!window.CLOUD || !PROFILE) return;
   clearTimeout(pushT);
   try{ await CLOUD.save(PROFILE, JSON.parse(JSON.stringify(S))); setCloud("ok"); }
-  catch(e){ setCloud("off"); }
+  catch(e){ setCloud(e&&e.code==="permission-denied"?"deny":"off"); }
 }
 window.addEventListener("cloud-ready",()=>{ if(PROFILE) syncDown(PROFILE); else setCloud("none"); });
+
+/* Sesión recordada: solo se mira en el arranque. Si ya había un alumno dentro,
+   se abre su perfil sin pedir nada; si era el profesor, su panel. */
+window.addEventListener("auth-state",e=>{
+  const {email, first}=e.detail||{};
+  if(!first || !email) return;
+  if(PROFILE) return;
+  const id=studentFromEmail(email);
+  if(id){ useProfile(id); go({name:"home"}); }
+  else { go({name:"teacher"}); }
+});
 window.addEventListener("online",()=>{ if(PROFILE) pushUp(); });
 document.addEventListener("visibilitychange",()=>{ if(document.visibilityState==="hidden") pushUp(); });
 function paintWho(){
@@ -1266,42 +1281,63 @@ function renderProfiles(){
 }
 
 function renderUnlock(id){
-  const p=profileOf(id);
+  const p=profileOf(id), isT=id===TEACHER.id;
   app.innerHTML=`
   <section class="hero" style="padding:48px 0 10px;text-align:center;justify-items:center">
     <div class="eyebrow">Cuaderno Arcade</div>
     <h1 style="font-size:clamp(26px,4.4vw,36px)">Hola, <span class="mk">${p.name}</span></h1>
-    <p class="lede" style="margin:0 auto">Escribe tu contraseña para entrar.</p>
+    <p class="lede" style="margin:0 auto">${isT?"Escribe tu correo y tu contraseña para entrar.":"Escribe tu contraseña para entrar."}</p>
   </section>
 
-  <div class="lockbox" id="lockbox">
+  <form class="lockbox" id="lockbox" autocomplete="on">
     <span class="pick-av" style="background:${p.hue};width:56px;height:56px;font-size:25px">${p.initial}</span>
-    <input id="pw" type="password" inputmode="text" autocomplete="off" autocapitalize="off"
-           spellcheck="false" placeholder="Contraseña" aria-label="Contraseña de ${p.name}">
-    <div class="lockmsg" id="lockmsg" hidden>Esa no es. Vuelve a intentarlo.</div>
+    ${isT?`<input id="em" type="email" name="email" autocomplete="username" autocapitalize="off"
+           spellcheck="false" placeholder="Correo" aria-label="Correo del profesor">`
+         :`<input type="text" name="username" value="${p.id}" autocomplete="username" hidden>`}
+    <input id="pw" type="password" name="password" autocomplete="current-password" autocapitalize="off"
+           spellcheck="false" placeholder="Contraseña" aria-label="Contraseña${isT?"":" de "+p.name}">
+    <div class="lockmsg" id="lockmsg" hidden></div>
     <div class="lockacts">
-      <button class="btn" id="enter">Entrar</button>
-      <button class="btn ghost" id="backsel">Volver</button>
+      <button class="btn" id="enter" type="submit">Entrar</button>
+      <button class="btn ghost" id="backsel" type="button">Volver</button>
     </div>
-  </div>`;
+  </form>`;
 
-  const pw=document.getElementById("pw"), box=document.getElementById("lockbox"), msg=document.getElementById("lockmsg");
-  pw.focus();
-  const tryIt=()=>{
-    if(passOk(id, pw.value)){
-      if(id===TEACHER.id){ PROFILE=null; go({name:"teacher"}); return; }
-      useProfile(id);
-      go({name:"home"});
-      toast("¡Hola, "+p.name+"!");
-    } else {
-      msg.hidden=false;
-      box.classList.remove("wrong"); void box.offsetWidth; box.classList.add("wrong");
-      pw.value=""; pw.focus();
-    }
+  const form=document.getElementById("lockbox"), pw=document.getElementById("pw"),
+        em=document.getElementById("em"), msg=document.getElementById("lockmsg"),
+        btn=document.getElementById("enter");
+  (em||pw).focus();
+
+  const fail=text=>{
+    msg.textContent=text; msg.hidden=false;
+    form.classList.remove("wrong"); void form.offsetWidth; form.classList.add("wrong");
+    pw.value=""; pw.focus();
   };
-  document.getElementById("enter").onclick=tryIt;
-  pw.addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); tryIt(); } });
+  form.addEventListener("submit", async e=>{
+    e.preventDefault();
+    if(!window.CLOUD) return fail("No se ha podido conectar. Recarga la página.");
+    if(!pw.value) return fail("Escribe la contraseña.");
+    if(isT && !em.value.trim()) return fail("Escribe tu correo.");
+    btn.disabled=true; btn.textContent="Entrando…"; msg.hidden=true;
+    try{
+      const email=isT?em.value.trim():id+AUTH_DOMAIN;
+      await CLOUD.login(email, pw.value);
+      if(isT){ PROFILE=null; go({name:"teacher"}); }
+      else { useProfile(id); go({name:"home"}); toast("¡Hola, "+p.name+"!"); }
+    }catch(err){
+      btn.disabled=false; btn.textContent="Entrar";
+      fail(authMsg(err));
+    }
+  });
   document.getElementById("backsel").onclick=()=>go({name:"profiles"});
+}
+
+/* Cerrar sesión: antes de soltarla, sube lo último que se haya hecho. */
+async function leave(){
+  try{ await pushUp(); }catch(e){}
+  try{ if(window.CLOUD) await CLOUD.logout(); }catch(e){}
+  PROFILE=null; S=blank();
+  go({name:"profiles"});
 }
 
 /* =====================================================================
@@ -1335,7 +1371,7 @@ async function renderTeacher(){
     <h1 style="font-size:clamp(26px,4.4vw,38px)">Cómo van</h1>
     <p class="lede">Cargando el progreso de los alumnos…</p>
   </section>`;
-  document.getElementById("back").onclick=()=>go({name:"profiles"});
+  document.getElementById("back").onclick=()=>leave();
 
   const data=[];
   for(const p of PROFILES) data.push({p, s:statsFor(p, await loadStudent(p.id))});
@@ -1404,7 +1440,7 @@ async function renderTeacher(){
 
   <p class="footnote">${window.CLOUD?"Datos en vivo desde la nube.":"Sin conexión con la nube: viendo solo lo guardado en este dispositivo."}</p>`;
 
-  document.getElementById("back2").onclick=()=>go({name:"profiles"});
+  document.getElementById("back2").onclick=()=>leave();
 }
 
 /* =====================================================================
@@ -2395,7 +2431,7 @@ function renderStats(){
    ARRANQUE
    ===================================================================== */
 document.getElementById("statsbtn").onclick=()=>{ if(PROFILE) go({name:"stats"}); };
-document.getElementById("whobtn").onclick=()=>go({name:"profiles"});
+document.getElementById("whobtn").onclick=()=>leave();
 paintWho();
 const tb=document.getElementById("themebtn");
 try{const t0=localStorage.getItem(TKEY); if(t0) document.documentElement.setAttribute("data-theme",t0);}catch(e){}
@@ -2418,6 +2454,7 @@ initDownloads();
    ===================================================================== */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
 import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBPZ54PzHWwb78e4u0lA_dgxTsPt3-aaxU",
@@ -2432,12 +2469,23 @@ const CLASE = "5c96aa91a9d5";
 try{
   const app = initializeApp(firebaseConfig);
   const db  = getFirestore(app);
+  const auth = getAuth(app);
   const ref = id => doc(db, "clases", CLASE, "progreso", id);
   window.CLOUD = {
     async load(id){ const s = await getDoc(ref(id)); return s.exists() ? s.data() : null; },
-    async save(id, data){ await setDoc(ref(id), data); }
+    async save(id, data){ await setDoc(ref(id), data); },
+    async login(email, pass){ const c = await signInWithEmailAndPassword(auth, email, pass); return c.user.email; },
+    async logout(){ await signOut(auth); },
+    email(){ return auth.currentUser ? auth.currentUser.email : null; }
   };
   window.dispatchEvent(new Event("cloud-ready"));
+  /* La sesión se recuerda en el dispositivo (persistencia local por defecto).
+     Al arrancar, Firebase avisa una vez de si ya había alguien dentro. */
+  let first = true;
+  onAuthStateChanged(auth, user => {
+    window.dispatchEvent(new CustomEvent("auth-state", { detail: { email: user ? user.email : null, first } }));
+    first = false;
+  });
 }catch(e){
   console.warn("Sin sincronización:", e && e.message);
 }
