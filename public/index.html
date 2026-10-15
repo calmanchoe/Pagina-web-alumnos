@@ -650,6 +650,40 @@ input{font:inherit;color:inherit}
   background:color-mix(in srgb,var(--mark) 18%,transparent);
   border:1px solid color-mix(in srgb,var(--mark) 45%,transparent);
   padding:3px 10px;border-radius:99px;margin-top:8px}
+.ladder{display:grid;gap:8px}
+.rung{
+  display:grid;grid-template-columns:32px 1fr auto;gap:12px;align-items:center;
+  padding:11px 14px;border-radius:12px;border:1px solid var(--glass-brd);background:var(--glass-3);
+}
+.rung.done{background:var(--green-soft);border-color:color-mix(in srgb,var(--green) 35%,transparent)}
+.rung.now{
+  background:color-mix(in srgb,var(--mark) 16%,transparent);
+  border-color:color-mix(in srgb,var(--mark) 55%,transparent);
+  box-shadow:0 0 22px -10px color-mix(in srgb,var(--mark) 80%,transparent);
+}
+.rung.todo{opacity:.82}
+.rung-dot{
+  width:30px;height:30px;border-radius:50%;display:grid;place-items:center;
+  font-family:var(--f-mono);font-size:12px;font-weight:700;
+  background:var(--glass-2);border:1px solid var(--glass-brd);color:var(--ink-faint);
+}
+.rung.done .rung-dot{background:var(--green);border-color:transparent;color:var(--paper)}
+.rung.now .rung-dot{background:var(--mark);border-color:transparent;color:#2a2000}
+.rung-body{display:grid;gap:3px;min-width:0}
+.rung-name{font-weight:750;font-size:15px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.rung-tag{
+  font-family:var(--f-mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--mark-deep);background:color-mix(in srgb,var(--mark) 24%,transparent);
+  border:1px solid color-mix(in srgb,var(--mark) 55%,transparent);padding:2px 7px;border-radius:99px;
+}
+.rung-need{font-family:var(--f-read);font-size:13px;color:var(--ink-soft)}
+.rung-bar{display:block;height:7px;border-radius:99px;background:var(--glass-3);border:1px solid var(--glass-brd);overflow:hidden;margin-top:4px}
+.rung-bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--mark),color-mix(in srgb,var(--mark) 60%,var(--pen)))}
+.rung-left{font-family:var(--f-mono);font-size:11.5px;color:var(--ink-soft)}
+.rung-left b{color:var(--mark-deep)}
+.rung-xp{display:grid;justify-items:end;line-height:1.1}
+.rung-xp b{font-family:var(--f-mono);font-size:19px;font-variant-numeric:tabular-nums}
+.rung-xp small{font-family:var(--f-mono);font-size:9.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-faint)}
 .pendchip{
   display:inline-block;margin-left:6px;font-family:var(--f-mono);font-size:10.5px;font-weight:600;
   letter-spacing:.04em;color:var(--mark-deep);vertical-align:middle;
@@ -2446,6 +2480,31 @@ function renderStats(){
   <div class="levelbar" style="margin:14px 0 0">
     <span class="chip"><span class="lab">Progreso de nivel</span><b>${lv.pct}%</b></span>
     <div class="track"><i style="width:${lv.pct}%"></i></div>
+  </div>
+
+  <div class="panel">
+    <h3>Niveles y experiencia</h3>
+    <p class="sub">Los XP que hacen falta para llegar a cada nivel. Cada vez que subes, ganas <b>2 🎟️</b> para salvar tu racha.</p>
+    <div class="ladder">
+      ${LEVELS.map((L,i)=>{
+        const nxt=LEVELS[i+1], prev=LEVELS[i-1];
+        const state=i<lv.i?"done":(i===lv.i?"now":"todo");
+        const span=nxt?nxt.xp-L.xp:0;
+        const into=Math.max(0,Math.min(span,S.xp-L.xp));
+        const need=i===0?"nivel de partida":"+"+(L.xp-prev.xp)+" XP desde "+prev.name;
+        return `<div class="rung ${state}">
+          <span class="rung-dot">${state==="done"?"✓":(state==="now"?"●":i+1)}</span>
+          <span class="rung-body">
+            <span class="rung-name">${esc(L.name)}${state==="now"?'<span class="rung-tag">tu nivel</span>':""}</span>
+            <span class="rung-need">${need}</span>
+            ${state==="now"&&nxt?`<span class="rung-bar"><i style="width:${Math.round(into/span*100)}%"></i></span>
+              <span class="rung-left">${into} / ${span} XP · faltan <b>${nxt.xp-S.xp}</b> para ${esc(nxt.name)}</span>`
+              :state==="now"?`<span class="rung-left">¡Has llegado al último nivel!</span>`:""}
+          </span>
+          <span class="rung-xp"><b>${L.xp}</b><small>XP en total</small></span>
+        </div>`;
+      }).join("")}
+    </div>
   </div>
 
   <div class="panel">
