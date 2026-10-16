@@ -405,6 +405,11 @@ input{font:inherit;color:inherit}
   width:23px;height:23px;flex:none;border-radius:7px;background:var(--glass-3);
   border:1px solid var(--glass-brd);display:grid;place-items:center;font-size:11px;font-weight:600;color:var(--ink-faint);
 }
+.opt.sel{
+  border-color:var(--pen);background:var(--pen-soft);
+  box-shadow:inset 0 1px 0 var(--glass-hi), 0 0 0 3px color-mix(in srgb,var(--pen) 22%,transparent);
+}
+.opt.sel .key{background:var(--pen);color:var(--paper);border-color:transparent}
 .opt.ok{border-color:color-mix(in srgb,var(--green) 55%,transparent);background:var(--green-soft)}
 .opt.ok .key{background:var(--green);color:var(--paper);border-color:transparent}
 .opt.no{border-color:color-mix(in srgb,var(--red) 55%,transparent);background:var(--red-soft)}
@@ -2214,9 +2219,13 @@ function paintQuestion(it){
   const stemHTML=t=>wrapGloss(t, it.gloss, !it.tr);
 
   if(it.t==="choice"){
+    /* Las opciones se muestran en orden aleatorio, para que la buena no sea
+       siempre la primera. Cada botón guarda su índice original (data-i): la
+       corrección compara con ese índice, no con la posición en pantalla. */
+    const order=shuffle(it.opts.map((_,i)=>i));
     body=`<div class="stem">${stemHTML(it.q).replace(/___/g,'<span style="color:var(--ink-faint)">______</span>')}</div>
     <div class="opts ${it.opts.length>4?"bank":""}" id="opts">
-      ${it.opts.map((o,i)=>`<button class="opt" data-i="${i}"><span class="key">${String.fromCharCode(65+i)}</span><span>${esc(o)}</span></button>`).join("")}
+      ${order.map((i,pos)=>`<button class="opt" data-i="${i}" aria-pressed="false"><span class="key">${String.fromCharCode(65+pos)}</span><span>${esc(it.opts[i])}</span></button>`).join("")}
     </div>`;
   } else if(it.t==="fill"){
     let n=0;
@@ -2264,8 +2273,17 @@ function paintQuestion(it){
   run.answered=false;
 
   if(it.t==="choice"){
-    card.querySelectorAll(".opt").forEach(b=>b.onclick=()=>resolveChoice(it,+b.dataset.i));
+    /* tocar una opción solo la selecciona; se corrige al pulsar «Comprobar» */
+    let picked=null;
+    card.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{
+      if(run.answered) return;
+      picked=+b.dataset.i;
+      card.querySelectorAll(".opt").forEach(x=>{ const on=x===b; x.classList.toggle("sel",on); x.setAttribute("aria-pressed",String(on)); });
+      checkBtn.disabled=false; checkBtn.style.opacity="";
+      SFX.play("pick");
+    });
     checkBtn.disabled=true; checkBtn.style.opacity=".45";
+    checkBtn.onclick=()=>{ if(picked!==null) resolveChoice(it,picked); };
   }
   if(it.t==="fill"){
     const first=card.querySelector(".blank"); if(first) first.focus();
@@ -2280,6 +2298,24 @@ function paintQuestion(it){
   if(it.t==="match"){ setupMatch(it,card); checkBtn.disabled=true; checkBtn.style.opacity=".45"; }
   document.getElementById("skip").onclick=()=>reveal(it);
 }
+/* En las preguntas de elegir: A, B, C… o 1, 2, 3… seleccionan la opción que
+   aparece en esa posición; Enter comprueba. */
+document.addEventListener("keydown",e=>{
+  if(view.name!=="play"||!run||run.answered||!drawer.hidden) return;
+  if(e.ctrlKey||e.metaKey||e.altKey) return;
+  const t=e.target; if(t&&/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)) return;
+  const it=run.items[run.i]; if(!it||it.t!=="choice") return;
+  if(e.key==="Enter"){
+    if(t&&t.tagName==="BUTTON") return;   /* sobre un botón, Enter ya lo pulsa él */
+    const c=document.getElementById("check");
+    if(c&&!c.disabled){ e.preventDefault(); c.click(); }
+    return;
+  }
+  const k=e.key.toLowerCase(); let idx=-1;
+  if(/^[1-9]$/.test(k)) idx=+k-1; else if(/^[a-i]$/.test(k)) idx=k.charCodeAt(0)-97;
+  const btn=[...document.querySelectorAll(".opt")][idx];
+  if(btn){ e.preventDefault(); btn.click(); }
+});
 function onEnter(){
   if(run.answered){ const n=document.getElementById("next"); if(n) n.click(); return; }
   const b=document.getElementById("check");
@@ -2287,16 +2323,18 @@ function onEnter(){
 }
 document.addEventListener("keydown",e=>{
   if(view.name!=="play"||!drawer.hidden) return;
-  if(e.key==="Enter"&&run&&run.answered){ e.preventDefault(); const n=document.getElementById("next"); if(n) n.click(); }
+  /* un Enter que acaba de comprobar no puede ser también el que avanza */
+  if(e.key==="Enter"&&run&&run.answered&&!e.repeat&&Date.now()-(run.checkedAt||0)>400){ e.preventDefault(); const n=document.getElementById("next"); if(n) n.click(); }
 });
 
 /* ---------- resolución ---------- */
+/* el botón de una opción, buscado por su índice original (no por su posición) */
+function optBtn(i){ return document.querySelector('.opt[data-i="'+i+'"]'); }
 function resolveChoice(it,pick){
-  const opts=[...document.querySelectorAll(".opt")];
   const ok=it.a.includes(pick);
-  opts.forEach(b=>b.disabled=true);
-  opts[pick].classList.add(ok?"ok":"no");
-  if(!ok) opts[it.a[0]].classList.add("ok");
+  document.querySelectorAll(".opt").forEach(b=>{ b.disabled=true; b.classList.remove("sel"); });
+  optBtn(pick).classList.add(ok?"ok":"no");
+  if(!ok) optBtn(it.a[0]).classList.add("ok");
   finish(it,ok,it.opts[it.a[0]],it.opts[pick],false,false);
 }
 function resolveFill(it){
@@ -2341,8 +2379,8 @@ function reveal(it){
   if(run.answered) return;
   let model="";
   if(it.t==="choice"){
-    const opts=[...document.querySelectorAll(".opt")];
-    opts.forEach(b=>b.disabled=true); opts[it.a[0]].classList.add("ok");
+    document.querySelectorAll(".opt").forEach(b=>{ b.disabled=true; b.classList.remove("sel"); });
+    optBtn(it.a[0]).classList.add("ok");
     model=it.opts[it.a[0]];
   } else if(it.t==="fill"){
     [...document.querySelectorAll(".blank")].forEach((inp,k)=>{ inp.value=expand(it.a[k][0])[0]; inp.classList.add("ok"); inp.disabled=true; });
@@ -2368,7 +2406,7 @@ function canSelfMark(given,model){
 
 /* ---------- feedback ---------- */
 function finish(it,ok,model,given,near,selfmarkable,revealed){
-  run.answered=true;
+  run.answered=true; run.checkedAt=Date.now();
   const slot=document.getElementById("fbslot"), foot=document.querySelector(".qfoot");
   const prevStreak=run.streak;
   let gained=0, mult=1;
