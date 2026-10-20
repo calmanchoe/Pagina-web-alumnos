@@ -1032,7 +1032,7 @@ const ALL_UNITS = [
     ["Present perfect","Experiencia o resultado, sin decir cuándo. <code>have/has + participio</code>. Señales: <i>ever, never, just, already, yet, for, since</i>."]
   ]},
   {h:"Afirmativa, negativa e interrogativa", p:"Cada tiempo tiene su <b>auxiliar</b>, y es el auxiliar el que se mueve: <code>do/does</code> (present simple), <code>am/is/are</code> (present continuous), <code>did</code> (past simple), <code>was/were</code> (past continuous), <code>will</code> (future), <code>have/has</code> (present perfect). Tras <b>didn't</b> y <b>doesn't</b> el verbo va en <b>infinitivo</b>: <i>He didn't go</i>, nunca <i>didn't went</i>."},
-  {h:"Adjetivo + preposición", p:"Se aprenden juntos, como si fueran una sola palabra: <b>interested in · good at · bad at · afraid of · proud of · full of · tired of · worried about · excited about · married to · different from · famous for</b>."},
+  {h:"Adjetivo + preposición", vocab:1, p:"Se aprenden juntos, como si fueran una sola palabra: <b>interested in · good at · bad at · afraid of · proud of · full of · tired of · worried about · excited about · married to · different from · famous for</b>."},
   {h:"Respuestas cortas con So / Nor", p:"Para decir «yo también» y «yo tampoco». <b>So + auxiliar + sujeto</b> (frases afirmativas) y <b>Neither / Nor + auxiliar + sujeto</b> (frases negativas). El auxiliar es el mismo de la frase anterior, y el orden se <b>invierte</b>: <i>I love pizza → <b>So do I</b></i> · <i>She can't swim → <b>Neither can I</b></i>. Ojo: tras <i>neither/nor</i> el verbo va en <b>afirmativo</b>."},
   {h:"Oraciones de relativo", p:"<b>Especificativas (defining)</b>: dicen de quién o de qué hablamos, van <b>sin comas</b> y aceptan <i>that</i>: <i>The man <b>who/that</b> lives next door is a doctor</i>. A veces se puede quitar el relativo: <i>This is the film (that) we watched yesterday</i>.<br><b>Explicativas (non-defining)</b>: añaden un dato extra, van <b>entre comas</b>, <b>nunca</b> con <i>that</i> y no se pueden quitar: <i>My bike, <b>which</b> is very old, still works</i>."},
   {h:"Pronombres relativos", dl:[
@@ -1222,15 +1222,15 @@ const ALL_UNITS = [
   {h:"Present perfect continuous: cuándo se usa", p:"Para una acción que <b>empezó en el pasado y sigue ahora</b>, o que <b>acaba de terminar</b> y se nota el resultado: <i>I've been practising all day (y estoy agotado)</i>. Señales: <i>for, since, all day, lately, recently, how long</i>.<br><b>For</b> + periodo (<i>for two years</i>) · <b>since</b> + momento en que empezó (<i>since Monday</i>)."},
   {h:"Present perfect simple o continuous", p:"<b>Simple</b>: acción terminada y relevante ahora, o <b>cuántas</b> cosas se han hecho (<i>I've just gone up a level · How many games have you played?</i>). Va con <i>just, already, yet, ever, never</i>.<br><b>Continuous</b>: se destaca la <b>duración</b> o el proceso (<i>They've been developing this game for years</i>) y las preguntas con <i>how long</i>."},
   {h:"Verbos que no van en continuous", p:"Los verbos de estado (<i>want, need, like, love, understand, hear, see, know</i>) no suelen usarse en continuous: <i>I've known her since primary school</i>, nunca <i>I've been knowing</i>."},
-  {h:"Si dices cuándo: pasado simple", p:"Con un momento concreto y terminado (<i>yesterday, last week, in 2020</i>) se usa <b>past simple</b>: <i>I practised the dance moves yesterday</i>, no <i>I've been practising … yesterday</i>."},
+  {h:"Si dices cuándo: pasado simple", p:"Con un momento concreto y terminado (<i>yesterday, last week, in 2020</i>) se usa <b>past simple</b>: <i>I practised the song yesterday</i>, no <i>I've been practising … yesterday</i>."},
   {h:"Formación de palabras", dl:[
-    ["-ment","enjoy → enjoy<b>ment</b> · entertain → entertain<b>ment</b> · excite → excite<b>ment</b>"],
-    ["-ance / -ence","perform → perform<b>ance</b> · depend → depend<b>ence</b>"],
-    ["-ion","inspire → inspir<b>ation</b> · compete → compet<b>ition</b> · decide → decis<b>ion</b>"],
-    ["-ity / -ty","popular → popular<b>ity</b> · difficult → difficul<b>ty</b>"],
-    ["-er / -or","perform → perform<b>er</b> · organise → organis<b>er</b>"],
-    ["-ive / -ous / -able","create → creat<b>ive</b> · danger → danger<b>ous</b> · enjoy → enjoy<b>able</b> · fame → fam<b>ous</b>"],
-    ["un- / im-","<b>un</b>happy · <b>im</b>possible"]
+    ["-ment","achieve → achieve<b>ment</b> · improve → improve<b>ment</b> · move → move<b>ment</b>"],
+    ["-ance / -ence","appear → appear<b>ance</b> · differ → differ<b>ence</b> · attend → attend<b>ance</b>"],
+    ["-ion","collect → collect<b>ion</b> · discuss → discuss<b>ion</b> · invent → invent<b>ion</b>"],
+    ["-ity / -ty","active → activ<b>ity</b> · safe → safe<b>ty</b> · certain → certain<b>ty</b>"],
+    ["-er / -or","teach → teach<b>er</b> · act → act<b>or</b> · visit → visit<b>or</b>"],
+    ["-ive / -ous / -able","attract → attract<b>ive</b> · nerve → nerv<b>ous</b> · comfort → comfort<b>able</b>"],
+    ["un- / im-","<b>un</b>usual · <b>un</b>fair · <b>im</b>patient · <b>im</b>polite"]
   ]},
   {h:"Vocabulario: música y baile", vocab:1, dl:[
     ["venue","lugar donde se celebra un concierto"],["cheer","vitorear, animar"],["wave","agitar (los brazos)"],
@@ -1991,9 +1991,10 @@ function renderUnit(u){
 /* ---------- chuleta ---------- */
 document.getElementById("dr-close").onclick=()=>drawer.hidden=true;
 drawer.onclick=e=>{ if(e.target===drawer) drawer.hidden=true; };
-/* En los ejercicios de vocabulario (ex.vocab) la chuleta no muestra las listas
-   de vocabulario con su traducción: se quedaría la respuesta a la vista. */
-function theoryFor(u,ex){ return (u.theory||[]).filter(t=>!(ex&&ex.vocab&&t.vocab)); }
+/* Dentro de un ejercicio la chuleta no muestra los bloques de vocabulario
+   (vocab:1), con sus traducciones: se quedaría la respuesta a la vista.
+   Sin ejercicio (la chuleta de la unidad) se enseña todo. */
+function theoryFor(u,ex){ return (u.theory||[]).filter(t=>!(ex&&t.vocab)); }
 function openTheory(u,ex){
   document.getElementById("dr-eyebrow").textContent="Chuleta · "+u.num;
   document.getElementById("dr-title").textContent=u.title;
