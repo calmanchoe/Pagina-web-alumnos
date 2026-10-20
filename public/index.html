@@ -139,7 +139,9 @@
 
 *{box-sizing:border-box}
 body{
+  margin:0;
   min-height:100vh;
+  min-height:100dvh;
   background-color:var(--paper);
   background-image:
     radial-gradient(46rem 34rem at 8% -6%, var(--b1), transparent 62%),
@@ -167,7 +169,7 @@ p{margin:0}
 button{font:inherit;color:inherit;cursor:pointer;border:none;background:none}
 input{font:inherit;color:inherit}
 :focus-visible{outline:2.5px solid var(--pen);outline-offset:2px;border-radius:5px}
-.wrap{max-width:940px;margin:0 auto;padding:0 18px 90px}
+.wrap{max-width:940px;margin:0 auto;padding:0 18px 28px}
 
 /* superficie de cristal reutilizable */
 .glass,.topbar,.modes,.unit,.ex,.qcard,.result,.panel,.tile,.drawer-in,.gloss,.toast,.chip,.iconbtn{
@@ -525,7 +527,7 @@ input{font:inherit;color:inherit}
 .trow{display:grid;grid-template-columns:minmax(120px,auto) 1fr;gap:4px 14px;font-size:14px;margin-top:6px}
 .trow dt{font-family:var(--f-mono);font-size:13px;color:var(--pen);font-weight:500}
 .trow dd{margin:0;font-family:var(--f-read);color:var(--ink-soft);font-size:14.5px}
-.footnote{margin-top:34px;font-family:var(--f-read);font-size:13.5px;color:var(--ink-faint);line-height:1.5;text-align:center}
+.footnote{margin-top:clamp(14px,4vh,34px);font-family:var(--f-read);font-size:13.5px;color:var(--ink-faint);line-height:1.5;text-align:center}
 .toast{
   position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:70;
   background:var(--pop);color:var(--pop-ink);
@@ -538,6 +540,18 @@ input{font:inherit;color:inherit}
 .toast[hidden]{display:none!important}
 
 @media (max-width:640px){
+  /* cabecera en dos filas: marca + acciones arriba, marcadores debajo */
+  .topbar-in{flex-wrap:wrap;gap:0 8px;padding:8px 14px}
+  .stats{display:contents}
+  .brand{order:1;flex:1 1 auto;margin-right:0}
+  .chip.who{order:2}
+  #statsbtn{order:3}
+  #sndbtn{order:4}
+  #themebtn{order:5}
+  .topbar-in::after{content:"";order:6;flex:0 0 100%;height:0}
+  .chip.mult,.chip.streak,.chip.tok,.chip.xp,.cloudchip{order:7;margin-top:8px}
+  .topbar.in .brand-name{display:none}
+  .chip{padding:4px 9px;font-size:12px}
   .matchgrid{grid-template-columns:1fr}
   .qcard{padding:20px 16px 18px 26px}
   .stem{font-size:16px}
@@ -740,6 +754,27 @@ input{font:inherit;color:inherit}
   position:absolute;top:12px;right:12px;font-family:var(--f-mono);font-size:9.5px;
   letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);
   background:var(--glass-3);border:1px solid var(--glass-brd);padding:3px 8px;border-radius:99px;
+}
+
+/* selector de alumno compacto en móvil (va después de sus estilos base) */
+@media (max-width:640px){
+  .picks{grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}
+  .pick{padding:20px 10px 16px;border-radius:18px}
+  .pick-av{width:54px;height:54px;font-size:24px}
+  .pick-name{font-size:19px}
+  .pick-meta{font-size:13px}
+  /* pantalla de preguntas más compacta para que quepa sin scroll */
+  .back{padding:2px 0}
+  .playhead{padding:8px 0 8px}
+  .qcard{padding:14px 14px 14px 22px;border-radius:16px}
+  .qtag{margin-bottom:8px}
+  .stem{line-height:1.65}
+  .opts{gap:8px;margin-top:10px}
+  .opt{padding:10px 13px}
+  .answerline{margin-top:12px}
+  .qfoot{margin-top:12px}
+  .vochelp{margin-top:8px}
+  .fb{margin-top:12px;padding:12px 14px}
 }
 
 @media (prefers-reduced-motion:reduce){
@@ -1591,6 +1626,7 @@ function syncTop(){
   document.getElementById("statsbtn").hidden=!on;
   document.getElementById("whobtn").hidden=!on;
   const cc=document.getElementById("cloudchip"); if(cc){ cc.hidden=!on; if(on) setCloud(cloudState); }
+  document.querySelector(".topbar").classList.toggle("in",on);
   const sub=document.querySelector(".brand-sub");
   if(sub && !on) sub.textContent="Elige alumno";
   document.getElementById("s-xp").textContent=S.xp;
@@ -1621,7 +1657,7 @@ function renderProfiles(){
   if(view.ask) return renderUnlock(view.ask);
   let last=null; try{ last=localStorage.getItem(LASTKEY); }catch(e){}
   app.innerHTML=`
-  <section class="hero" style="padding:48px 0 10px;text-align:center;justify-items:center">
+  <section class="hero" style="padding:clamp(14px,5vh,48px) 0 10px;text-align:center;justify-items:center">
     <div class="eyebrow">Cuaderno Arcade</div>
     <h1 style="font-size:clamp(28px,5vw,42px)">¿Quién practica <span class="mk">hoy</span>?</h1>
     <p class="lede" style="margin:0 auto">Cada alumno tiene sus propias unidades, su progreso y sus estadísticas.</p>
@@ -1655,7 +1691,7 @@ function renderProfiles(){
 function renderUnlock(id){
   const p=profileOf(id), isT=id===TEACHER.id;
   app.innerHTML=`
-  <section class="hero" style="padding:48px 0 10px;text-align:center;justify-items:center">
+  <section class="hero" style="padding:clamp(14px,5vh,48px) 0 10px;text-align:center;justify-items:center">
     <div class="eyebrow">Cuaderno Arcade</div>
     <h1 style="font-size:clamp(26px,4.4vw,36px)">Hola, <span class="mk">${p.name}</span></h1>
     <p class="lede" style="margin:0 auto">${isT?"Escribe tu correo y tu contraseña para entrar.":"Escribe tu contraseña para entrar."}</p>
