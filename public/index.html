@@ -1174,9 +1174,9 @@ const ALL_UNITS = [
 },
 {
  id:"m1", short:"U1", owner:"marcos", num:"Unidad 1", title:"All Fun and Games", icon:"🎮",
- desc:"Módulo 1 del libro: vocabulario de música y baile, videojuegos y lugares divertidos; present perfect continuous, present perfect simple frente a continuous, y conectores para contar una experiencia.",
- gram:["Present perfect continuous","Present perfect simple vs continuous","Conectores de tiempo"],
- lex:["Música y baile","Videojuegos","Lugares divertidos"],
+ desc:"Módulo 1 del libro: vocabulario de música y baile, videojuegos y ocio; present perfect continuous, present perfect simple frente a continuous, formación de palabras, conectores y comprensión lectora.",
+ gram:["Present perfect continuous","Present perfect simple vs continuous","Formación de palabras"],
+ lex:["Música y baile","Videojuegos","Ocio y conectores"],
  theory:[
   {h:"Present perfect continuous: la forma", dl:[
     ["Afirmativa","<code>have/has + been + verbo-ing</code> · <i>Claire has been singing for two years.</i>"],
@@ -1184,10 +1184,19 @@ const ALL_UNITS = [
     ["Pregunta","<code>Have/Has + sujeto + been + -ing?</code> · <i>Have you been rehearsing lately?</i>"],
     ["Con wh-","<i>How long have they been playing? · What has John been doing all day?</i>"]
   ]},
-  {h:"Present perfect continuous: cuándo se usa", p:"Para una acción que <b>empezó en el pasado y sigue ahora</b>, o que <b>acaba de terminar</b> y se nota el resultado: <i>I've been practising all day (y estoy agotado)</i>. Señales: <i>for, since, all day, lately, recently, how long</i>. <b>For</b> + periodo (<i>for two years</i>) · <b>since</b> + momento en que empezó (<i>since Monday</i>)."},
+  {h:"Present perfect continuous: cuándo se usa", p:"Para una acción que <b>empezó en el pasado y sigue ahora</b>, o que <b>acaba de terminar</b> y se nota el resultado: <i>I've been practising all day (y estoy agotado)</i>. Señales: <i>for, since, all day, lately, recently, how long</i>.<br><b>For</b> + periodo (<i>for two years</i>) · <b>since</b> + momento en que empezó (<i>since Monday</i>)."},
   {h:"Present perfect simple o continuous", p:"<b>Simple</b>: acción terminada y relevante ahora, o <b>cuántas</b> cosas se han hecho (<i>I've just gone up a level · How many games have you played?</i>). Va con <i>just, already, yet, ever, never</i>.<br><b>Continuous</b>: se destaca la <b>duración</b> o el proceso (<i>They've been developing this game for years</i>) y las preguntas con <i>how long</i>."},
-  {h:"Verbos que no van en continuous", p:"Los verbos de estado (<i>want, need, like, love, understand, hear, see, know</i>) no suelen usarse en continuous: <i>I've loved this game since I was a child</i>, nunca <i>I've been loving</i>."},
-  {h:"Si dices cuándo: pasado simple", p:"Con un momento concreto (<i>yesterday, last week, in 2020</i>) se usa <b>past simple</b>: <i>I practised the dance moves yesterday</i>, no <i>I've been practising … yesterday</i>."},
+  {h:"Verbos que no van en continuous", p:"Los verbos de estado (<i>want, need, like, love, understand, hear, see, know</i>) no suelen usarse en continuous: <i>I've known her since primary school</i>, nunca <i>I've been knowing</i>."},
+  {h:"Si dices cuándo: pasado simple", p:"Con un momento concreto y terminado (<i>yesterday, last week, in 2020</i>) se usa <b>past simple</b>: <i>I practised the dance moves yesterday</i>, no <i>I've been practising … yesterday</i>."},
+  {h:"Formación de palabras", dl:[
+    ["-ment","enjoy → enjoy<b>ment</b> · entertain → entertain<b>ment</b> · excite → excite<b>ment</b>"],
+    ["-ance / -ence","perform → perform<b>ance</b> · depend → depend<b>ence</b>"],
+    ["-ion","inspire → inspir<b>ation</b> · compete → compet<b>ition</b> · decide → decis<b>ion</b>"],
+    ["-ity / -ty","popular → popular<b>ity</b> · difficult → difficul<b>ty</b>"],
+    ["-er / -or","perform → perform<b>er</b> · organise → organis<b>er</b>"],
+    ["-ive / -ous / -able","create → creat<b>ive</b> · danger → danger<b>ous</b> · enjoy → enjoy<b>able</b> · fame → fam<b>ous</b>"],
+    ["un- / im-","<b>un</b>happy · <b>im</b>possible"]
+  ]},
   {h:"Vocabulario: música y baile", dl:[
     ["venue","lugar donde se celebra un concierto"],["cheer","vitorear, animar"],["wave","agitar (los brazos)"],
     ["rhythm","ritmo"],["dance moves","pasos de baile"],["criticism","críticas"],["broadcast","retransmisión"],
@@ -1202,216 +1211,191 @@ const ALL_UNITS = [
     ["relate to","identificarse con"],["pull off","conseguir algo difícil"],["set off","ponerse en marcha"],["sell out","agotarse"],
     ["take an interest in","interesarse por"]
   ]},
-  {h:"Vocabulario: lugares divertidos", dl:[
+  {h:"Vocabulario: ocio y conectores", dl:[
     ["roller coaster","montaña rusa"],["big wheel","noria"],["main attraction","atracción principal"],["brochure","folleto"],
-    ["upside down","boca abajo"],["at full speed","a toda velocidad"],["knock over","derribar"],["provide","proporcionar"],
-    ["either way","de cualquier manera"],["all the way","todo el camino"]
-  ]},
-  {h:"Conectores para contar una experiencia", dl:[
+    ["upside down","boca abajo"],["at full speed","a toda velocidad"],["either way","de cualquier manera"],
     ["after a while","después de un rato"],["as soon as","en cuanto"],["eventually","al final, con el tiempo"],
-    ["ever since then","desde entonces"],["for a while","durante un tiempo"],["in the course of","a lo largo de"],
-    ["later","más tarde"],["all day","todo el día"]
+    ["ever since then","desde entonces"],["in the course of","a lo largo de"],
+    ["what have you been up to?","¿en qué has andado metido?"],["quite trendy","bastante de moda"]
   ]},
   {h:"Adjetivo + to + verbo", p:"Para expresar cómo te sientes ante una acción: <i>I'm <b>eager to</b> go on stage · She's <b>lucky to</b> be here</i>. Se usa con <b>ready, pleased, excited, lucky, likely, proud</b>."}
  ],
  exercises:[
 
   /* ------------------------------ NIVEL 1 ------------------------------ */
-  {n:1, lvl:1, no:1, vocab:1, title:"Música y baile: elige la palabra", instr:"Elige la palabra que completa cada frase.", items:[
-   {t:"choice", q:"At the end of the show, the audience clapped and ___.", opts:["cheered","rehearsed","criticised"], a:[0], why:"<b>cheer</b> = vitorear, animar al artista. <i>Rehearse</i> es ensayar, y eso se hace antes del concierto."},
-   {t:"choice", q:"The old factory is a strange ___ for a music festival.", opts:["location","broadcast","criticism"], a:[0], why:"<b>location</b> = lugar, escenario. <i>Broadcast</i> es una retransmisión y <i>criticism</i> son críticas."},
-   {t:"choice", q:"I can't be sure, but I ___ that Jess wants to leave the band.", opts:["get the feeling","star in","show off"], a:[0], why:"<b>get the feeling (that)</b> = tener la sensación de que."},
-   {t:"choice", q:"This theatre is a great ___ for live music.", opts:["venue","broadcast","rhythm"], a:[0], why:"<b>venue</b> = el lugar donde se celebra un concierto o un evento."},
-   {t:"choice", q:"We're all really ___ hear their new album.", opts:["eager to","fond of","weird to"], a:[0], why:"<b>eager to + verbo</b> = con muchas ganas de. <i>Fond of</i> va con un nombre o con -ing: <i>fond of listening</i>."},
-   {t:"choice", q:"My brother has a great sense of ___; he never loses the beat.", opts:["rhythm","criticism","venue"], a:[0], why:"<b>sense of rhythm</b> = sentido del ritmo."},
-   {t:"choice", q:"Mia loves to ___ her new guitar in front of her friends.", opts:["show off","star in","cheer"], a:[0], why:"<b>show off</b> = presumir, lucirse. <i>Star in</i> se usa para películas y obras de teatro."},
-   {t:"choice", q:"He was upset by the ___ because people said his song was boring.", opts:["criticism","rhythm","venue"], a:[0], why:"<b>criticism</b> = críticas. Es incontable: no lleva -s."},
-   {t:"choice", q:"The final of the talent show was a live ___ on TV.", opts:["broadcast","venue","rhythm"], a:[0], why:"<b>broadcast</b> = retransmisión, emisión."},
-   {t:"choice", q:"The crowd was ___ their arms in the air.", opts:["waving","rehearsing","starring"], a:[0], why:"<b>wave</b> = agitar. <i>Waving their arms</i> = moviendo los brazos."}
+  {n:1, lvl:1, no:1, vocab:1, title:"Música y baile: vocabulario en contexto", instr:"Elige la opción que completa mejor la frase.", items:[
+   {t:"choice", q:"After months of ___, the cast finally felt ready for opening night.", opts:["rehearsing","cheering","broadcasting","waving"], a:[0], why:"<b>rehearse</b> = ensayar: es lo que hace un reparto durante meses antes del estreno. <i>Broadcast</i> es retransmitir."},
+   {t:"choice", q:"He doesn't take ___ well: every negative comment about his songs makes him furious.", opts:["criticism","rhythm","venue","appeal"], a:[0], why:"<b>take criticism</b> = encajar las críticas."},
+   {t:"choice", q:"She was ___ her new dance moves to anyone who would watch, even though nobody had asked.", opts:["showing off","starring in","cheering on","waving at"], a:[0], why:"<b>show off</b> = presumir, lucirse. <i>Star in</i> se usa para películas y obras de teatro."},
+   {t:"choice", q:"I get the ___ that tonight's concert is going to be something special.", opts:["feeling","rhythm","moves","mind"], a:[0], why:"<b>get the feeling (that)</b> = tener la sensación de que."},
+   {t:"choice", q:"Although the costume looked ___ at first, it soon became a trend among teenagers.", opts:["weird","eager","fond","proud"], a:[0], why:"<b>weird</b> = raro. <i>Eager</i> y <i>proud</i> van seguidos de <i>to</i> / <i>of</i> y se dicen de personas."},
+   {t:"choice", q:"The semi-final will be shown as a live ___ on national television.", opts:["broadcast","venue","criticism","rhythm"], a:[0], why:"<b>broadcast</b> = retransmisión, emisión."},
+   {t:"choice", q:"Thousands of fans were ___ their arms in the air and singing along to every song.", opts:["waving","rehearsing","starring","broadcasting"], a:[0], why:"<b>wave</b> = agitar. <i>Waving their arms</i> = moviendo los brazos."},
+   {t:"choice", q:"Clara was so ___ to meet her idol that she arrived at the venue five hours early.", opts:["eager","fond","weird","tired"], a:[0], why:"<b>eager to + verbo</b> = con muchas ganas de. <i>Fond</i> necesita <i>of</i>."},
+   {t:"choice", q:"Their new single has a catchy ___ that makes everyone want to dance.", opts:["rhythm","venue","criticism","broadcast"], a:[0], why:"<b>rhythm</b> = ritmo."}
   ]},
 
-  {n:2, lvl:1, no:2, vocab:1, title:"Música y baile: completa con el banco", instr:"Completa con una palabra o expresión del banco.",
-   bank:["fond of","cheered","weird","venue","rehearsed","criticism","rhythm","dance moves"], items:[
-   {t:"fill", q:"Everyone in the club was watching his amazing ___.", a:[["dance moves"]], why:"<b>dance moves</b> = pasos de baile."},
-   {t:"fill", q:"I'm very ___ pop music, so I listen to it every day.", a:[["fond of"]], why:"<b>fond of</b> + nombre = que le gusta mucho."},
-   {t:"fill", q:"Our school hall is a small ___, but the sound is great.", a:[["venue"]], why:"<b>venue</b> = lugar donde se celebra un concierto."},
-   {t:"fill", q:"She said the song was ___ because it had no melody at all.", a:[["weird"]], why:"<b>weird</b> = raro, extraño."},
-   {t:"fill", q:"The audience ___ loudly at the end of the show.", a:[["cheered"]], why:"Pasado simple de <b>cheer</b>: <i>cheered</i>."},
-   {t:"fill", q:"The drummer keeps a strong ___ all through the song.", a:[["rhythm"]], why:"<b>rhythm</b> = ritmo."},
-   {t:"fill", q:"The students ___ all week, so now they feel ready for the show.", a:[["rehearsed","have rehearsed","'ve rehearsed"]], why:"<b>rehearse</b> = ensayar. Vale <i>rehearsed</i> (o <i>have rehearsed</i>)."},
-   {t:"fill", q:"A good singer must accept ___, even when it isn't nice to hear.", a:[["criticism"]], why:"<b>accept criticism</b> = aceptar críticas."}
+  {n:2, lvl:1, no:2, vocab:1, title:"Música y baile: completa el texto", instr:"Completa cada texto con las palabras del banco. Sobra una.",
+   bank:["venue","rehearsed","cheered","criticism","fond of","dance moves","show off","eager","weird","rhythm","broadcast"], items:[
+   {t:"fill", q:"Last Saturday my band played at a small ___ in our town. We had ___ every afternoon for a month, so we felt confident. The audience ___ after every song and, honestly, I was surprised: I had been expecting some ___.", a:[["venue"],["rehearsed"],["cheered"],["criticism"]], why:"<b>venue</b> (lugar del concierto) · <b>rehearsed</b> (<i>had rehearsed</i>) · <b>cheered</b> (vitoreó) · <b>criticism</b> (críticas)."},
+   {t:"fill", q:"My little sister is really ___ hip-hop. She learns every one of the new ___ from online videos, and she loves to ___ in front of the whole family.", a:[["fond of"],["dance moves"],["show off"]], why:"<b>fond of</b> + nombre · <b>dance moves</b> = pasos de baile · <b>show off</b> = presumir."},
+   {t:"fill", q:"The lead singer is ___ to perform again after a long break. At first the new song sounds ___, but the ___ is so catchy that the whole crowd ends up dancing.", a:[["eager"],["weird"],["rhythm"]], why:"<b>eager to</b> = con ganas de · <b>weird</b> = raro · <b>rhythm</b> = ritmo."}
   ]},
 
-  {n:3, lvl:1, no:3, vocab:1, title:"Videojuegos: ¿qué significa?", instr:"Elige la opción que muestra que entiendes la palabra.", items:[
-   {t:"choice", q:"Vivid colours are usually very ___.", opts:["bright","dark","quiet"], a:[0], why:"<b>vivid</b> = vivo, intenso: colores muy brillantes."},
-   {t:"choice", q:"Novels and fantasy films are usually about ___ characters.", opts:["fictional","real","famous"], a:[0], why:"<b>fictional</b> = ficticio, inventado."},
-   {t:"choice", q:"The game has sold out, so you can't ___ it anywhere.", opts:["buy","sell","repair"], a:[0], why:"<b>sell out</b> = agotarse: ya no quedan copias en las tiendas, así que no se puede <i>buy</i> (comprar)."},
-   {t:"choice", q:"If you relate to a character, you ___ with them.", opts:["identify","argue","disagree"], a:[0], why:"<b>relate to</b> = identificarse con alguien, conectar con él."},
-   {t:"choice", q:"When you get a lot of enjoyment from something, you think it's ___.", opts:["fun","risky","boring"], a:[0], why:"<b>enjoyment</b> = disfrute: lo pasas bien, te parece divertido."},
-   {t:"choice", q:"When you do a job properly, you do it ___.", opts:["well","immediately","slowly"], a:[0], why:"<b>properly</b> = como es debido, bien."},
-   {t:"choice", q:"Bizarre characters are very ___.", opts:["strange","ordinary","friendly"], a:[0], why:"<b>bizarre</b> = extraño, raro."},
-   {t:"choice", q:"If you are immersed in a game, you ___ about everything around you.", opts:["forget","worry","complain"], a:[0], why:"<b>immersed</b> = sumergido: estás tan metido en el juego que te olvidas de todo lo demás."},
-   {t:"choice", q:"A feat is something very ___ to do.", opts:["difficult","easy","boring"], a:[0], why:"<b>feat</b> = hazaña, algo que cuesta mucho conseguir."}
+  {n:3, lvl:1, no:3, vocab:1, title:"Videojuegos: de la definición a la palabra", instr:"Escribe la palabra o expresión que corresponde a la definición en inglés.", items:[
+   {t:"fill", q:"The graphics are so good that you quickly become ___ in the game's world.", hint:"completely absorbed in something", a:[["immersed"]], why:"<b>immersed</b> = sumergido, totalmente metido en algo."},
+   {t:"fill", q:"Shops can't keep up with demand: the new console has ___ everywhere.", hint:"no copies are left", a:[["sold out"]], why:"<b>sell out</b> = agotarse. Aquí <i>has sold out</i>."},
+   {t:"fill", q:"Learning the whole song in one afternoon was an incredible ___.", hint:"an impressive achievement", a:[["feat"]], why:"<b>feat</b> = hazaña."},
+   {t:"fill", q:"Developers use ___ graphics to make the colours look bright and intense.", hint:"bright and intense", a:[["vivid"]], why:"<b>vivid</b> = vivo, intenso."},
+   {t:"fill", q:"Do you think you can ___ that level without losing a single life?", hint:"succeed in doing something difficult", a:[["pull off"]], why:"<b>pull off</b> = conseguir algo difícil."},
+   {t:"fill", q:"In the opening scene, the hero ___ on a long journey to rescue his friends.", hint:"starts a journey", a:[["sets off"]], why:"<b>set off</b> = ponerse en marcha. Con <i>the hero</i>: <i>sets off</i>."},
+   {t:"fill", q:"I can't ___ the characters in that game; their problems are nothing like mine.", hint:"identify with", a:[["relate to"]], why:"<b>relate to</b> = identificarse con."},
+   {t:"fill", q:"Whether you win or lose, the real ___ comes from playing with friends.", hint:"the pleasure you get from something", a:[["enjoyment"]], why:"<b>enjoyment</b> = disfrute (nombre)."},
+   {t:"fill", q:"The final boss was so ___ that nobody could explain what it was supposed to be.", hint:"very strange", a:[["bizarre"]], why:"<b>bizarre</b> = extraño, raro."},
+   {t:"fill", q:"Good coaches ___ their players' progress to see who needs extra training.", hint:"follow closely", a:[["keep track of"]], why:"<b>keep track of</b> = seguir la pista de."}
   ]},
 
-  {n:4, lvl:1, no:4, vocab:1, title:"Videojuegos: completa con el banco", instr:"Completa con una palabra del banco.",
-   bank:["appeal","bizarre","engaged","enjoyment","feat","features","properly","vivid"], items:[
-   {t:"fill", q:"The ___ of this game is that you can build your own world.", a:[["appeal"]], why:"<b>appeal</b> = atractivo."},
-   {t:"fill", q:"The plot was so ___ that nobody could understand it.", a:[["bizarre"]], why:"<b>bizarre</b> = extraño, raro."},
-   {t:"fill", q:"A good game keeps players ___ from the first minute to the last.", a:[["engaged"]], why:"<b>stay engaged</b> = seguir enganchado, con interés."},
-   {t:"fill", q:"I get a lot of ___ out of playing with my friends online.", a:[["enjoyment"]], why:"<b>enjoyment</b> = disfrute (nombre). <i>Enjoy</i> es el verbo."},
-   {t:"fill", q:"Finishing the game in one hour was an incredible ___!", a:[["feat"]], why:"<b>feat</b> = hazaña."},
-   {t:"fill", q:"Great sound effects and music are the best ___ of this game.", a:[["features"]], why:"<b>features</b> = características, elementos destacados."},
-   {t:"fill", q:"If the game doesn't load ___, restart your console.", a:[["properly"]], why:"<b>properly</b> = bien, como es debido."},
-   {t:"fill", q:"The landscapes have ___ colours: bright red, blue and green.", a:[["vivid"]], why:"<b>vivid</b> = vivo, muy intenso."}
+  {n:4, lvl:1, no:4, title:"Formación de palabras", instr:"Escribe la forma correcta de la palabra entre paréntesis.", items:[
+   {t:"fill", q:"Her ___ in the main role was praised by every critic.", hint:"perform", a:[["performance"]], why:"perform → perform<b>ance</b>."},
+   {t:"fill", q:"Getting so much ___ from the fans made him more confident.", hint:"encourage", a:[["encouragement"]], why:"encourage → encourage<b>ment</b>."},
+   {t:"fill", q:"The concert was a huge ___: every ticket sold out in minutes.", hint:"succeed", a:[["success"]], why:"succeed → <b>success</b> (cambia la raíz)."},
+   {t:"fill", q:"Online games have become one of the most popular forms of ___.", hint:"entertain", a:[["entertainment"]], why:"entertain → entertain<b>ment</b>."},
+   {t:"fill", q:"The painting was the ___ for his new song.", hint:"inspire", a:[["inspiration"]], why:"inspire → inspir<b>ation</b>."},
+   {t:"fill", q:"The ___ of this game has grown quickly: it now has ten million players.", hint:"popular", a:[["popularity"]], why:"popular → popular<b>ity</b>."},
+   {t:"fill", q:"The main ___ of the game is that the levels are extremely long.", hint:"difficult", a:[["difficulty"]], why:"difficult → difficul<b>ty</b>."},
+   {t:"fill", q:"It is ___ to hear the singer over all that noise.", hint:"possible", a:[["impossible"]], why:"possible → <b>im</b>possible."},
+   {t:"fill", q:"She is a very ___ dancer: her moves are always original.", hint:"create", a:[["creative"]], why:"create → creat<b>ive</b>."},
+   {t:"fill", q:"The film was so ___ that we laughed from beginning to end.", hint:"enjoy", a:[["enjoyable"]], why:"enjoy → enjoy<b>able</b>."}
   ]},
 
-  {n:5, lvl:1, no:5, title:"Present perfect continuous: completa", instr:"Escribe el verbo entre paréntesis en present perfect continuous.", items:[
-   {t:"fill", q:"People in Spain ___ flamenco for hundreds of years.", hint:"dance", a:[["have been dancing"]], why:"Sujeto plural + <i>for</i>: <b>have been dancing</b>."},
-   {t:"fill", q:"I ___ the guitar for about a year.", hint:"learn", a:[["{have|'ve} been learning"]], why:"<i>For about a year</i> → <b>have been learning</b>."},
-   {t:"fill", q:"My cousin ___ in London for long.", hint:"not live", a:[["{hasn't|has not} been living"]], why:"Tercera persona singular negativa: <b>hasn't been living</b>."},
-   {t:"fill", q:"We ___ to the park to practise lately.", hint:"go", a:[["{have|'ve} been going"]], why:"<i>Lately</i> → present perfect continuous: <b>have been going</b>."},
-   {t:"fill", q:"How long ___ you ___ in this band?", hint:"play", a:[["have"],["been playing"]], why:"<b>How long have you been playing…?</b> Pregunta sobre duración."},
-   {t:"fill", q:"My sister ___ much music recently.", hint:"not listen to", a:[["{hasn't|has not} been listening to"]], why:"<b>hasn't been listening to</b>: <i>recently</i> pide continuous."},
-   {t:"fill", q:"They ___ a new song since Monday.", hint:"rehearse", a:[["{have|'ve} been rehearsing"]], why:"<i>Since Monday</i> = desde cuándo → <b>have been rehearsing</b>."},
-   {t:"fill", q:"What ___ John ___ all day?", hint:"do", a:[["has"],["been doing"]], why:"<b>What has John been doing all day?</b> Con <i>John</i> (3.ª persona) va <b>has</b>."},
-   {t:"fill", q:"The fans ___ outside the venue for hours.", hint:"wait", a:[["{have|'ve} been waiting"]], why:"<i>For hours</i> → <b>have been waiting</b>."},
-   {t:"fill", q:"I ___ hard to learn this dance, and I'm tired.", hint:"try", a:[["{have|'ve} been trying"]], why:"Se nota el resultado (estoy cansado) → <b>have been trying</b>."}
+  {n:5, lvl:1, no:5, nogloss:1, title:"Present perfect: completa el texto", instr:"Completa con los verbos entre paréntesis en present perfect simple o continuous.", items:[
+   {t:"fill", q:"I ___ (learn) the drums for about a year now. I ___ (already / join) a band, and we ___ (rehearse) every Friday since January.", a:[["{have|'ve} been learning"],["{have|'ve} already joined"],["{have|'ve} been rehearsing"]], why:"<i>For about a year</i> → <b>have been learning</b> · <i>already</i> + acción hecha → <b>have already joined</b> · <i>since January</i> → <b>have been rehearsing</b>."},
+   {t:"fill", q:"Mia ___ (study) for the exam all afternoon, so she's exhausted. She ___ (not / finish) the last chapter yet, but she ___ (read) three others already.", a:[["{has|'s} been studying"],["{hasn't|has not} finished"],["{has|'s} read"]], why:"<i>All afternoon</i> + cansancio → <b>has been studying</b> · <i>yet</i> → <b>hasn't finished</b> · cantidad (<i>three</i>) → <b>has read</b>."},
+   {t:"fill", q:"Developers ___ (work) on this game for five years. They ___ (release) two updates this month, and players ___ (complain) about the bugs ever since.", a:[["{have|'ve} been working"],["{have|'ve} released"],["{have|'ve} been complaining"]], why:"<i>For five years</i> → <b>have been working</b> · <i>two updates this month</i> → <b>have released</b> · <i>ever since</i> → <b>have been complaining</b>."},
+   {t:"fill", q:"A: How long ___ you ___ (wait) here?\nB: About two hours. The doors ___ (not / open) yet, and the queue ___ (get) longer all morning.", a:[["have"],["been waiting"],["{haven't|have not} opened"],["{has|'s} been getting"]], why:"<b>How long have you been waiting</b>? · <i>yet</i> → <b>haven't opened</b> · <i>all morning</i> → <b>has been getting</b>."}
   ]},
 
-  {n:6, lvl:1, no:6, title:"Present perfect continuous: escribe la frase", instr:"Escribe frases en present perfect continuous con las palabras dadas.", items:[
-   {t:"write", q:"they / rehearse / since Monday", a:["they{ have|'ve} been rehearsing since monday"], why:"<b>have been + -ing</b> con <i>since</i> + momento en que empezó."},
-   {t:"write", q:"we / wait / for long (negativa)", a:["we {haven't|have not} been waiting for long"], why:"Negativa: <b>haven't been waiting</b>."},
-   {t:"write", q:"you / learn / the guitar / lately (pregunta)", a:["have you been learning the guitar lately"], why:"Pregunta: se adelanta <b>have</b> → <i>Have you been learning…?</i>"},
-   {t:"write", q:"she / not feel / very well / recently", a:["she {hasn't|has not} been feeling very well recently"], why:"3.ª persona negativa: <b>hasn't been feeling</b>."},
-   {t:"write", q:"how long / the silent disco / go on (pregunta)", a:["how long has the silent disco been going on"], why:"<b>How long has</b> + sujeto singular + <b>been going on</b>."},
-   {t:"write", q:"he / practise / his dance moves / all day", a:["he{ has|'s} been {practising|practicing} his dance moves all day"], why:"<b>has been practising</b>: <i>all day</i> indica duración."},
-   {t:"write", q:"what / the musicians / do / all afternoon (pregunta)", a:["what have the musicians been doing all afternoon"], why:"Sujeto plural: <b>what have</b> the musicians <b>been doing</b>."},
-   {t:"write", q:"my cousin / not travel / much / this year", a:["my cousin {hasn't|has not} been {travelling|traveling} much this year"], why:"<b>hasn't been travelling</b>."}
+  {n:6, lvl:1, no:6, nogloss:1, title:"Encuentra el error y corrígelo", instr:"Cada frase tiene un error de tiempo verbal o de uso. Escribe la frase corregida.", items:[
+   {t:"write", q:"We've been seeing that film three times already.", a:["we{ have|'ve} seen that film three times already"], why:"Con una cantidad (<i>three times</i>) se usa el <b>present perfect simple</b>: <i>We've seen</i>."},
+   {t:"write", q:"She has been playing the guitar yesterday afternoon.", a:["she {played|was playing} the guitar yesterday afternoon"], why:"<i>Yesterday afternoon</i> es un momento concreto y terminado → <b>past simple</b>."},
+   {t:"write", q:"I've been wanting to see this band for years.", a:["i{ have|'ve} wanted to see this band for years"], why:"<i>Want</i> es un verbo de estado: no suele ir en continuous → <b>I've wanted</b>."},
+   {t:"write", q:"The singer hasn't been rehearsing since three hours.", a:["the singer {hasn't|has not} been rehearsing for three hours"], why:"<b>For</b> + periodo (<i>three hours</i>); <b>since</b> + momento en que empezó."},
+   {t:"write", q:"How many songs has the band been recording this year?", a:["how many songs has the band recorded this year"], why:"<i>How many</i> (cantidad) → <b>present perfect simple</b>."},
+   {t:"write", q:"They have been just finishing their new album.", a:["they{ have|'ve} just finished their new album"], why:"<i>Just</i> + acción terminada → <b>present perfect simple</b>."},
+   {t:"write", q:"My brother is playing video games since he got home.", a:["my brother{ has|'s} been playing video games since he got home"], why:"<i>Since</i> + algo que continúa → <b>has been playing</b>, no presente simple/continuous."},
+   {t:"write", q:"Have you been ever to a music festival?", a:["have you ever been to a music festival"], why:"<i>Ever</i> va entre <i>have</i> y el participio: <b>Have you ever been…?</b>"}
   ]},
 
-  {n:7, lvl:1, no:7, title:"Present perfect: ¿simple o continuous?", instr:"Elige el tiempo que mejor encaja en cada frase.", items:[
-   {t:"choice", q:"I'm tired because I ___ this level all night.", opts:["have been trying","have tried","am trying"], a:[0], why:"<i>All night</i> + resultado visible (estoy cansado) → <b>present perfect continuous</b>."},
-   {t:"choice", q:"I ___ the update yet, so I can't play.", opts:["haven't downloaded","haven't been downloading","don't download"], a:[0], why:"<i>Yet</i> → <b>present perfect simple</b>."},
-   {t:"choice", q:"How many levels ___ you ___ so far?", opts:["have / completed","have / been completing","did / completing"], a:[0], why:"<i>How many</i> (cantidad) → <b>present perfect simple</b>."},
-   {t:"choice", q:"I ___ this game since I was a child.", opts:["have loved","have been loving","love"], a:[0], why:"<i>Love</i> es un verbo de estado: no suele ir en continuous → <b>have loved</b>."},
-   {t:"choice", q:"The company ___ three new games this year.", opts:["has produced","has been producing","produced"], a:[0], why:"Una cantidad (<i>three</i>) y <i>this year</i> sin acabar → <b>present perfect simple</b>."},
-   {t:"choice", q:"Why are your eyes red? You ___ at the screen too long.", opts:["have been looking","have looked","looked"], a:[0], why:"Se ve el resultado y se destaca la duración → <b>present perfect continuous</b>."},
-   {t:"choice", q:"The console ___ properly since Friday.", opts:["hasn't been working","isn't working","didn't work"], a:[0], why:"<i>Since Friday</i> + sigue sin funcionar → <b>hasn't been working</b>."},
-   {t:"choice", q:"I ___ such a bizarre game before.", opts:["have never played","have never been playing","never play"], a:[0], why:"<i>Never</i> → <b>present perfect simple</b>."},
-   {t:"choice", q:"We ___ on this project for months, and we're nearly finished.", opts:["have been working","worked","work"], a:[0], why:"<i>For months</i> y sigue en marcha → <b>have been working</b>."}
+  {n:7, lvl:1, no:7, nogloss:1, title:"Reescribe con la palabra clave", instr:"Reescribe la frase para que signifique lo mismo. Usa la palabra entre paréntesis.", items:[
+   {t:"write", q:"I started playing the piano three years ago and I still play it. (for)", a:["i{ have|'ve} been playing the piano for three years","i{ have|'ve} played the piano for three years"], why:"<b>for three years</b> + acción que continúa: <i>I've been playing…</i>"},
+   {t:"write", q:"The last time we went to a concert was in June. (since)", a:["we {haven't|have not} {been|gone} to a concert since june"], why:"<b>We haven't been to a concert since June.</b>"},
+   {t:"write", q:"When did you start working on this project? (How long)", a:["how long have you been working on this project"], why:"La duración se pregunta con <b>How long have you been + -ing</b>."},
+   {t:"write", q:"It's the first time he has performed on stage. (never)", a:["he{ has|'s} never performed on stage[ before]"], why:"<b>He has never performed on stage (before).</b>"},
+   {t:"write", q:"They began rehearsing at nine and they are still rehearsing. (since)", a:["they{ have|'ve} been rehearsing since nine[ o'clock]"], why:"<b>since nine</b> = desde las nueve → present perfect continuous."},
+   {t:"write", q:"My phone broke two weeks ago and it still doesn't work. (for)", a:["my phone {hasn't|has not} {been working|worked} for two weeks"], why:"<b>My phone hasn't been working for two weeks.</b>"},
+   {t:"write", q:"I got to the venue at six and I'm still waiting. (since)", a:["i{ have|'ve} been waiting [at the venue ]since six[ o'clock]"], why:"<b>I've been waiting since six.</b>"},
+   {t:"write", q:"Lucy is tired because she danced for three hours. (been)", a:["lucy is tired because she{ has|'s} been dancing for three hours"], why:"Resultado visible + duración → <b>she has been dancing</b>."}
   ]},
 
-  {n:8, lvl:1, no:8, vocab:1, title:"Lugares divertidos y conectores", instr:"Completa con la palabra correcta o elige el conector.", items:[
-   {t:"fill", q:"For many people, the ___ is the most exciting ride at an amusement park.", hint:"montaña rusa", a:[["roller coaster","rollercoaster"]], why:"<b>roller coaster</b> = montaña rusa."},
-   {t:"fill", q:"The roller coaster is the park's main ___.", hint:"atracción", a:[["attraction"]], why:"<b>main attraction</b> = atracción principal."},
-   {t:"fill", q:"Going upside ___ makes some people feel sick.", hint:"boca abajo", a:[["down"]], why:"<b>upside down</b> = boca abajo."},
-   {t:"fill", q:"From the top of the big ___ you can see the whole city.", hint:"noria", a:[["wheel"]], why:"<b>big wheel</b> = noria."},
-   {t:"fill", q:"Read the ___ to find out the opening times.", hint:"folleto", a:[["brochure"]], why:"<b>brochure</b> = folleto informativo."},
-   {t:"fill", q:"The ride goes ___ speed, so hold on tight!", hint:"a toda", a:[["at full"]], why:"<b>at full speed</b> = a toda velocidad."},
-   {t:"choice", q:"I watched the film ___, but I left early because it was boring.", opts:["for a while","as soon as","ever since then"], a:[0], why:"<b>for a while</b> = durante un rato."},
-   {t:"choice", q:"___ the doors opened, everyone ran to the front.", opts:["As soon as","For a while","Eventually"], a:[0], why:"<b>as soon as</b> = en cuanto."},
-   {t:"choice", q:"I saw this band live in Madrid and, ___, I've been their biggest fan.", opts:["ever since then","as soon as","in the course of"], a:[0], why:"<b>ever since then</b> = desde entonces."},
-   {t:"choice", q:"We waited for hours and, ___, we got on the big wheel.", opts:["eventually","as soon as","ever since then"], a:[0], why:"<b>eventually</b> = al final, tras mucho esperar."}
+  {n:8, lvl:1, no:8, vocab:1, nogloss:1, title:"Ocio, conectores y diálogo", instr:"Completa cada texto con las palabras o expresiones indicadas.", items:[
+   {t:"fill", q:"We queued for almost two hours to get into the amusement park. ___ we reached the entrance, and ___ we were inside, we ran to the roller coaster. ___ the day we went on every ride, and ___, I've been a roller coaster fan.", hint:"eventually · as soon as · in the course of · ever since then", a:[["eventually"],["as soon as"],["in the course of"],["ever since then"]], why:"<b>eventually</b> (al final) · <b>as soon as</b> (en cuanto) · <b>in the course of</b> (a lo largo de) · <b>ever since then</b> (desde entonces)."},
+   {t:"fill", q:"Last summer I visited a huge amusement park. The ___ was a giant roller coaster that goes ___ speed and even turns you upside ___. If you prefer something calmer, you can ride the big ___ and enjoy the view.", hint:"main attraction · at full · down · wheel", a:[["main attraction"],["at full"],["down"],["wheel"]], why:"<b>main attraction</b> · <b>at full speed</b> (a toda velocidad) · <b>upside down</b> (boca abajo) · <b>big wheel</b> (noria)."},
+   {t:"fill", q:"A: What ___ lately?\nB: I've been learning to skateboard.\nA: ___ been interested in skateboarding?\nB: Since last summer. It's become ___ at my school.\nA: Really? I ___ myself falling off a board!\nB: ___ try it with me on Saturday?", hint:"have you been up to · since when have you · quite trendy · can't imagine · why don't you", a:[["have you been up to"],["since when have you"],["quite trendy"],["{can't|cannot} imagine"],["why don't you"]], why:"<b>What have you been up to?</b> · <b>Since when have you been…?</b> · <b>quite trendy</b> (bastante de moda) · <b>I can't imagine myself…</b> · <b>Why don't you…?</b> (sugerencia)."}
+  ]},
+
+  {n:9, lvl:1, no:9, title:"Mini-lecturas", instr:"Lee el texto y elige la mejor respuesta.", items:[
+   {t:"choice", q:"Silent discos are becoming popular at festivals. Instead of loud speakers, everyone wears wireless headphones and chooses between several music channels. The headphones light up in different colours, so you can see who is listening to the same music as you. The neighbours are happy too, because the party makes no noise.\n\nWhy do the headphones light up in different colours?", opts:["To show which channel each person is listening to","To make the party louder","To stop the neighbours complaining","To help people find the venue"], a:[0], why:"El texto dice que las luces permiten <b>ver quién escucha la misma música</b>, es decir, el mismo canal."},
+   {t:"choice", q:"When Jonas started learning the violin, he was a terrible player and wanted to give up after a month. His teacher told him to record himself every week. Hearing his progress motivated him so much that he has been practising every day ever since. Now he plays in the school orchestra.\n\nWhat made Jonas keep practising?", opts:["Listening to recordings that showed his progress","Winning a competition","Being accepted into the orchestra","Receiving criticism from his parents"], a:[0], why:"<i>Hearing his progress motivated him</i>: oír su mejora en las grabaciones le motivó."},
+   {t:"choice", q:"Retro games are back. Although modern consoles offer realistic graphics, many players say older games are more fun because they are simpler and you can learn the rules in minutes. Some developers have even been remaking classic titles with updated graphics, hoping to attract both new and nostalgic players.\n\nWhat does the writer say about retro games?", opts:["They are popular partly because they are easy to learn","They have better graphics than modern games","They are impossible to find nowadays","Developers refuse to remake them"], a:[0], why:"El texto dice que son más divertidos porque son <b>más simples y se aprenden en minutos</b>."},
+   {t:"choice", q:"The theatre in our town has been showing a musical every summer since 1998. This year's production is the most ambitious yet: the cast has been rehearsing since March and the set is built entirely by local students. Tickets have sold out for every performance, so the organisers are planning extra shows.\n\nWhat can we infer from the text?", opts:["The musical is very popular this year","The cast has only just started rehearsing","Professional builders made the set","The theatre has never shown a musical before"], a:[0], why:"Las entradas se han agotado en todas las funciones y se planean más: <b>el musical tiene mucho éxito</b>."}
   ]},
 
   /* ------------------------------ NIVEL 2 ------------------------------ */
-  {n:9, lvl:2, no:1, vocab:1, title:"Música y baile: elige la palabra", instr:"Elige la palabra que completa cada frase.", items:[
-   {t:"choice", q:"The singer likes to ___ her new dress to the photographers.", opts:["show off","star in","cheer"], a:[0], why:"<b>show off</b> = presumir, lucirse."},
-   {t:"choice", q:"The school hall isn't a good ___ for a rock concert.", opts:["venue","rhythm","criticism"], a:[0], why:"<b>venue</b> = lugar donde se celebra un concierto."},
-   {t:"choice", q:"The band has been ___ their new songs all week.", opts:["rehearsing","cheering","waving"], a:[0], why:"<b>rehearse</b> = ensayar."},
-   {t:"choice", q:"Mia is going to ___ the school musical this year.", opts:["star in","show off","cheer"], a:[0], why:"<b>star in</b> = protagonizar."},
-   {t:"choice", q:"I'm very ___ jazz, so I go to a concert every month.", opts:["fond of","eager to","weird about"], a:[0], why:"<b>fond of + nombre</b> = aficionado a."},
-   {t:"choice", q:"Some people think his clothes are ___, but I love his style.", opts:["weird","eager","fond"], a:[0], why:"<b>weird</b> = raro, extraño."},
-   {t:"choice", q:"You can follow the live ___ of the festival on TV.", opts:["broadcast","criticism","rhythm"], a:[0], why:"<b>broadcast</b> = retransmisión."},
-   {t:"choice", q:"At first I wanted to go, but then I ___ and stayed at home.", opts:["changed my mind","got the feeling","starred in"], a:[0], why:"<b>change your mind</b> = cambiar de opinión."},
-   {t:"choice", q:"Good musicians don't mind ___ if it helps them improve.", opts:["criticism","rhythm","venue"], a:[0], why:"<b>criticism</b> = críticas."},
-   {t:"choice", q:"The crowd was ___ their hands in time with the music.", opts:["waving","rehearsing","showing off"], a:[0], why:"<b>wave</b> = agitar."}
+  {n:10, lvl:2, no:1, vocab:1, title:"Música y baile: vocabulario en contexto", instr:"Elige la opción que completa mejor la frase.", items:[
+   {t:"choice", q:"The festival has moved to a bigger ___ because so many people wanted tickets.", opts:["venue","rhythm","criticism","broadcast"], a:[0], why:"<b>venue</b> = lugar donde se celebra el evento."},
+   {t:"choice", q:"Fans who couldn't attend watched the whole show as a live ___ online.", opts:["broadcast","venue","feeling","rhythm"], a:[0], why:"<b>broadcast</b> = retransmisión."},
+   {t:"choice", q:"He has the ___ that the band is about to break up, though nobody has said anything.", opts:["feeling","mind","moves","appeal"], a:[0], why:"<b>have/get the feeling that</b> = tener la sensación de que."},
+   {t:"choice", q:"Don't ___ in front of your friends; just enjoy the dance.", opts:["show off","star in","cheer for","broadcast"], a:[0], why:"<b>show off</b> = presumir, lucirse."},
+   {t:"choice", q:"The audience started ___ loudly as soon as the band played its biggest hit.", opts:["cheering","rehearsing","starring","broadcasting"], a:[0], why:"<b>cheer</b> = vitorear, animar."},
+   {t:"choice", q:"My grandfather is very ___ old jazz records; he has hundreds of them.", opts:["fond of","eager to","proud to","likely to"], a:[0], why:"<b>fond of + nombre</b> = aficionado a. <i>Eager/proud/likely</i> + <i>to</i> + verbo."},
+   {t:"choice", q:"I was going to buy the tickets, but then I changed my ___.", opts:["mind","feeling","moves","venue"], a:[0], why:"<b>change your mind</b> = cambiar de opinión."},
+   {t:"choice", q:"The drummer is brilliant: he never loses the ___, even in the fastest songs.", opts:["rhythm","venue","broadcast","criticism"], a:[0], why:"<b>rhythm</b> = ritmo."},
+   {t:"choice", q:"That outfit looks a bit ___, but it suits you.", opts:["weird","eager","fond","ready"], a:[0], why:"<b>weird</b> = raro, extraño."}
   ]},
 
-  {n:10, lvl:2, no:2, vocab:1, title:"Música y baile: completa con el banco", instr:"Completa con una palabra o expresión del banco.",
-   bank:["wireless speakers","star in","change my mind","get the feeling","try hard","eager","broadcast","dance moves"], items:[
-   {t:"fill", q:"I listen to music at home with my new ___.", a:[["wireless speakers"]], why:"<b>wireless speakers</b> = altavoces inalámbricos."},
-   {t:"fill", q:"If you ___ enough, you will improve.", a:[["try hard"]], why:"<b>try hard</b> = esforzarse mucho."},
-   {t:"fill", q:"She wants to ___ a Hollywood film one day.", a:[["star in"]], why:"<b>star in</b> = protagonizar."},
-   {t:"fill", q:"I haven't decided yet, but I might ___ and come with you.", a:[["change my mind"]], why:"<b>change my mind</b> = cambiar de opinión."},
-   {t:"fill", q:"I ___ that nobody likes this song.", a:[["get the feeling"]], why:"<b>get the feeling that</b> = tener la sensación de que."},
-   {t:"fill", q:"We're very ___ to see the show.", a:[["eager"]], why:"<b>eager to + verbo</b> = con muchas ganas de."},
-   {t:"fill", q:"The final was a live ___ watched by millions.", a:[["broadcast"]], why:"<b>broadcast</b> = retransmisión."},
-   {t:"fill", q:"He learned all the ___ from a video on YouTube.", a:[["dance moves"]], why:"<b>dance moves</b> = pasos de baile."}
+  {n:11, lvl:2, no:2, vocab:1, title:"Música y baile: completa el texto", instr:"Completa cada texto con las palabras del banco. Sobra una.",
+   bank:["star in","rehearsed","try hard","wireless speakers","get the feeling","changed my mind","broadcast","dance moves","eager","criticism"], items:[
+   {t:"fill", q:"I wanted to ___ the school musical, so I ___ every day after class. In the end I didn't get the main role, but my teacher said that if I ___, I'll get a bigger part next year.", a:[["star in"],["rehearsed"],["try hard"]], why:"<b>star in</b> = protagonizar · <b>rehearsed</b> = ensayé · <b>try hard</b> = esforzarse."},
+   {t:"fill", q:"My parents gave me new ___ for my birthday, and the sound is incredible. I ___ that the neighbours are enjoying it too, although they have never said a word. Yesterday I was going to stay in, but I ___ and went to a concert instead.", a:[["wireless speakers"],["get the feeling"],["changed my mind"]], why:"<b>wireless speakers</b> · <b>get the feeling that</b> · <b>changed my mind</b> (cambié de opinión)."},
+   {t:"fill", q:"The final of the dance contest was a live ___ watched by millions. The winner learned every one of her ___ from online videos, and she was so ___ to win that she cried when they announced it.", a:[["broadcast"],["dance moves"],["eager"]], why:"<b>broadcast</b> = retransmisión · <b>dance moves</b> = pasos de baile · <b>eager to</b> = con muchas ganas de."}
   ]},
 
-  {n:11, lvl:2, no:3, vocab:1, title:"Videojuegos: ¿qué significa?", instr:"Elige la opción que muestra que entiendes la palabra.", items:[
-   {t:"choice", q:"A game with vivid graphics has very ___ colours.", opts:["bright","dull","dark"], a:[0], why:"<b>vivid</b> = vivo, intenso: colores brillantes (lo contrario de <i>dull</i>)."},
-   {t:"choice", q:"If you keep track of your score, you always ___ what it is.", opts:["know","forget","hide"], a:[0], why:"<b>keep track of</b> = seguir la pista de algo, estar al tanto."},
-   {t:"choice", q:"If a game has sold out, the shops have no ___ left.", opts:["copies","features","feats"], a:[0], why:"<b>sell out</b> = agotarse: no quedan <i>copies</i> (ejemplares)."},
-   {t:"choice", q:"If you pull off an incredible feat, you ___.", opts:["succeed in doing something very difficult","fail at something easy","stop playing"], a:[0], why:"<b>pull off</b> = conseguir algo difícil; <b>feat</b> = hazaña."},
-   {t:"choice", q:"When you are engaged in a game, you are completely ___ in it.", opts:["interested","bored","worried"], a:[0], why:"<b>engaged</b> = enganchado, con toda tu atención puesta en el juego."},
-   {t:"choice", q:"Entirely means ___.", opts:["completely","almost","never"], a:[0], why:"<b>entirely</b> = completamente, del todo."},
-   {t:"choice", q:"To ensure something means to make ___ that it happens.", opts:["sure","a mistake","a wish"], a:[0], why:"<b>ensure</b> = asegurarse de que algo ocurra."},
-   {t:"choice", q:"A game's appeal is the ___ it has for players.", opts:["attraction","price","length"], a:[0], why:"<b>appeal</b> = atractivo."},
-   {t:"choice", q:"If a hero sets off on an adventure, he ___.", opts:["starts a journey","comes back home","falls asleep"], a:[0], why:"<b>set off</b> = ponerse en marcha, salir de viaje."}
+  {n:12, lvl:2, no:3, vocab:1, title:"Videojuegos: de la definición a la palabra", instr:"Escribe la palabra o expresión que corresponde a la definición en inglés.", items:[
+   {t:"fill", q:"A game with a good plot and strong characters keeps players ___ for hours.", hint:"interested and involved", a:[["engaged"]], why:"<b>engaged</b> = enganchado, implicado."},
+   {t:"fill", q:"The sequel ___ in just two days, which surprised even the developers.", hint:"all copies were bought", a:[["sold out"]], why:"<b>sell out</b> = agotarse. En pasado: <i>sold out</i>."},
+   {t:"fill", q:"Climbing the mountain without oxygen was an extraordinary ___.", hint:"an impressive achievement", a:[["feat"]], why:"<b>feat</b> = hazaña."},
+   {t:"fill", q:"Retro games have a special ___ for people who grew up in the nineties.", hint:"an attractive quality", a:[["appeal"]], why:"<b>appeal</b> = atractivo."},
+   {t:"fill", q:"What I like most are the great ___ of this game: the soundtrack, the graphics and the story.", hint:"important parts or characteristics", a:[["features"]], why:"<b>features</b> = características."},
+   {t:"fill", q:"The game's success ___ its realistic graphics.", hint:"is determined by", a:[["depends on"]], why:"<b>depend on</b> = depender de. Con <i>success</i>: <i>depends on</i>."},
+   {t:"fill", q:"The story was so ___ that I couldn't follow it: a talking sandwich ruled the galaxy.", hint:"very strange", a:[["bizarre"]], why:"<b>bizarre</b> = extraño, raro."},
+   {t:"fill", q:"Dragons and wizards are ___ characters.", hint:"not real; invented", a:[["fictional"]], why:"<b>fictional</b> = ficticio."},
+   {t:"fill", q:"Developers must ___ that the game works on every console.", hint:"make certain", a:[["ensure"]], why:"<b>ensure</b> = asegurarse de que."},
+   {t:"fill", q:"He ___ the final level without losing a single life.", hint:"succeeded in doing something difficult", a:[["pulled off"]], why:"<b>pull off</b> = conseguir algo difícil. En pasado: <i>pulled off</i>."}
   ]},
 
-  {n:12, lvl:2, no:4, vocab:1, title:"Videojuegos: completa con el banco", instr:"Completa con una palabra o expresión del banco.",
-   bank:["immersed","depends on","fictional","pull off","relate to","takes an interest in","sets off","sold out"], items:[
-   {t:"fill", q:"Her enjoyment of a game always ___ the story.", a:[["depends on"]], why:"<b>depend on</b> = depender de. En 3.ª persona: <i>depends on</i>."},
-   {t:"fill", q:"I was so ___ in the game that I forgot to eat.", a:[["immersed"]], why:"<b>immersed in</b> = sumergido en."},
-   {t:"fill", q:"The hero ___ on a dangerous mission at the start of the game.", a:[["sets off"]], why:"<b>set off</b> = ponerse en marcha. Con <i>the hero</i>: <i>sets off</i>."},
-   {t:"fill", q:"It is hard to ___ a perfect score without any mistakes.", a:[["pull off"]], why:"<b>pull off</b> = conseguir algo difícil."},
-   {t:"fill", q:"Dragons and elves are ___ creatures.", a:[["fictional"]], why:"<b>fictional</b> = ficticio, inventado."},
-   {t:"fill", q:"The new console has ___ in every shop in town.", a:[["sold out"]], why:"<b>has sold out</b> = se ha agotado."},
-   {t:"fill", q:"My dad never plays, but he ___ what I do online.", a:[["takes an interest in"]], why:"<b>take an interest in</b> = interesarse por. En 3.ª persona: <i>takes</i>."},
-   {t:"fill", q:"I can easily ___ the main character; we have the same problems.", a:[["relate to"]], why:"<b>relate to</b> = identificarse con."}
+  {n:13, lvl:2, no:4, title:"Formación de palabras", instr:"Escribe la forma correcta de la palabra entre paréntesis.", items:[
+   {t:"fill", q:"The street ___ amazed the crowd with his dance moves.", hint:"perform", a:[["performer"]], why:"perform → perform<b>er</b> = el que actúa."},
+   {t:"fill", q:"The fans screamed with ___ when the band walked on stage.", hint:"excite", a:[["excitement"]], why:"excite → excite<b>ment</b>."},
+   {t:"fill", q:"She entered a singing ___ and won first prize.", hint:"compete", a:[["competition"]], why:"compete → compet<b>ition</b>."},
+   {t:"fill", q:"Changing my mind about the trip was a difficult ___.", hint:"decide", a:[["decision"]], why:"decide → decis<b>ion</b>."},
+   {t:"fill", q:"You need a lot of ___ to create a fantasy world for a game.", hint:"imagine", a:[["imagination"]], why:"imagine → imagin<b>ation</b>."},
+   {t:"fill", q:"I saw an ___ for the festival on the bus.", hint:"advertise", a:[["advertisement","advert"]], why:"advertise → advertise<b>ment</b> (o la forma corta <i>advert</i>)."},
+   {t:"fill", q:"The ___ of the festival announced three extra concerts.", hint:"organise", a:[["organiser","organizer"]], why:"organise → organis<b>er</b>."},
+   {t:"fill", q:"He became ___ overnight after a viral video.", hint:"fame", a:[["famous"]], why:"fame → fam<b>ous</b>."},
+   {t:"fill", q:"Playing on a busy road is ___.", hint:"danger", a:[["dangerous"]], why:"danger → danger<b>ous</b>."},
+   {t:"fill", q:"Many fans were ___ with the ending of the game.", hint:"happy", a:[["unhappy"]], why:"happy → <b>un</b>happy."}
   ]},
 
-  {n:13, lvl:2, no:5, title:"Present perfect continuous: completa", instr:"Escribe el verbo entre paréntesis en present perfect continuous.", items:[
-   {t:"fill", q:"Scientists ___ the effects of video games for years.", hint:"study", a:[["{have|'ve} been studying"]], why:"<i>For years</i> → <b>have been studying</b>."},
-   {t:"fill", q:"I ___ to jazz radio lately.", hint:"listen", a:[["{have|'ve} been listening"]], why:"<i>Lately</i> → <b>have been listening</b>."},
-   {t:"fill", q:"My brother ___ the drums since he was eight.", hint:"play", a:[["{has|'s} been playing"]], why:"<i>Since he was eight</i> → <b>has been playing</b>."},
-   {t:"fill", q:"They ___ at the stadium for long.", hint:"not wait", a:[["{haven't|have not} been waiting"]], why:"Negativa plural: <b>haven't been waiting</b>."},
-   {t:"fill", q:"How long ___ the band ___ in this town?", hint:"perform", a:[["has"],["been performing"]], why:"Sujeto singular (<i>the band</i>): <b>How long has the band been performing…?</b>"},
-   {t:"fill", q:"Marta is out of breath because she ___.", hint:"run", a:[["{has|'s} been running"]], why:"Se nota el resultado (sin aliento) → <b>has been running</b>."},
-   {t:"fill", q:"We ___ a lot of dance videos recently.", hint:"watch", a:[["{have|'ve} been watching"]], why:"<i>Recently</i> → <b>have been watching</b>."},
-   {t:"fill", q:"My cousin ___ much because of his exams.", hint:"not go out", a:[["{hasn't|has not} been going out"]], why:"<b>hasn't been going out</b>."},
-   {t:"fill", q:"What ___ you ___ lately?", hint:"do", a:[["have"],["been doing"]], why:"<b>What have you been doing lately?</b>"},
-   {t:"fill", q:"It ___ all day, so the concert is full of mud.", hint:"rain", a:[["{has|'s} been raining"]], why:"<i>All day</i> + resultado visible → <b>has been raining</b>."}
+  {n:14, lvl:2, no:5, nogloss:1, title:"Present perfect: completa el texto", instr:"Completa con los verbos entre paréntesis en present perfect simple o continuous.", items:[
+   {t:"fill", q:"My brother ___ (play) the same video game all day, and he ___ (not / stop) for lunch yet. He ___ (already / reach) level 50.", a:[["{has|'s} been playing"],["{hasn't|has not} stopped"],["{has|'s} already reached"]], why:"<i>All day</i> → <b>has been playing</b> · <i>yet</i> → <b>hasn't stopped</b> · <i>already</i> + logro → <b>has already reached</b>."},
+   {t:"fill", q:"Scientists ___ (study) teenagers' gaming habits for a decade. A recent survey ___ (find) that 70% of them play online, and many experts ___ (warn) about the risks ever since.", a:[["{have|'ve} been studying"],["{has|'s} found"],["{have|'ve} been warning"]], why:"<i>For a decade</i> → <b>have been studying</b> · una encuesta reciente → <b>has found</b> · <i>ever since</i> → <b>have been warning</b>."},
+   {t:"fill", q:"Our school choir ___ (rehearse) since September. We ___ (already / learn) six songs, but we ___ (not / decide) which one to open the show with.", a:[["{has|have} been rehearsing"],["{have|'ve} already {learned|learnt}"],["{haven't|have not} decided"]], why:"<i>Since September</i> → <b>has been rehearsing</b> · <i>already</i> + cantidad → <b>have already learnt</b> · todavía sin decidir → <b>haven't decided</b>."},
+   {t:"fill", q:"A: What ___ you ___ (do) lately?\nB: I ___ (look) for a new hobby, and I ___ (fall) off a skateboard five times so far!", a:[["have"],["been doing"],["{have|'ve} been looking"],["{have|'ve} fallen"]], why:"<b>What have you been doing lately?</b> · <b>I've been looking</b> (proceso) · <b>I've fallen</b> (cantidad: <i>five times</i>)."}
   ]},
 
-  {n:14, lvl:2, no:6, title:"Present perfect continuous: escribe la frase", instr:"Escribe frases en present perfect continuous con las palabras dadas.", items:[
-   {t:"write", q:"the crowd / cheer / for ten minutes", a:["the crowd{ has|'s} been cheering for ten minutes"], why:"<i>The crowd</i> va con <b>has been cheering</b>."},
-   {t:"write", q:"I / not sleep / well / lately (negativa)", a:["i {haven't|have not} been sleeping well lately"], why:"Negativa: <b>haven't been sleeping</b>."},
-   {t:"write", q:"how long / you / wait / for the bus (pregunta)", a:["how long have you been waiting for the bus"], why:"<b>How long have you been waiting…?</b>"},
-   {t:"write", q:"she / practise / the piano / since breakfast", a:["she{ has|'s} been {practising|practicing} the piano since breakfast"], why:"<b>has been practising</b> con <i>since</i> + momento de inicio."},
-   {t:"write", q:"they / not rehearse / enough (negativa)", a:["they {haven't|have not} been rehearsing enough"], why:"<b>haven't been rehearsing</b>."},
-   {t:"write", q:"what / he / listen to / lately (pregunta)", a:["what has he been listening to lately"], why:"<b>What has he been listening to lately?</b>"},
-   {t:"write", q:"we / dance / all night", a:["we{ have|'ve} been dancing all night"], why:"<b>have been dancing</b>: <i>all night</i> indica duración."},
-   {t:"write", q:"your brother / play / video games / since lunch (pregunta)", a:["has your brother been playing video games since lunch"], why:"Pregunta: se adelanta <b>has</b> → <i>Has your brother been playing…?</i>"}
+  {n:15, lvl:2, no:6, nogloss:1, title:"Encuentra el error y corrígelo", instr:"Cada frase tiene un error de tiempo verbal o de uso. Escribe la frase corregida.", items:[
+   {t:"write", q:"I've been knowing her since primary school.", a:["i{ have|'ve} known her since primary school"], why:"<i>Know</i> es un verbo de estado: no va en continuous → <b>I've known</b>."},
+   {t:"write", q:"How long do you play the guitar?", a:["how long {have you been playing|have you played} the guitar"], why:"La duración se pregunta con el present perfect: <b>How long have you been playing…?</b>"},
+   {t:"write", q:"The band has been releasing five albums so far.", a:["the band has released five albums so far"], why:"Cantidad (<i>five albums</i>) → <b>present perfect simple</b>."},
+   {t:"write", q:"We've been waiting for the bus since an hour.", a:["we{ have|'ve} been waiting for the bus for an hour"], why:"<b>For</b> + periodo (<i>an hour</i>); <b>since</b> + momento de inicio."},
+   {t:"write", q:"I have been finishing my homework, so now I can play.", a:["i{ have|'ve} finished my homework so now i can play"], why:"Tarea ya terminada y con resultado → <b>present perfect simple</b>."},
+   {t:"write", q:"Did you ever been to a music festival?", a:["have you ever been to a music festival"], why:"Experiencia sin decir cuándo → <b>Have you ever been…?</b>"},
+   {t:"write", q:"They have been playing at the stadium last night.", a:["they {played|were playing} at the stadium last night"], why:"<i>Last night</i> es un momento concreto → <b>past simple</b>."},
+   {t:"write", q:"My computer isn't working since Monday.", a:["my computer {hasn't|has not} been working since monday"], why:"<i>Since Monday</i> + algo que continúa → <b>hasn't been working</b>."}
   ]},
 
-  {n:15, lvl:2, no:7, title:"Present perfect: ¿simple o continuous?", instr:"Elige el tiempo que mejor encaja en cada frase.", items:[
-   {t:"choice", q:"My thumbs hurt because I ___ this game since lunch.", opts:["have been playing","have played","played"], a:[0], why:"<i>Since lunch</i> + resultado visible → <b>have been playing</b>."},
-   {t:"choice", q:"She ___ already ___ the final level.", opts:["has / completed","has / been completing","is / completing"], a:[0], why:"<i>Already</i> + acción terminada → <b>present perfect simple</b>."},
-   {t:"choice", q:"How long ___ they ___ this game?", opts:["have / been developing","have / developed","are / developing"], a:[0], why:"<i>How long</i> pregunta por la duración → <b>present perfect continuous</b>."},
-   {t:"choice", q:"We ___ three songs for the show so far.", opts:["have written","have been writing","write"], a:[0], why:"Una cantidad (<i>three songs</i>) → <b>present perfect simple</b>."},
-   {t:"choice", q:"I ___ this singer since I was a kid.", opts:["have liked","have been liking","like"], a:[0], why:"<i>Like</i> es un verbo de estado: no va en continuous → <b>have liked</b>."},
-   {t:"choice", q:"Look, the console is still warm! Somebody ___ on it.", opts:["has been playing","played","is played"], a:[0], why:"Se ve el resultado de algo reciente → <b>present perfect continuous</b>."},
-   {t:"choice", q:"Have you ever ___ a game like this?", opts:["played","been playing","play"], a:[0], why:"<i>Ever</i> + experiencia → <b>present perfect simple</b>: <i>Have you ever played…?</i>"},
-   {t:"choice", q:"He ___ a new dance since June, but he still isn't ready.", opts:["has been learning","has learnt","learnt"], a:[0], why:"<i>Since June</i> + sigue en marcha → <b>has been learning</b>."},
-   {t:"choice", q:"They ___ their new album. It comes out on Friday!", opts:["have just finished","have just been finishing","just finish"], a:[0], why:"<i>Just</i> + acción terminada → <b>present perfect simple</b>."}
+  {n:16, lvl:2, no:7, nogloss:1, title:"Reescribe con la palabra clave", instr:"Reescribe la frase para que signifique lo mismo. Usa la palabra entre paréntesis.", items:[
+   {t:"write", q:"She started singing in the choir in 2021 and she still sings there. (since)", a:["she{ has|'s} been singing in the choir since 2021","she{ has|'s} sung in the choir since 2021"], why:"<b>since 2021</b> + acción que continúa."},
+   {t:"write", q:"I last saw my cousins a month ago. (for)", a:["i {haven't|have not} seen my cousins for a month"], why:"<b>I haven't seen my cousins for a month.</b>"},
+   {t:"write", q:"When did the band start touring? (How long)", a:["how long {has|have} the band been touring"], why:"<b>How long has the band been touring?</b>"},
+   {t:"write", q:"This is my first time at a music festival. (never)", a:["i{ have|'ve} never been to a music festival[ before]"], why:"<b>I've never been to a music festival (before).</b>"},
+   {t:"write", q:"They began recording the album in May, and it is now July. They are still recording it. (for)", a:["they{ have|'ve} been recording the album for two months"], why:"De mayo a julio son <b>two months</b> → <b>have been recording … for two months</b>."},
+   {t:"write", q:"He is tired because he ran for two hours. (been)", a:["he is tired because he{ has|'s} been running for two hours"], why:"Resultado visible + duración → <b>he has been running</b>."},
+   {t:"write", q:"Where are my headphones? Someone took them. (has)", a:["someone has taken my headphones"], why:"Resultado relevante ahora → <b>present perfect simple</b>: <i>has taken</i>."},
+   {t:"write", q:"How many levels did you complete today? (have)", a:["how many levels have you completed today"], why:"<i>Today</i> sin acabar y cantidad → <b>How many levels have you completed…?</b>"}
   ]},
 
-  {n:16, lvl:2, no:8, vocab:1, title:"Lugares divertidos y conectores", instr:"Completa con la palabra correcta o elige el conector.", items:[
-   {t:"fill", q:"We took the ___ to the top of the park and looked at the view.", hint:"noria", a:[["big wheel"]], why:"<b>big wheel</b> = noria."},
-   {t:"fill", q:"The roller coaster turned us ___, hanging by our seat belts.", hint:"boca abajo", a:[["upside down"]], why:"<b>upside down</b> = boca abajo."},
-   {t:"fill", q:"Read the ___ to find the prices and the opening times.", hint:"folleto", a:[["brochure"]], why:"<b>brochure</b> = folleto."},
-   {t:"fill", q:"You can choose any ride: ___, you'll have fun.", hint:"de cualquier manera", a:[["either way"]], why:"<b>either way</b> = de cualquier manera."},
-   {t:"fill", q:"The park will ___ food and drink for all visitors.", hint:"proporcionar", a:[["provide"]], why:"<b>provide</b> = proporcionar, ofrecer."},
-   {t:"fill", q:"Throw the ball hard and try to ___ all the coconuts.", hint:"derribar", a:[["knock over"]], why:"<b>knock over</b> = derribar, tirar."},
-   {t:"choice", q:"I enjoyed the film at first, but ___ I got bored.", opts:["after a while","as soon as","ever since then"], a:[0], why:"<b>after a while</b> = después de un rato."},
-   {t:"choice", q:"___ I got home, I called my friend.", opts:["As soon as","Eventually","For a while"], a:[0], why:"<b>as soon as</b> = en cuanto."},
-   {t:"choice", q:"___ the concert, the band played all their hits.", opts:["In the course of","Ever since then","Eventually"], a:[0], why:"<b>in the course of</b> = a lo largo de."},
-   {t:"choice", q:"I had never listened to jazz, but I went to a concert and, ___, I've loved it.", opts:["ever since then","as soon as","in the course of"], a:[0], why:"<b>ever since then</b> = desde entonces."}
+  {n:17, lvl:2, no:8, vocab:1, nogloss:1, title:"Ocio, conectores y diálogo", instr:"Completa cada texto con las palabras o expresiones indicadas.", items:[
+   {t:"fill", q:"___ I got on the roller coaster, I closed my eyes and screamed. ___, I opened them and realised I was having fun. I've been back four times, and ___ I've never missed a summer visit.", hint:"as soon as · after a while · ever since then · in the course of", a:[["as soon as"],["after a while"],["ever since then"]], why:"<b>as soon as</b> (en cuanto) · <b>after a while</b> (después de un rato) · <b>ever since then</b> (desde entonces)."},
+   {t:"fill", q:"Before our trip, we read the ___ to plan the day. The park's main ___ is a huge roller coaster; if you don't like that, you can take a quiet ride on the big ___. ___, you'll have a great day.", hint:"either way · brochure · wheel · attraction · provide", a:[["brochure"],["attraction"],["wheel"],["either way"]], why:"<b>brochure</b> (folleto) · <b>main attraction</b> · <b>big wheel</b> (noria) · <b>either way</b> (de cualquier manera)."},
+   {t:"fill", q:"A: Have you ___ anything interesting lately?\nB: I've started going to a climbing wall.\nA: ___ have you been doing that?\nB: Since March. It has become ___ among teenagers in my town.\nA: Wow, I ___ myself climbing a wall; heights terrify me!\nB: ___ come along on Saturday and give it a try?", hint:"been up to · since when · quite trendy · can't imagine · why don't you", a:[["been up to"],["since when"],["quite trendy"],["{can't|cannot} imagine"],["why don't you"]], why:"<b>Have you been up to anything…?</b> · <b>Since when…?</b> · <b>quite trendy</b> · <b>I can't imagine myself…</b> · <b>Why don't you…?</b>"}
+  ]},
+
+  {n:18, lvl:2, no:9, title:"Mini-lecturas", instr:"Lee el texto y elige la mejor respuesta.", items:[
+   {t:"choice", q:"Escape rooms have been growing in popularity for the last decade. Teams of four to six players are locked in a themed room and must solve puzzles within an hour to get out. Organisers say the real appeal is cooperation: nobody can win alone, so even shy players end up taking part.\n\nAccording to the text, why are escape rooms attractive?", opts:["Everyone has to cooperate to succeed","They are cheaper than the cinema","Players compete against each other","You can play them alone"], a:[0], why:"<i>The real appeal is cooperation: nobody can win alone</i> → hay que <b>cooperar</b> para conseguirlo."},
+   {t:"choice", q:"Marta has been vlogging about her skateboarding practice since January. At first only her friends watched, but one video went viral after she landed a difficult trick. She admits the sudden attention was stressful, yet she has kept posting every week.\n\nHow did Marta feel about becoming popular online?", opts:["It was stressful, but she carried on","She stopped posting immediately","She enjoyed every moment of it","She ignored the comments completely"], a:[0], why:"<i>The sudden attention was stressful, yet she has kept posting</i>: fue estresante, pero siguió."},
+   {t:"choice", q:"Streaming has changed how we watch entertainment. Instead of waiting for a programme to be broadcast at a fixed time, viewers can choose what to watch and when. However, critics argue that having thousands of options makes it harder to decide, and many people spend more time browsing than watching.\n\nWhat is the critics' main complaint?", opts:["Too many options make choosing difficult","Streaming is more expensive than TV","Programmes are broadcast too late","There are not enough films to watch"], a:[0], why:"<i>Thousands of options makes it harder to decide</i>: demasiadas opciones dificultan elegir."},
+   {t:"choice", q:"The Lip Synch Contest was meant to be a small school event, but this year more than 400 people bought tickets. The organisers have had to move it from the gym to the town theatre. Several teachers have already agreed to take part, which has made the event even more exciting for students.\n\nWhy has the contest moved to the theatre?", opts:["More people wanted to attend than the gym could hold","The gym is being repaired","The teachers requested it","It is going to be broadcast on TV"], a:[0], why:"Más de 400 personas compraron entradas: <b>el gimnasio se quedaba pequeño</b>."}
   ]}
  ]
 }
@@ -2460,7 +2444,7 @@ document.addEventListener("click",()=>{ glossEl.hidden=true; document.querySelec
 function paintQuestion(it){
   const card=document.getElementById("qcard"), ex=it.ex;
   let body="";
-  const stemHTML=t=>wrapGloss(t, it.gloss, !it.tr);
+  const stemHTML=t=>wrapGloss(t, it.gloss, !(it.tr||ex.nogloss));
 
   if(it.t==="choice"){
     /* Las opciones se muestran en orden aleatorio, para que la buena no sea
