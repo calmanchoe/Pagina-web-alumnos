@@ -1014,7 +1014,7 @@ const ALL_UNITS = [
    {t:"choice", q:"While I ___ my homework, the lights went out.", opts:["was doing","did","have done"], a:[0], why:"Con <i>while</i>, la acción larga de fondo va en <b>past continuous</b>."},
    {t:"choice", q:"Don't worry, I ___ you tomorrow.", opts:["will call","call","called"], a:[0], why:"<i>Tomorrow</i> + decisión del momento → <b>future simple</b>."},
    {t:"choice", q:"I ___ to London.", opts:["have never been","am never been","never went"], a:[0], why:"Experiencia sin decir cuándo → <b>present perfect</b>: have + participio."},
-   {t:"choice", q:"She ___ her keys yesterday.", opts:["lost","has lost","loses"], a:[0], why:"<i>Yesterday</i> obliga a <b>past simple</b>, nunca present perfect."},
+   {t:"choice", gloss:{"keys": "llaves"}, q:"She ___ her keys yesterday.", opts:["lost","has lost","loses"], a:[0], why:"<i>Yesterday</i> obliga a <b>past simple</b>, nunca present perfect."},
    {t:"choice", q:"They ___ their homework, so they can play now.", opts:["have already finished","already finished","are already finishing"], a:[0], why:"<i>Already</i> + resultado en el presente → <b>present perfect</b>."},
    {t:"choice", q:"Listen! Somebody ___ at the door.", opts:["is knocking","knocks","knocked"], a:[0], why:"<i>Listen!</i> → present continuous."},
    {t:"choice", q:"What ___ you ___ at 8 o'clock last night?", opts:["were / doing","did / do","have / done"], a:[0], why:"Un momento concreto del pasado → <b>past continuous</b>: were you doing."}
@@ -1051,7 +1051,7 @@ const ALL_UNITS = [
    {t:"fill", q:"My aunt is married ___ a doctor.", hint:"preposición", a:[["to"]], why:"<b>married to</b>, no <i>married with</i>."},
    {t:"fill", q:"We're tired ___ waiting for the bus.", hint:"preposición", a:[["of"]], why:"<b>tired of</b> = harto de."},
    {t:"fill", q:"This city is famous ___ its food.", hint:"preposición", a:[["for"]], why:"<b>famous for</b>."},
-   {t:"fill", q:"The glass is full ___ water.", hint:"preposición", a:[["of"]], why:"<b>full of</b>."}
+   {t:"fill", gloss:{"glass": "vaso"}, q:"The glass is full ___ water.", hint:"preposición", a:[["of"]], why:"<b>full of</b>."}
   ]},
   {n:5, lvl:1, no:5, title:"Respuestas cortas con So / Nor", instr:"«Yo también» y «yo tampoco»: completa la respuesta.", items:[
    {t:"choice", q:"— I love pizza.\n— ___ I.", opts:["So do","So am","Neither do"], a:[0], why:"Frase afirmativa en present simple → <b>So do I</b>."},
@@ -1090,12 +1090,12 @@ const ALL_UNITS = [
    {t:"choice", q:"My dad ___ coffee every morning.", opts:["drinks","is drinking","drank"], a:[0], why:"<i>Every morning</i> = rutina → present simple con -s."},
    {t:"choice", q:"Be quiet! The baby ___.", opts:["is sleeping","sleeps","slept"], a:[0], why:"Está pasando ahora → present continuous."},
    {t:"choice", q:"We ___ our grandparents last weekend.", opts:["visited","visit","have visited"], a:[0], why:"<i>Last weekend</i> dice cuándo → past simple."},
-   {t:"choice", q:"I ___ my bike when it started to rain.", opts:["was riding","rode","have ridden"], a:[0], why:"Acción en curso interrumpida por otra → past continuous."},
+   {t:"choice", gloss:{"rain": "llover"}, q:"I ___ my bike when it started to rain.", opts:["was riding","rode","have ridden"], a:[0], why:"Acción en curso interrumpida por otra → past continuous."},
    {t:"choice", q:"I'm sure you ___ the exam.", opts:["will pass","pass","passed"], a:[0], why:"Predicción sobre el futuro → <b>will</b>."},
    {t:"choice", q:"Oh no! I ___ my phone at home.", opts:["have left","left","am leaving"], a:[0], why:"Lo importante es el resultado ahora → present perfect."},
    {t:"choice", q:"They ___ to the cinema yesterday.", opts:["went","have gone","go"], a:[0], why:"<i>Yesterday</i> → past simple, nunca present perfect."},
    {t:"choice", q:"___ you ever ___ a horse?", opts:["Have / ridden","Did / ride","Are / riding"], a:[0], why:"Pregunta de experiencia con <i>ever</i> → <b>Have you ever ridden…?</b>"},
-   {t:"choice", q:"Water ___ at 0 degrees.", opts:["freezes","is freezing","froze"], a:[0], why:"Verdad de siempre → present simple."},
+   {t:"choice", gloss:{"degrees": "grados"}, q:"Water ___ at 0 degrees.", opts:["freezes","is freezing","froze"], a:[0], why:"Verdad de siempre → present simple."},
    {t:"choice", q:"What ___ you ___ when I called you?", opts:["were / doing","did / do","have / done"], a:[0], why:"Qué estabas haciendo en ese momento → past continuous."}
   ]},
 
@@ -1103,12 +1103,12 @@ const ALL_UNITS = [
    {t:"fill", q:"My cat ___ all day.", hint:"sleep", a:[["sleeps"]], why:"Rutina en tercera persona: <b>sleeps</b>."},
    {t:"fill", q:"Shh! The teacher ___.", hint:"speak", a:[["is speaking","'s speaking"]], why:"Ahora mismo → <b>is speaking</b>."},
    {t:"fill", q:"We ___ TV last night.", hint:"not watch", a:[["{didn't|did not} watch"]], why:"Pasado negativo: <b>didn't watch</b>."},
-   {t:"fill", q:"She ___ a book when the phone rang.", hint:"read", a:[["was reading"]], why:"Acción larga de fondo → <b>was reading</b>."},
+   {t:"fill", gloss:{"book": "libro"}, q:"She ___ a book when the phone rang.", hint:"read", a:[["was reading"]], why:"Acción larga de fondo → <b>was reading</b>."},
    {t:"fill", q:"Next summer I ___ my cousins.", hint:"visit", a:[["will visit","'ll visit"]], why:"<i>Next summer</i> → futuro con <b>will</b>."},
    {t:"fill", q:"I ___ my lunch.", hint:"just finish", a:[["{have just|'ve just} finished"]], why:"<b>just</b> va entre <i>have</i> y el participio: have just finished."},
    {t:"fill", q:"___ he ___ to school by bike every day?", hint:"go", a:[["Does","does"],["go"]], why:"Pregunta de rutina en tercera persona: <b>Does he go…?</b>"},
    {t:"fill", q:"They ___ in Madrid since 2019.", hint:"live", a:[["{have|'ve} lived"]], why:"<i>Since</i> → present perfect: <b>have lived</b>."},
-   {t:"fill", q:"What time ___ the film ___ yesterday?", hint:"start", a:[["did"],["start"]], why:"Pregunta en pasado: <b>did</b> + infinitivo."},
+   {t:"fill", gloss:{"time": "hora"}, q:"What time ___ the film ___ yesterday?", hint:"start", a:[["did"],["start"]], why:"Pregunta en pasado: <b>did</b> + infinitivo."},
    {t:"fill", q:"Listen! The birds ___.", hint:"sing", a:[["are singing","'re singing"]], why:"<i>Listen!</i> → present continuous en plural."}
   ]},
 
@@ -1127,17 +1127,17 @@ const ALL_UNITS = [
    {t:"fill", q:"She's very good ___ drawing.", hint:"preposición", a:[["at"]], why:"<b>good at</b> + actividad."},
    {t:"fill", q:"I'm really excited ___ the trip.", hint:"preposición", a:[["about"]], why:"<b>excited about</b>."},
    {t:"fill", q:"My little brother is afraid ___ dogs.", hint:"preposición", a:[["of"]], why:"<b>afraid of</b>."},
-   {t:"fill", q:"My room is full ___ books.", hint:"preposición", a:[["of"]], why:"<b>full of</b>."},
+   {t:"fill", gloss:{"books": "libros"}, q:"My room is full ___ books.", hint:"preposición", a:[["of"]], why:"<b>full of</b>."},
    {t:"fill", q:"I'm not interested ___ football.", hint:"preposición", a:[["in"]], why:"<b>interested in</b>."},
    {t:"fill", q:"They are proud ___ their daughter.", hint:"preposición", a:[["of"]], why:"<b>proud of</b>."},
-   {t:"fill", q:"The film is different ___ the book.", hint:"preposición", a:[["from","to"]], why:"<b>different from</b>."},
+   {t:"fill", gloss:{"book": "libro"}, q:"The film is different ___ the book.", hint:"preposición", a:[["from","to"]], why:"<b>different from</b>."},
    {t:"fill", q:"Are you worried ___ your test?", hint:"preposición", a:[["about"]], why:"<b>worried about</b>."},
    {t:"fill", q:"My town is famous ___ its castle.", hint:"preposición", a:[["for"]], why:"<b>famous for</b>."},
    {t:"fill", q:"He's tired ___ doing the same thing.", hint:"preposición", a:[["of"]], why:"<b>tired of</b> = harto de."}
   ]},
 
   {n:12, lvl:2, no:5, title:"Respuestas cortas con So / Nor", instr:"«Yo también» y «yo tampoco»: completa la respuesta.", items:[
-   {t:"choice", q:"— I like ice cream.\n— ___ I.", opts:["So do","So am","Neither do"], a:[0], why:"Afirmativa en present simple → <b>So do I</b>."},
+   {t:"choice", gloss:{"ice": "helado (ice cream)"}, q:"— I like ice cream.\n— ___ I.", opts:["So do","So am","Neither do"], a:[0], why:"Afirmativa en present simple → <b>So do I</b>."},
    {t:"choice", q:"— He can't cook.\n— ___ can I.", opts:["Neither","So","Not"], a:[0], why:"Negativa con <i>can</i> → <b>Neither can I</b>."},
    {t:"choice", q:"— I saw that film.\n— ___ did my sister.", opts:["So","Neither","Also"], a:[0], why:"Afirmativa en pasado → <b>So did…</b>"},
    {t:"choice", q:"— She isn't tired.\n— ___ am I.", opts:["Neither","So","Either"], a:[0], why:"Negativa con <i>to be</i> → <b>Neither am I</b>."},
@@ -1224,48 +1224,48 @@ const ALL_UNITS = [
 
   /* ------------------------------ NIVEL 1 ------------------------------ */
   {n:1, lvl:1, no:1, vocab:1, title:"Música y baile: vocabulario en contexto", instr:"Elige la opción que completa mejor la frase.", items:[
-   {t:"choice", q:"After months of ___, the cast finally felt ready for opening night.", opts:["rehearsing","cheering","broadcasting","waving"], a:[0], why:"<b>rehearse</b> = ensayar: es lo que hace un reparto durante meses antes del estreno. <i>Broadcast</i> es retransmitir."},
-   {t:"choice", q:"He doesn't take ___ well: every negative comment about his songs makes him furious.", opts:["criticism","rhythm","venue","appeal"], a:[0], why:"<b>take criticism</b> = encajar las críticas."},
-   {t:"choice", q:"She was ___ her new dance moves to anyone who would watch, even though nobody had asked.", opts:["showing off","starring in","cheering on","waving at"], a:[0], why:"<b>show off</b> = presumir, lucirse. <i>Star in</i> se usa para películas y obras de teatro."},
-   {t:"choice", q:"I get the ___ that tonight's concert is going to be something special.", opts:["feeling","rhythm","moves","mind"], a:[0], why:"<b>get the feeling (that)</b> = tener la sensación de que."},
+   {t:"choice", gloss:{"opening": "de estreno (opening night = noche de estreno)"}, q:"After months of ___, the cast finally felt ready for opening night.", opts:["rehearsing","cheering","broadcasting","waving"], a:[0], why:"<b>rehearse</b> = ensayar: es lo que hace un reparto durante meses antes del estreno. <i>Broadcast</i> es retransmitir."},
+   {t:"choice", gloss:{"take": "encajar, aguantar"}, q:"He doesn't take ___ well: every negative comment about his songs makes him furious.", opts:["criticism","rhythm","venue","appeal"], a:[0], why:"<b>take criticism</b> = encajar las críticas."},
+   {t:"choice", gloss:{"moves": "movimientos"}, q:"She was ___ her new dance moves to anyone who would watch, even though nobody had asked.", opts:["showing off","starring in","cheering on","waving at"], a:[0], why:"<b>show off</b> = presumir, lucirse. <i>Star in</i> se usa para películas y obras de teatro."},
+   {t:"choice", gloss:{"get": ""}, q:"I get the ___ that tonight's concert is going to be something special.", opts:["feeling","rhythm","moves","mind"], a:[0], why:"<b>get the feeling (that)</b> = tener la sensación de que."},
    {t:"choice", q:"Although the costume looked ___ at first, it soon became a trend among teenagers.", opts:["weird","eager","fond","proud"], a:[0], why:"<b>weird</b> = raro. <i>Eager</i> y <i>proud</i> van seguidos de <i>to</i> / <i>of</i> y se dicen de personas."},
    {t:"choice", q:"The semi-final will be shown as a live ___ on national television.", opts:["broadcast","venue","criticism","rhythm"], a:[0], why:"<b>broadcast</b> = retransmisión, emisión."},
    {t:"choice", q:"Thousands of fans were ___ their arms in the air and singing along to every song.", opts:["waving","rehearsing","starring","broadcasting"], a:[0], why:"<b>wave</b> = agitar. <i>Waving their arms</i> = moviendo los brazos."},
-   {t:"choice", q:"Clara was so ___ to meet her idol that she arrived at the venue five hours early.", opts:["eager","fond","weird","tired"], a:[0], why:"<b>eager to + verbo</b> = con muchas ganas de. <i>Fond</i> necesita <i>of</i>."},
+   {t:"choice", gloss:{"early": "pronto, con antelación"}, q:"Clara was so ___ to meet her idol that she arrived at the venue five hours early.", opts:["eager","fond","weird","tired"], a:[0], why:"<b>eager to + verbo</b> = con muchas ganas de. <i>Fond</i> necesita <i>of</i>."},
    {t:"choice", q:"Their new single has a catchy ___ that makes everyone want to dance.", opts:["rhythm","venue","criticism","broadcast"], a:[0], why:"<b>rhythm</b> = ritmo."}
   ]},
 
   {n:2, lvl:1, no:2, vocab:1, title:"Música y baile: completa el texto", instr:"Completa cada texto con las palabras del banco. Sobra una.",
    bank:["venue","rehearsed","cheered","criticism","fond of","dance moves","show off","eager","weird","rhythm","broadcast"], items:[
-   {t:"fill", q:"Last Saturday my band played at a small ___ in our town. We had ___ every afternoon for a month, so we felt confident. The audience ___ after every song and, honestly, I was surprised: I had been expecting some ___.", a:[["venue"],["rehearsed"],["cheered"],["criticism"]], why:"<b>venue</b> (lugar del concierto) · <b>rehearsed</b> (<i>had rehearsed</i>) · <b>cheered</b> (vitoreó) · <b>criticism</b> (críticas)."},
+   {t:"fill", gloss:{"had":""}, q:"Last Saturday my band played at a small ___ in our town. We had ___ every afternoon for a month, so we felt confident. The audience ___ after every song and, honestly, I was surprised: I had been expecting some ___.", a:[["venue"],["rehearsed"],["cheered"],["criticism"]], why:"<b>venue</b> (lugar del concierto) · <b>rehearsed</b> (<i>had rehearsed</i>) · <b>cheered</b> (vitoreó) · <b>criticism</b> (críticas)."},
    {t:"fill", q:"My little sister is really ___ hip-hop. She learns every one of the new ___ from online videos, and she loves to ___ in front of the whole family.", a:[["fond of"],["dance moves"],["show off"]], why:"<b>fond of</b> + nombre · <b>dance moves</b> = pasos de baile · <b>show off</b> = presumir."},
-   {t:"fill", q:"The lead singer is ___ to perform again after a long break. At first the new song sounds ___, but the ___ is so catchy that the whole crowd ends up dancing.", a:[["eager"],["weird"],["rhythm"]], why:"<b>eager to</b> = con ganas de · <b>weird</b> = raro · <b>rhythm</b> = ritmo."}
+   {t:"fill", gloss:{"break": "descanso, pausa", "ends": "acaba (end up = acabar haciendo algo)"}, q:"The lead singer is ___ to perform again after a long break. At first the new song sounds ___, but the ___ is so catchy that the whole crowd ends up dancing.", a:[["eager"],["weird"],["rhythm"]], why:"<b>eager to</b> = con ganas de · <b>weird</b> = raro · <b>rhythm</b> = ritmo."}
   ]},
 
   {n:3, lvl:1, no:3, vocab:1, title:"Videojuegos: de la definición a la palabra", instr:"Escribe la palabra o expresión que corresponde a la definición en inglés.", items:[
    {t:"fill", q:"The graphics are so good that you quickly become ___ in the game's world.", hint:"completely absorbed in something", a:[["immersed"]], why:"<b>immersed</b> = sumergido, totalmente metido en algo."},
-   {t:"fill", q:"Shops can't keep up with demand: the new console has ___ everywhere.", hint:"no copies are left", a:[["sold out"]], why:"<b>sell out</b> = agotarse. Aquí <i>has sold out</i>."},
+   {t:"fill", gloss:{"has":"", "keep": "seguir el ritmo (keep up with)"}, q:"Shops can't keep up with demand: the new console has ___ everywhere.", hint:"no copies are left", a:[["sold out"]], why:"<b>sell out</b> = agotarse. Aquí <i>has sold out</i>."},
    {t:"fill", q:"Learning the whole song in one afternoon was an incredible ___.", hint:"an impressive achievement", a:[["feat"]], why:"<b>feat</b> = hazaña."},
    {t:"fill", q:"Developers use ___ graphics to make the colours look bright and intense.", hint:"bright and intense", a:[["vivid"]], why:"<b>vivid</b> = vivo, intenso."},
    {t:"fill", q:"Do you think you can ___ that level without losing a single life?", hint:"succeed in doing something difficult", a:[["pull off"]], why:"<b>pull off</b> = conseguir algo difícil."},
-   {t:"fill", q:"In the opening scene, the hero ___ on a long journey to rescue his friends.", hint:"starts a journey", a:[["sets off"]], why:"<b>set off</b> = ponerse en marcha. Con <i>the hero</i>: <i>sets off</i>."},
-   {t:"fill", q:"I can't ___ the characters in that game; their problems are nothing like mine.", hint:"identify with", a:[["relate to"]], why:"<b>relate to</b> = identificarse con."},
+   {t:"fill", gloss:{"opening": "inicial, de apertura"}, q:"In the opening scene, the hero ___ on a long journey to rescue his friends.", hint:"starts a journey", a:[["sets off"]], why:"<b>set off</b> = ponerse en marcha. Con <i>the hero</i>: <i>sets off</i>."},
+   {t:"fill", gloss:{"like": "como, parecido a"}, q:"I can't ___ the characters in that game; their problems are nothing like mine.", hint:"identify with", a:[["relate to"]], why:"<b>relate to</b> = identificarse con."},
    {t:"fill", q:"Whether you win or lose, the real ___ comes from playing with friends.", hint:"the pleasure you get from something", a:[["enjoyment"]], why:"<b>enjoyment</b> = disfrute (nombre)."},
    {t:"fill", q:"The final boss was so ___ that nobody could explain what it was supposed to be.", hint:"very strange", a:[["bizarre"]], why:"<b>bizarre</b> = extraño, raro."},
-   {t:"fill", q:"Good coaches ___ their players' progress to see who needs extra training.", hint:"follow closely", a:[["keep track of"]], why:"<b>keep track of</b> = seguir la pista de."}
+   {t:"fill", gloss:{"coaches": "entrenadores"}, q:"Good coaches ___ their players' progress to see who needs extra training.", hint:"follow closely", a:[["keep track of"]], why:"<b>keep track of</b> = seguir la pista de."}
   ]},
 
   {n:4, lvl:1, no:4, title:"Formación de palabras", instr:"Escribe la forma correcta de la palabra entre paréntesis.", items:[
    {t:"fill", q:"Her ___ in the main role was praised by every critic.", hint:"perform", a:[["performance"]], why:"perform → perform<b>ance</b>."},
-   {t:"fill", q:"Getting so much ___ from the fans made him more confident.", hint:"encourage", a:[["encouragement"]], why:"encourage → encourage<b>ment</b>."},
-   {t:"fill", q:"The concert was a huge ___: every ticket sold out in minutes.", hint:"succeed", a:[["success"]], why:"succeed → <b>success</b> (cambia la raíz)."},
-   {t:"fill", q:"Online games have become one of the most popular forms of ___.", hint:"entertain", a:[["entertainment"]], why:"entertain → entertain<b>ment</b>."},
+   {t:"fill", gloss:{"getting": "recibir"}, q:"Getting so much ___ from the fans made him more confident.", hint:"encourage", a:[["encouragement"]], why:"encourage → encourage<b>ment</b>."},
+   {t:"fill", gloss:{"sold": "agotarse (sell out)"}, q:"The concert was a huge ___: every ticket sold out in minutes.", hint:"succeed", a:[["success"]], why:"succeed → <b>success</b> (cambia la raíz)."},
+   {t:"fill", gloss:{"forms": "formas, tipos"}, q:"Online games have become one of the most popular forms of ___.", hint:"entertain", a:[["entertainment"]], why:"entertain → entertain<b>ment</b>."},
    {t:"fill", q:"The painting was the ___ for his new song.", hint:"inspire", a:[["inspiration"]], why:"inspire → inspir<b>ation</b>."},
    {t:"fill", q:"The ___ of this game has grown quickly: it now has ten million players.", hint:"popular", a:[["popularity"]], why:"popular → popular<b>ity</b>."},
    {t:"fill", q:"The main ___ of the game is that the levels are extremely long.", hint:"difficult", a:[["difficulty"]], why:"difficult → difficul<b>ty</b>."},
    {t:"fill", q:"It is ___ to hear the singer over all that noise.", hint:"possible", a:[["impossible"]], why:"possible → <b>im</b>possible."},
    {t:"fill", q:"She is a very ___ dancer: her moves are always original.", hint:"create", a:[["creative"]], why:"create → creat<b>ive</b>."},
-   {t:"fill", q:"The film was so ___ that we laughed from beginning to end.", hint:"enjoy", a:[["enjoyable"]], why:"enjoy → enjoy<b>able</b>."}
+   {t:"fill", gloss:{"beginning": "principio", "end": "final"}, q:"The film was so ___ that we laughed from beginning to end.", hint:"enjoy", a:[["enjoyable"]], why:"enjoy → enjoy<b>able</b>."}
   ]},
 
   {n:5, lvl:1, no:5, nogloss:1, title:"Present perfect: completa el texto", instr:"Completa con los verbos entre paréntesis en present perfect simple o continuous.", items:[
@@ -1304,17 +1304,17 @@ const ALL_UNITS = [
   ]},
 
   {n:9, lvl:1, no:9, title:"Mini-lecturas", instr:"Lee el texto y elige la mejor respuesta.", items:[
-   {t:"choice", q:"Silent discos are becoming popular at festivals. Instead of loud speakers, everyone wears wireless headphones and chooses between several music channels. The headphones light up in different colours, so you can see who is listening to the same music as you. The neighbours are happy too, because the party makes no noise.\n\nWhy do the headphones light up in different colours?", opts:["To show which channel each person is listening to","To make the party louder","To stop the neighbours complaining","To help people find the venue"], a:[0], why:"El texto dice que las luces permiten <b>ver quién escucha la misma música</b>, es decir, el mismo canal."},
-   {t:"choice", q:"When Jonas started learning the violin, he was a terrible player and wanted to give up after a month. His teacher told him to record himself every week. Hearing his progress motivated him so much that he has been practising every day ever since. Now he plays in the school orchestra.\n\nWhat made Jonas keep practising?", opts:["Listening to recordings that showed his progress","Winning a competition","Being accepted into the orchestra","Receiving criticism from his parents"], a:[0], why:"<i>Hearing his progress motivated him</i>: oír su mejora en las grabaciones le motivó."},
+   {t:"choice", gloss:{"light": "iluminarse (light up)"}, q:"Silent discos are becoming popular at festivals. Instead of loud speakers, everyone wears wireless headphones and chooses between several music channels. The headphones light up in different colours, so you can see who is listening to the same music as you. The neighbours are happy too, because the party makes no noise.\n\nWhy do the headphones light up in different colours?", opts:["To show which channel each person is listening to","To make the party louder","To stop the neighbours complaining","To help people find the venue"], a:[0], why:"El texto dice que las luces permiten <b>ver quién escucha la misma música</b>, es decir, el mismo canal."},
+   {t:"choice", gloss:{"give": "rendirse (give up)", "keep": "seguir, continuar (keep + -ing)"}, q:"When Jonas started learning the violin, he was a terrible player and wanted to give up after a month. His teacher told him to record himself every week. Hearing his progress motivated him so much that he has been practising every day ever since. Now he plays in the school orchestra.\n\nWhat made Jonas keep practising?", opts:["Listening to recordings that showed his progress","Winning a competition","Being accepted into the orchestra","Receiving criticism from his parents"], a:[0], why:"<i>Hearing his progress motivated him</i>: oír su mejora en las grabaciones le motivó."},
    {t:"choice", q:"Retro games are back. Although modern consoles offer realistic graphics, many players say older games are more fun because they are simpler and you can learn the rules in minutes. Some developers have even been remaking classic titles with updated graphics, hoping to attract both new and nostalgic players.\n\nWhat does the writer say about retro games?", opts:["They are popular partly because they are easy to learn","They have better graphics than modern games","They are impossible to find nowadays","Developers refuse to remake them"], a:[0], why:"El texto dice que son más divertidos porque son <b>más simples y se aprenden en minutos</b>."},
-   {t:"choice", q:"The theatre in our town has been showing a musical every summer since 1998. This year's production is the most ambitious yet: the cast has been rehearsing since March and the set is built entirely by local students. Tickets have sold out for every performance, so the organisers are planning extra shows.\n\nWhat can we infer from the text?", opts:["The musical is very popular this year","The cast has only just started rehearsing","Professional builders made the set","The theatre has never shown a musical before"], a:[0], why:"Las entradas se han agotado en todas las funciones y se planean más: <b>el musical tiene mucho éxito</b>."}
+   {t:"choice", gloss:{"cast": "reparto (los actores)", "sold": "agotarse (sell out)"}, q:"The theatre in our town has been showing a musical every summer since 1998. This year's production is the most ambitious yet: the cast has been rehearsing since March and the set is built entirely by local students. Tickets have sold out for every performance, so the organisers are planning extra shows.\n\nWhat can we infer from the text?", opts:["The musical is very popular this year","The cast has only just started rehearsing","Professional builders made the set","The theatre has never shown a musical before"], a:[0], why:"Las entradas se han agotado en todas las funciones y se planean más: <b>el musical tiene mucho éxito</b>."}
   ]},
 
   /* ------------------------------ NIVEL 2 ------------------------------ */
   {n:10, lvl:2, no:1, vocab:1, title:"Música y baile: vocabulario en contexto", instr:"Elige la opción que completa mejor la frase.", items:[
    {t:"choice", q:"The festival has moved to a bigger ___ because so many people wanted tickets.", opts:["venue","rhythm","criticism","broadcast"], a:[0], why:"<b>venue</b> = lugar donde se celebra el evento."},
    {t:"choice", q:"Fans who couldn't attend watched the whole show as a live ___ online.", opts:["broadcast","venue","feeling","rhythm"], a:[0], why:"<b>broadcast</b> = retransmisión."},
-   {t:"choice", q:"He has the ___ that the band is about to break up, though nobody has said anything.", opts:["feeling","mind","moves","appeal"], a:[0], why:"<b>have/get the feeling that</b> = tener la sensación de que."},
+   {t:"choice", gloss:{"break": "separarse (break up)"}, q:"He has the ___ that the band is about to break up, though nobody has said anything.", opts:["feeling","mind","moves","appeal"], a:[0], why:"<b>have/get the feeling that</b> = tener la sensación de que."},
    {t:"choice", q:"Don't ___ in front of your friends; just enjoy the dance.", opts:["show off","star in","cheer for","broadcast"], a:[0], why:"<b>show off</b> = presumir, lucirse."},
    {t:"choice", q:"The audience started ___ loudly as soon as the band played its biggest hit.", opts:["cheering","rehearsing","starring","broadcasting"], a:[0], why:"<b>cheer</b> = vitorear, animar."},
    {t:"choice", q:"My grandfather is very ___ old jazz records; he has hundreds of them.", opts:["fond of","eager to","proud to","likely to"], a:[0], why:"<b>fond of + nombre</b> = aficionado a. <i>Eager/proud/likely</i> + <i>to</i> + verbo."},
@@ -1325,7 +1325,7 @@ const ALL_UNITS = [
 
   {n:11, lvl:2, no:2, vocab:1, title:"Música y baile: completa el texto", instr:"Completa cada texto con las palabras del banco. Sobra una.",
    bank:["star in","rehearsed","try hard","wireless speakers","get the feeling","changed my mind","broadcast","dance moves","eager","criticism"], items:[
-   {t:"fill", q:"I wanted to ___ the school musical, so I ___ every day after class. In the end I didn't get the main role, but my teacher said that if I ___, I'll get a bigger part next year.", a:[["star in"],["rehearsed"],["try hard"]], why:"<b>star in</b> = protagonizar · <b>rehearsed</b> = ensayé · <b>try hard</b> = esforzarse."},
+   {t:"fill", gloss:{"end": "final (in the end = al final)"}, q:"I wanted to ___ the school musical, so I ___ every day after class. In the end I didn't get the main role, but my teacher said that if I ___, I'll get a bigger part next year.", a:[["star in"],["rehearsed"],["try hard"]], why:"<b>star in</b> = protagonizar · <b>rehearsed</b> = ensayé · <b>try hard</b> = esforzarse."},
    {t:"fill", q:"My parents gave me new ___ for my birthday, and the sound is incredible. I ___ that the neighbours are enjoying it too, although they have never said a word. Yesterday I was going to stay in, but I ___ and went to a concert instead.", a:[["wireless speakers"],["get the feeling"],["changed my mind"]], why:"<b>wireless speakers</b> · <b>get the feeling that</b> · <b>changed my mind</b> (cambié de opinión)."},
    {t:"fill", q:"The final of the dance contest was a live ___ watched by millions. The winner learned every one of her ___ from online videos, and she was so ___ to win that she cried when they announced it.", a:[["broadcast"],["dance moves"],["eager"]], why:"<b>broadcast</b> = retransmisión · <b>dance moves</b> = pasos de baile · <b>eager to</b> = con muchas ganas de."}
   ]},
@@ -1344,16 +1344,16 @@ const ALL_UNITS = [
   ]},
 
   {n:13, lvl:2, no:4, title:"Formación de palabras", instr:"Escribe la forma correcta de la palabra entre paréntesis.", items:[
-   {t:"fill", q:"The street ___ amazed the crowd with his dance moves.", hint:"perform", a:[["performer"]], why:"perform → perform<b>er</b> = el que actúa."},
+   {t:"fill", gloss:{"moves": "movimientos"}, q:"The street ___ amazed the crowd with his dance moves.", hint:"perform", a:[["performer"]], why:"perform → perform<b>er</b> = el que actúa."},
    {t:"fill", q:"The fans screamed with ___ when the band walked on stage.", hint:"excite", a:[["excitement"]], why:"excite → excite<b>ment</b>."},
-   {t:"fill", q:"She entered a singing ___ and won first prize.", hint:"compete", a:[["competition"]], why:"compete → compet<b>ition</b>."},
-   {t:"fill", q:"Changing my mind about the trip was a difficult ___.", hint:"decide", a:[["decision"]], why:"decide → decis<b>ion</b>."},
+   {t:"fill", gloss:{"singing": "de canto"}, q:"She entered a singing ___ and won first prize.", hint:"compete", a:[["competition"]], why:"compete → compet<b>ition</b>."},
+   {t:"fill", gloss:{"mind": "opinión, mente (change your mind = cambiar de opinión)"}, q:"Changing my mind about the trip was a difficult ___.", hint:"decide", a:[["decision"]], why:"decide → decis<b>ion</b>."},
    {t:"fill", q:"You need a lot of ___ to create a fantasy world for a game.", hint:"imagine", a:[["imagination"]], why:"imagine → imagin<b>ation</b>."},
    {t:"fill", q:"I saw an ___ for the festival on the bus.", hint:"advertise", a:[["advertisement","advert"]], why:"advertise → advertise<b>ment</b> (o la forma corta <i>advert</i>)."},
    {t:"fill", q:"The ___ of the festival announced three extra concerts.", hint:"organise", a:[["organiser","organizer"]], why:"organise → organis<b>er</b>."},
    {t:"fill", q:"He became ___ overnight after a viral video.", hint:"fame", a:[["famous"]], why:"fame → fam<b>ous</b>."},
-   {t:"fill", q:"Playing on a busy road is ___.", hint:"danger", a:[["dangerous"]], why:"danger → danger<b>ous</b>."},
-   {t:"fill", q:"Many fans were ___ with the ending of the game.", hint:"happy", a:[["unhappy"]], why:"happy → <b>un</b>happy."}
+   {t:"fill", gloss:{"busy": "concurrido, con mucho tráfico"}, q:"Playing on a busy road is ___.", hint:"danger", a:[["dangerous"]], why:"danger → danger<b>ous</b>."},
+   {t:"fill", gloss:{"ending": "final"}, q:"Many fans were ___ with the ending of the game.", hint:"happy", a:[["unhappy"]], why:"happy → <b>un</b>happy."}
   ]},
 
   {n:14, lvl:2, no:5, nogloss:1, title:"Present perfect: completa el texto", instr:"Completa con los verbos entre paréntesis en present perfect simple o continuous.", items:[
@@ -1392,10 +1392,10 @@ const ALL_UNITS = [
   ]},
 
   {n:18, lvl:2, no:9, title:"Mini-lecturas", instr:"Lee el texto y elige la mejor respuesta.", items:[
-   {t:"choice", q:"Escape rooms have been growing in popularity for the last decade. Teams of four to six players are locked in a themed room and must solve puzzles within an hour to get out. Organisers say the real appeal is cooperation: nobody can win alone, so even shy players end up taking part.\n\nAccording to the text, why are escape rooms attractive?", opts:["Everyone has to cooperate to succeed","They are cheaper than the cinema","Players compete against each other","You can play them alone"], a:[0], why:"<i>The real appeal is cooperation: nobody can win alone</i> → hay que <b>cooperar</b> para conseguirlo."},
-   {t:"choice", q:"Marta has been vlogging about her skateboarding practice since January. At first only her friends watched, but one video went viral after she landed a difficult trick. She admits the sudden attention was stressful, yet she has kept posting every week.\n\nHow did Marta feel about becoming popular online?", opts:["It was stressful, but she carried on","She stopped posting immediately","She enjoyed every moment of it","She ignored the comments completely"], a:[0], why:"<i>The sudden attention was stressful, yet she has kept posting</i>: fue estresante, pero siguió."},
-   {t:"choice", q:"Streaming has changed how we watch entertainment. Instead of waiting for a programme to be broadcast at a fixed time, viewers can choose what to watch and when. However, critics argue that having thousands of options makes it harder to decide, and many people spend more time browsing than watching.\n\nWhat is the critics' main complaint?", opts:["Too many options make choosing difficult","Streaming is more expensive than TV","Programmes are broadcast too late","There are not enough films to watch"], a:[0], why:"<i>Thousands of options makes it harder to decide</i>: demasiadas opciones dificultan elegir."},
-   {t:"choice", q:"The Lip Synch Contest was meant to be a small school event, but this year more than 400 people bought tickets. The organisers have had to move it from the gym to the town theatre. Several teachers have already agreed to take part, which has made the event even more exciting for students.\n\nWhy has the contest moved to the theatre?", opts:["More people wanted to attend than the gym could hold","The gym is being repaired","The teachers requested it","It is going to be broadcast on TV"], a:[0], why:"Más de 400 personas compraron entradas: <b>el gimnasio se quedaba pequeño</b>."}
+   {t:"choice", gloss:{"rooms": "salas", "room": "sala", "end": "acabar (end up = acabar haciendo algo)", "taking": "participar (take part)", "get": "salir (get out)"}, q:"Escape rooms have been growing in popularity for the last decade. Teams of four to six players are locked in a themed room and must solve puzzles within an hour to get out. Organisers say the real appeal is cooperation: nobody can win alone, so even shy players end up taking part.\n\nAccording to the text, why are escape rooms attractive?", opts:["Everyone has to cooperate to succeed","They are cheaper than the cinema","Players compete against each other","You can play them alone"], a:[0], why:"<i>The real appeal is cooperation: nobody can win alone</i> → hay que <b>cooperar</b> para conseguirlo."},
+   {t:"choice", gloss:{"landed": "clavar, conseguir (un truco)", "kept": "seguir, continuar (keep + -ing)"}, q:"Marta has been vlogging about her skateboarding practice since January. At first only her friends watched, but one video went viral after she landed a difficult trick. She admits the sudden attention was stressful, yet she has kept posting every week.\n\nHow did Marta feel about becoming popular online?", opts:["It was stressful, but she carried on","She stopped posting immediately","She enjoyed every moment of it","She ignored the comments completely"], a:[0], why:"<i>The sudden attention was stressful, yet she has kept posting</i>: fue estresante, pero siguió."},
+   {t:"choice", gloss:{"fixed": "fijo, establecido", "time": "hora"}, q:"Streaming has changed how we watch entertainment. Instead of waiting for a programme to be broadcast at a fixed time, viewers can choose what to watch and when. However, critics argue that having thousands of options makes it harder to decide, and many people spend longer browsing than watching.\n\nWhat is the critics' main complaint?", opts:["Too many options make choosing difficult","Streaming is more expensive than TV","Programmes are broadcast too late","There are not enough films to watch"], a:[0], why:"<i>Thousands of options makes it harder to decide</i>: demasiadas opciones dificultan elegir."},
+   {t:"choice", gloss:{"had":"tener que (have to)", "meant": "estar pensado para (be meant to)", "take": "participar (take part)"}, q:"The Lip Synch Contest was meant to be a small school event, but this year more than 400 people bought tickets. The organisers have had to move it from the gym to the town theatre. Several teachers have already agreed to take part, which has made the event even more exciting for students.\n\nWhy has the contest moved to the theatre?", opts:["More people wanted to attend than the gym could hold","The gym is being repaired","The teachers requested it","It is going to be broadcast on TV"], a:[0], why:"Más de 400 personas compraron entradas: <b>el gimnasio se quedaba pequeño</b>."}
   ]}
  ]
 }
@@ -2100,14 +2100,14 @@ function renderPlay(){
 const GLOSSARY={
 "accident":"accidente","address":"dirección postal","adult":"adulto","advice":"consejo","afternoon":"tarde","age":"edad","agency":"agencia","air":"aire","airport":"aeropuerto","answer":"respuesta","apartment":"apartamento","app":"aplicación","argument":"discusión","arm":"brazo","art":"arte","article":"artículo","artist":"artista","assembly":"asamblea, reunión de centro","assignment":"trabajo, tarea","audit":"auditoría","award":"premio",
 "baby":"bebé","balcony":"balcón","band":"grupo de música","barber":"barbero","battery":"pila, batería","beard":"barba","bed":"cama","bedroom":"dormitorio","beginner":"principiante","bike":"bici","biology":"biología","boss":"jefe","bottle":"botella","bread":"pan","breakfast":"desayuno","bridge":"puente","brother":"hermano","building":"edificio","bus":"autobús",
-"cafe":"cafetería","calculator":"calculadora","canyon":"cañón","car":"coche","cast":"escayola","centre":"centro","century":"siglo","charger":"cargador","chess":"ajedrez","child":"niño","childhood":"infancia","children":"niños","cinema":"cine","city":"ciudad","class":"clase","classmate":"compañero de clase","climate":"clima","cloud":"nube","club":"club","coach":"autocar; entrenador","coast":"costa","coat":"abrigo","comment":"comentario","computer":"ordenador","concert":"concierto","conference":"congreso","confidence":"confianza","contient":"continente","continent":"continente","contract":"contrato","country":"país","cousin":"primo / prima",
+"cafe":"cafetería","calculator":"calculadora","canyon":"cañón","car":"coche","cast":"reparto (los actores)","centre":"centro","century":"siglo","charger":"cargador","chess":"ajedrez","child":"niño","childhood":"infancia","children":"niños","cinema":"cine","city":"ciudad","class":"clase","classmate":"compañero de clase","climate":"clima","cloud":"nube","club":"club","coach":"autocar; entrenador","coast":"costa","coat":"abrigo","comment":"comentario","computer":"ordenador","concert":"concierto","conference":"congreso","confidence":"confianza","contient":"continente","continent":"continente","contract":"contrato","country":"país","cousin":"primo / prima",
 "database":"base de datos","day":"día","decision":"decisión","degree":"carrera; grado","dentist":"dentista","designer":"diseñador","device":"dispositivo","dictionary":"diccionario","dinner":"cena","director":"director","doctor":"médico","document":"documento","dog":"perro","door":"puerta","drought":"sequía",
 "education":"educación","effort":"esfuerzo","electrician":"electricista","energy":"energía","environment":"medio ambiente","essay":"redacción, trabajo","evening":"tarde-noche","event":"evento","exam":"examen","exercise":"ejercicio","exhibition":"exposición","eye":"ojo",
 "factory":"fábrica","family":"familia","father":"padre","favour":"favor","fever":"fiebre","field":"campo","film":"película","flat":"piso","flood":"inundación","floor":"planta, suelo","food":"comida","football":"fútbol","forest":"bosque","form":"formulario","friend":"amigo",
 "garage":"taller, garaje","garden":"jardín, huerto","girl":"chica","girlfriend":"novia","glass":"vidrio; vaso","glasses":"gafas","grandfather":"abuelo","grandmother":"abuela","grandparents":"abuelos","group":"grupo","guest":"invitado","guitar":"guitarra","gym":"gimnasio",
 "hair":"pelo","hall":"sala","head":"cabeza","headache":"dolor de cabeza","headphones":"auriculares","health":"salud","helmet":"casco","history":"historia","hobby":"afición","holiday":"vacaciones","home":"casa, hogar","homework":"deberes","horse":"caballo","hospital":"hospital","hostel":"albergue","hotel":"hotel","hour":"hora","house":"casa","husband":"marido",
 "ice":"hielo","idea":"idea","illness":"enfermedad","information":"información","injury":"lesión","instrument":"instrumento","intelligence":"inteligencia","internet":"internet","invitation":"invitación",
-"jacket":"chaqueta","job":"trabajo, empleo","journey":"trayecto","junk food":"comida basura",
+"jacket":"chaqueta","job":"trabajo, empleo","journey":"viaje, trayecto","junk food":"comida basura",
 "key":"llave; tecla","keyboard":"teclado","kitchen":"cocina",
 "laboratory":"laboratorio","landscape":"paisaje","language":"idioma","laptop":"portátil","lesson":"clase, lección","lift":"ascensor","light":"luz","litter":"basura en la calle","lot":"montón","lottery":"lotería","luggage":"equipaje","lunch":"comida del mediodía",
 "match":"partido","mayor":"alcalde","meeting":"reunión","message":"mensaje","midnight":"medianoche","minute":"minuto","moment":"momento","money":"dinero","month":"mes","mood":"estado de ánimo","morning":"mañana","mother":"madre","motorbike":"moto","mountain":"montaña","mum":"mamá","museum":"museo","music":"música","musical":"musical",
@@ -2387,8 +2387,35 @@ function glossLookup(w){
   if(/s$/.test(k)&&GLOSSARY[k.slice(0,-1)]) return GLOSSARY[k.slice(0,-1)];
   return null;
 }
+/* Los verbos auxiliares (do, have, be) no se traducen cuando solo ayudan a otro verbo. */
+function nextWords(text, from){
+  const r=/[A-Za-z][A-Za-z'’-]*/g; r.lastIndex=from; const o=[]; let m;
+  while(o.length<3 && (m=r.exec(text))) o.push(m[0].toLowerCase());
+  return o;
+}
+function isAuxUse(vb, k, nx){
+  const PRON=/^(i|you|he|she|it|we|they)$/;
+  const ADV=/^(even|still|only|really|nearly|almost|often|already|just|always|never|ever|also|finally|recently|not|yet)$/;
+  let [n0="", n1="", n2=""]=nx;
+  if(ADV.test(n0)){ n0=n1; n1=n2; }
+  const pp=w=>{ const v=VERB_FORMS[w]; return !!v && (/ed$/.test(w) || v.pp.split(" / ").some(x=>x.trim()===w)); };
+  const ing=w=>/ing$/.test(w) && w.length>4;
+  if(vb.base==="do") return !/^(doing|done)$/.test(k) && !!n0;
+  if(vb.base==="have"){
+    if(k==="having") return false;
+    if(/n't$/.test(k)) return true;
+    return pp(n0) || (PRON.test(n0) && pp(n1));
+  }
+  if(vb.base==="be"){
+    if(k==="being") return false;
+    return ing(n0) || pp(n0) || (PRON.test(n0) && (ing(n1) || pp(n1)));
+  }
+  return false;
+}
 /* Recorre el texto en crudo, escapa lo que no es palabra y envuelve las que
-   tienen traducción. Devuelve HTML listo para insertar. */
+   tienen traducción. Devuelve HTML listo para insertar.
+   itemGloss manda sobre el glosario general: es la traducción que vale en esa
+   frase; con "" la palabra se deja sin traducir. */
 function wrapGloss(text, itemGloss, useGlobal){
   const own={}; if(itemGloss) Object.keys(itemGloss).forEach(k=>own[k.toLowerCase()]=itemGloss[k]);
   const re=/[A-Za-z][A-Za-z'’-]*/g;
@@ -2396,8 +2423,10 @@ function wrapGloss(text, itemGloss, useGlobal){
   while((m=re.exec(text))!==null){
     out+=esc(text.slice(last,m.index));
     const w=m[0], k=w.toLowerCase();
-    const tr=own[k]||(useGlobal?glossLookup(k):null);
-    const vb=(!tr&&useGlobal)?verbLookup(k):null;
+    const hasOwn=Object.prototype.hasOwnProperty.call(own,k);
+    const tr=hasOwn?own[k]:(useGlobal?glossLookup(k):null);
+    let vb=(!hasOwn&&!tr&&useGlobal)?verbLookup(k):null;
+    if(vb && isAuxUse(vb,k,nextWords(text,m.index+w.length))) vb=null;
     if(tr){
       out+=`<button type="button" class="voc" data-t="${esc(tr).replace(/"/g,"&quot;")}">${esc(w)}</button>`;
     } else if(vb){
