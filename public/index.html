@@ -1232,21 +1232,21 @@ const ALL_UNITS = [
     ["-ive / -ous / -able","create → creat<b>ive</b> · danger → danger<b>ous</b> · enjoy → enjoy<b>able</b> · fame → fam<b>ous</b>"],
     ["un- / im-","<b>un</b>happy · <b>im</b>possible"]
   ]},
-  {h:"Vocabulario: música y baile", dl:[
+  {h:"Vocabulario: música y baile", vocab:1, dl:[
     ["venue","lugar donde se celebra un concierto"],["cheer","vitorear, animar"],["wave","agitar (los brazos)"],
     ["rhythm","ritmo"],["dance moves","pasos de baile"],["criticism","críticas"],["broadcast","retransmisión"],
     ["rehearse","ensayar"],["star in","protagonizar"],["show off","presumir, lucirse"],["get the feeling","tener la sensación"],
     ["weird","raro"],["fond of","aficionado a"],["eager (to)","con muchas ganas de"],["change your mind","cambiar de opinión"],
     ["try hard","esforzarse"],["wireless speakers","altavoces inalámbricos"]
   ]},
-  {h:"Vocabulario: videojuegos", dl:[
+  {h:"Vocabulario: videojuegos", vocab:1, dl:[
     ["appeal","atractivo"],["engaged","enganchado, implicado"],["ensure","asegurar"],["enjoyment","disfrute"],["feat","hazaña"],
     ["features","características"],["vivid","vivo, intenso"],["fictional","ficticio"],["bizarre","extraño"],["entirely","completamente"],
     ["properly","como es debido"],["immersed","sumergido"],["keep track of","seguir la pista de"],["depend on","depender de"],
     ["relate to","identificarse con"],["pull off","conseguir algo difícil"],["set off","ponerse en marcha"],["sell out","agotarse"],
     ["take an interest in","interesarse por"]
   ]},
-  {h:"Vocabulario: ocio y conectores", dl:[
+  {h:"Vocabulario: ocio y conectores", vocab:1, dl:[
     ["roller coaster","montaña rusa"],["big wheel","noria"],["main attraction","atracción principal"],["brochure","folleto"],
     ["upside down","boca abajo"],["at full speed","a toda velocidad"],["either way","de cualquier manera"],
     ["after a while","después de un rato"],["as soon as","en cuanto"],["eventually","al final, con el tiempo"],
@@ -1991,10 +1991,13 @@ function renderUnit(u){
 /* ---------- chuleta ---------- */
 document.getElementById("dr-close").onclick=()=>drawer.hidden=true;
 drawer.onclick=e=>{ if(e.target===drawer) drawer.hidden=true; };
-function openTheory(u){
+/* En los ejercicios de vocabulario (ex.vocab) la chuleta no muestra las listas
+   de vocabulario con su traducción: se quedaría la respuesta a la vista. */
+function theoryFor(u,ex){ return (u.theory||[]).filter(t=>!(ex&&ex.vocab&&t.vocab)); }
+function openTheory(u,ex){
   document.getElementById("dr-eyebrow").textContent="Chuleta · "+u.num;
   document.getElementById("dr-title").textContent=u.title;
-  document.getElementById("dr-body").innerHTML=u.theory.map(t=>`
+  document.getElementById("dr-body").innerHTML=theoryFor(u,ex).map(t=>`
     <div class="tblock">
       <h4>${t.h}</h4>
       ${t.p?`<p>${t.p}</p>`:""}
@@ -2556,12 +2559,12 @@ function paintQuestion(it){
       <button class="btn" id="check">Comprobar</button>
       <button class="btn ghost" id="skip">Ver la respuesta</button>
       <span class="spacer"></span>
-      <button class="btn ghost small" id="cheat">📖 Chuleta</button>
+      ${theoryFor(ex.unit,ex).length?'<button class="btn ghost small" id="cheat">📖 Chuleta</button>':""}
       <span class="kbd">Enter</span>
     </div>`;
 
   bindGloss(card);
-  document.getElementById("cheat").onclick=e=>{e.stopPropagation();openTheory(ex.unit);};
+  const cheat=document.getElementById("cheat"); if(cheat) cheat.onclick=e=>{e.stopPropagation();openTheory(ex.unit,ex);};
   const checkBtn=document.getElementById("check");
   run.answered=false;
 
@@ -2759,9 +2762,9 @@ function finish(it,ok,model,given,near,selfmarkable,revealed){
 
   foot.innerHTML=`<button class="btn" id="next">${run.i+1<run.items.length?"Siguiente →":"Ver resultados →"}</button>
     <span class="spacer"></span>
-    <button class="btn ghost small" id="cheat2">📖 Chuleta</button>
+    ${theoryFor(it.ex.unit,it.ex).length?'<button class="btn ghost small" id="cheat2">📖 Chuleta</button>':""}
     <span class="kbd">Enter</span>`;
-  document.getElementById("cheat2").onclick=e=>{e.stopPropagation();openTheory(it.ex.unit);};
+  const cheat2=document.getElementById("cheat2"); if(cheat2) cheat2.onclick=e=>{e.stopPropagation();openTheory(it.ex.unit,it.ex);};
   document.getElementById("next").onclick=()=>{
     run.i++;
     if(run.i>=run.items.length) go({name:"done"}); else renderPlay();
