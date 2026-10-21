@@ -1019,8 +1019,8 @@ function authMsg(e){
 const ALL_UNITS = [
 {
  id:"a1", short:"U1", owner:"alvaro", num:"Unidad 1", title:"Grammar test 1", icon:"📝",
- desc:"Repaso del examen: los seis tiempos verbales, afirmativa/negativa/interrogativa, adjetivos con preposición, so/nor, oraciones de relativo y el email a un amigo.",
- gram:["6 tiempos verbales","Afirmativa · negativa · interrogativa","So / Nor","Relative clauses"],
+ desc:"Repaso del examen: los seis tiempos verbales, afirmativa/negativa/interrogativa, adjetivos con preposición, so/nor, oraciones de relativo y el email a un amigo; más verbos irregulares (grupos 4 y 5) y los adjetivos con preposición de la lista.",
+ gram:["6 tiempos verbales","Afirmativa · negativa · interrogativa","So / Nor","Relative clauses","Verbos irregulares (grupos 4 y 5)"],
  lex:["Adjetivo + preposición","Email a un amigo"],
  theory:[
   {h:"Los seis tiempos del examen", dl:[
@@ -1032,7 +1032,45 @@ const ALL_UNITS = [
     ["Present perfect","Experiencia o resultado, sin decir cuándo. <code>have/has + participio</code>. Señales: <i>ever, never, just, already, yet, for, since</i>."]
   ]},
   {h:"Afirmativa, negativa e interrogativa", p:"Cada tiempo tiene su <b>auxiliar</b>, y es el auxiliar el que se mueve: <code>do/does</code> (present simple), <code>am/is/are</code> (present continuous), <code>did</code> (past simple), <code>was/were</code> (past continuous), <code>will</code> (future), <code>have/has</code> (present perfect). Tras <b>didn't</b> y <b>doesn't</b> el verbo va en <b>infinitivo</b>: <i>He didn't go</i>, nunca <i>didn't went</i>."},
-  {h:"Adjetivo + preposición", vocab:1, p:"Se aprenden juntos, como si fueran una sola palabra: <b>interested in · good at · bad at · afraid of · proud of · full of · tired of · worried about · excited about · married to · different from · famous for</b>."},
+  {h:"Verbos irregulares (grupos 4 y 5)", vocab:1, dl:[
+    ["break – broke – broken","romper"],
+    ["choose – chose – chosen","elegir"],
+    ["drive – drove – driven","conducir"],
+    ["eat – ate – eaten","comer"],
+    ["fall – fell – fallen","caer"],
+    ["give – gave – given","dar"],
+    ["forbid – forbade – forbidden","prohibir"],
+    ["forget – forgot – forgotten","olvidar"],
+    ["forgive – forgave – forgiven","perdonar"],
+    ["freeze – froze – frozen","congelar"],
+    ["hide – hid – hidden","esconder"],
+    ["ride – rode – ridden","montar en"],
+    ["rise – rose – risen","elevarse, subir (precios), salir el sol"],
+    ["shake – shook – shaken","agitar, batir"],
+    ["speak – spoke – spoken","hablar"],
+    ["steal – stole – stolen","robar"],
+    ["take – took – taken","tomar, coger"],
+    ["wake up – woke up – woken up","despertarse"],
+    ["write – wrote – written","escribir"]
+  ]},
+  {h:"Adjetivo + preposición", vocab:1, p:"Se aprenden juntos, como si fueran una sola palabra.", dl:[
+    ["good at","bueno en"],
+    ["terrible at","muy malo en"],
+    ["famous for","famoso por"],
+    ["good for","bueno para"],
+    ["bored of","aburrido de"],
+    ["afraid of","con miedo de"],
+    ["pleased with","contento con"],
+    ["angry with","enfadado con"],
+    ["different from","diferente de"],
+    ["married to","casado con"],
+    ["interested in","interesado en"],
+    ["keen on","aficionado a"],
+    ["excited about","emocionado por"],
+    ["upset about","disgustado por"],
+    ["proud of","orgulloso de"],
+    ["similar to","parecido a"]
+  ]},
   {h:"Respuestas cortas con So / Nor", p:"Para decir «yo también» y «yo tampoco». <b>So + auxiliar + sujeto</b> (frases afirmativas) y <b>Neither / Nor + auxiliar + sujeto</b> (frases negativas). El auxiliar es el mismo de la frase anterior, y el orden se <b>invierte</b>: <i>I love pizza → <b>So do I</b></i> · <i>She can't swim → <b>Neither can I</b></i>. Ojo: tras <i>neither/nor</i> el verbo va en <b>afirmativo</b>."},
   {h:"Oraciones de relativo", p:"<b>Especificativas (defining)</b>: dicen de quién o de qué hablamos, van <b>sin comas</b> y aceptan <i>that</i>: <i>The man <b>who/that</b> lives next door is a doctor</i>. A veces se puede quitar el relativo: <i>This is the film (that) we watched yesterday</i>.<br><b>Explicativas (non-defining)</b>: añaden un dato extra, van <b>entre comas</b>, <b>nunca</b> con <i>that</i> y no se pueden quitar: <i>My bike, <b>which</b> is very old, still works</i>."},
   {h:"Pronombres relativos", dl:[
@@ -1121,6 +1159,80 @@ const ALL_UNITS = [
    {t:"write", tr:1, q:"Traduce para despedirte: Escríbeme pronto.", a:["write back soon","write to me soon","write soon"], why:"<b>Write back soon!</b> es como se termina el email."}
   ]},
 
+  {n:15, lvl:1, no:8, nogloss:1, title:"Verbos irregulares: la tabla", instr:"Escribe el pasado y el participio de cada verbo.", items:[
+   {t:"fill", q:"break – ___ – ___", hint:"romper", a:[["broke"], ["broken"]], why:"<b>break – broke – broken</b> = romper."},
+   {t:"fill", q:"choose – ___ – ___", hint:"elegir", a:[["chose"], ["chosen"]], why:"<b>choose – chose – chosen</b> = elegir."},
+   {t:"fill", q:"drive – ___ – ___", hint:"conducir", a:[["drove"], ["driven"]], why:"<b>drive – drove – driven</b> = conducir."},
+   {t:"fill", q:"eat – ___ – ___", hint:"comer", a:[["ate"], ["eaten"]], why:"<b>eat – ate – eaten</b> = comer."},
+   {t:"fill", q:"fall – ___ – ___", hint:"caer", a:[["fell"], ["fallen"]], why:"<b>fall – fell – fallen</b> = caer."},
+   {t:"fill", q:"give – ___ – ___", hint:"dar", a:[["gave"], ["given"]], why:"<b>give – gave – given</b> = dar."},
+   {t:"fill", q:"forbid – ___ – ___", hint:"prohibir", a:[["forbade", "forbad"], ["forbidden"]], why:"<b>forbid – forbade – forbidden</b> = prohibir."},
+   {t:"fill", q:"forget – ___ – ___", hint:"olvidar", a:[["forgot"], ["forgotten"]], why:"<b>forget – forgot – forgotten</b> = olvidar."},
+   {t:"fill", q:"forgive – ___ – ___", hint:"perdonar", a:[["forgave"], ["forgiven"]], why:"<b>forgive – forgave – forgiven</b> = perdonar."},
+   {t:"fill", q:"freeze – ___ – ___", hint:"congelar", a:[["froze"], ["frozen"]], why:"<b>freeze – froze – frozen</b> = congelar."}
+  ]},
+  {n:16, lvl:1, no:9, nogloss:1, title:"Verbos irregulares: en frases", instr:"Escribe el verbo entre paréntesis en la forma que pide la frase (pasado o participio).", items:[
+   {t:"fill", q:"Yesterday I ___ pizza for lunch.", hint:"eat", a:[["ate"]], why:"<i>Yesterday</i> → pasado simple de <b>eat</b>: <i>ate</i>."},
+   {t:"fill", q:"She has ___ her phone again!", hint:"break", a:[["broken"]], why:"<i>Has</i> + participio de <b>break</b>: <i>broken</i>."},
+   {t:"fill", q:"We ___ to Madrid by car last weekend.", hint:"drive", a:[["drove"]], why:"<i>Last weekend</i> → pasado: <b>drove</b>."},
+   {t:"fill", q:"Have you ___ your homework at school?", hint:"forget", a:[["forgotten"]], why:"<i>Have you…</i> + participio de <b>forget</b>: <i>forgotten</i>."},
+   {t:"fill", q:"The boy ___ off his bike and started to cry.", hint:"fall", a:[["fell"]], why:"Pasado de <b>fall</b>: <i>fell</i>."},
+   {t:"fill", q:"Who has ___ the last biscuit?", hint:"take", a:[["taken"]], why:"<i>Has</i> + participio de <b>take</b>: <i>taken</i>."},
+   {t:"fill", q:"My teacher ___ to us about the exam yesterday.", hint:"speak", a:[["spoke"]], why:"<i>Yesterday</i> → pasado de <b>speak</b>: <i>spoke</i>."},
+   {t:"fill", q:"I have ___ you a present.", hint:"give", a:[["given"]], why:"<i>Have</i> + participio de <b>give</b>: <i>given</i>."},
+   {t:"fill", q:"He ___ a letter to his friend last night.", hint:"write", a:[["wrote"]], why:"<i>Last night</i> → pasado de <b>write</b>: <i>wrote</i>."},
+   {t:"fill", q:"They have ___ the best team for the match.", hint:"choose", a:[["chosen"]], why:"<i>Have</i> + participio de <b>choose</b>: <i>chosen</i>."}
+  ]},
+  {n:17, lvl:1, no:10, nogloss:1, title:"Verbos irregulares: elige la forma", instr:"Elige la forma correcta del verbo.", items:[
+   {t:"choice", q:"He has ___ his keys at home.", opts:["forgotten", "forgot", "forget"], a:[0], why:"<i>Has</i> + participio: <b>forgotten</b>."},
+   {t:"choice", q:"Last summer we ___ a lot of ice cream.", opts:["ate", "eaten", "eat"], a:[0], why:"<i>Last summer</i> → pasado: <b>ate</b>."},
+   {t:"choice", q:"My brother has ___ my bike again!", opts:["broken", "broke", "break"], a:[0], why:"<i>Has</i> + participio: <b>broken</b>."},
+   {t:"choice", q:"She ___ the blue dress yesterday.", opts:["chose", "chosen", "choose"], a:[0], why:"<i>Yesterday</i> → pasado: <b>chose</b>."},
+   {t:"choice", q:"Dad ___ us to school this morning.", opts:["drove", "driven", "drive"], a:[0], why:"Pasado simple: <b>drove</b>."},
+   {t:"choice", q:"The leaves have ___ from the tree.", opts:["fallen", "fell", "fall"], a:[0], why:"<i>Have</i> + participio: <b>fallen</b>."},
+   {t:"choice", q:"Who ___ you that book?", opts:["gave", "given", "give"], a:[0], why:"Pasado simple: <b>gave</b>."},
+   {t:"choice", q:"I have ___ a letter to Grandma.", opts:["written", "wrote", "write"], a:[0], why:"<i>Have</i> + participio: <b>written</b>."},
+   {t:"choice", q:"She ___ very fast, so I didn't understand.", opts:["spoke", "spoken", "speak"], a:[0], why:"Pasado simple: <b>spoke</b>."},
+   {t:"choice", q:"Somebody has ___ my pencil case!", opts:["taken", "took", "take"], a:[0], why:"<i>Has</i> + participio: <b>taken</b>."}
+  ]},
+  {n:18, lvl:1, no:11, title:"Verbos irregulares: relaciona", instr:"Relaciona cada verbo con su traducción.", items:[
+   {t:"match", q:"Relaciona cada verbo con su traducción.", pairs:[["break", "romper"], ["choose", "elegir"], ["drive", "conducir"], ["eat", "comer"], ["fall", "caer"], ["give", "dar"]], why:"<b>break</b> romper · <b>choose</b> elegir · <b>drive</b> conducir · <b>eat</b> comer · <b>fall</b> caer · <b>give</b> dar."},
+   {t:"match", q:"Relaciona cada verbo con su traducción.", pairs:[["forbid", "prohibir"], ["forget", "olvidar"], ["forgive", "perdonar"], ["freeze", "congelar"], ["hide", "esconder"], ["ride", "montar en"]], why:"<b>forbid</b> prohibir · <b>forget</b> olvidar · <b>forgive</b> perdonar · <b>freeze</b> congelar · <b>hide</b> esconder · <b>ride</b> montar en."},
+   {t:"match", q:"Relaciona cada verbo con su traducción.", pairs:[["rise", "subir"], ["shake", "agitar"], ["speak", "hablar"], ["steal", "robar"], ["take", "coger"], ["wake up", "despertarse"], ["write", "escribir"]], why:"<b>rise</b> subir · <b>shake</b> agitar · <b>speak</b> hablar · <b>steal</b> robar · <b>take</b> coger · <b>wake up</b> despertarse · <b>write</b> escribir."}
+  ]},
+  {n:19, lvl:1, no:12, nogloss:1, title:"Verbos irregulares: corrige el error", instr:"Cada frase tiene un error en un verbo irregular. Escribe la frase corregida.", items:[
+   {t:"write", q:"She has broke her pencil.", a:["she{ has|'s} broken her pencil"], why:"Con <i>has</i> hace falta el participio: <b>broken</b>."},
+   {t:"write", q:"I eated all the chocolate.", a:["i ate all the chocolate"], why:"<b>Eat</b> es irregular: pasado <i>ate</i>, no <i>eated</i>."},
+   {t:"write", q:"They have chose the red car.", a:["they{ have|'ve} chosen the red car"], why:"Con <i>have</i> hace falta el participio: <b>chosen</b>."},
+   {t:"write", q:"He drived to the beach yesterday.", a:["he drove to the beach yesterday"], why:"<b>Drive</b> es irregular: pasado <i>drove</i>."},
+   {t:"write", q:"The apple falled from the tree.", a:["the apple fell from the tree"], why:"<b>Fall</b> es irregular: pasado <i>fell</i>."},
+   {t:"write", q:"My friend has gave me a ticket.", a:["my friend{ has|'s} given me a ticket"], why:"Con <i>has</i> hace falta el participio: <b>given</b>."},
+   {t:"write", q:"I have forgot my book at home.", a:["i{ have|'ve} forgotten my book at home"], why:"El participio de <b>forget</b> es <i>forgotten</i>."},
+   {t:"write", q:"Yesterday she writed a long email.", a:["yesterday she wrote a long email"], why:"<b>Write</b> es irregular: pasado <i>wrote</i>."}
+  ]},
+  {n:20, lvl:1, no:13, title:"Adjetivos + preposición (2): completa", instr:"Escribe la preposición que acompaña al adjetivo.", items:[
+   {t:"fill", q:"My sister is terrible ___ drawing.", hint:"preposición", a:[["at"]], why:"<b>terrible at</b> = muy malo en."},
+   {t:"fill", q:"Vegetables are good ___ your health.", hint:"preposición", a:[["for"]], why:"<b>good for</b> = bueno para (algo o alguien). No lo confundas con <i>good at</i> = bueno en."},
+   {t:"fill", q:"I'm bored ___ this film.", hint:"preposición", a:[["of", "with"]], why:"<b>bored of</b> = aburrido de (también se dice <i>bored with</i>)."},
+   {t:"fill", q:"Mum is pleased ___ my marks.", hint:"preposición", a:[["with"]], why:"<b>pleased with</b> = contento con."},
+   {t:"fill", q:"Why are you angry ___ me?", hint:"preposición", a:[["with"]], why:"<b>angry with</b> + persona = enfadado con."},
+   {t:"fill", q:"Tom is keen ___ football.", hint:"preposición", a:[["on"]], why:"<b>keen on</b> = aficionado a."},
+   {t:"fill", q:"She was upset ___ the bad news.", hint:"preposición", a:[["about"]], why:"<b>upset about</b> = disgustado por."},
+   {t:"fill", q:"Your bag is similar ___ mine.", hint:"preposición", a:[["to"]], why:"<b>similar to</b> = parecido a."},
+   {t:"fill", q:"We are all excited ___ the party.", hint:"preposición", a:[["about"]], why:"<b>excited about</b> = emocionado por."},
+   {t:"fill", q:"He's very proud ___ his new bike.", hint:"preposición", a:[["of"]], why:"<b>proud of</b> = orgulloso de."}
+  ]},
+  {n:21, lvl:1, no:14, title:"Adjetivos + preposición (2): elige y relaciona", instr:"Elige la preposición correcta y relaciona cada expresión con su traducción.", items:[
+   {t:"choice", q:"I'm interested ___ music.", opts:["in", "at", "for"], a:[0], why:"<b>interested in</b> = interesado en."},
+   {t:"choice", q:"She's afraid ___ spiders.", opts:["of", "at", "with"], a:[0], why:"<b>afraid of</b> = con miedo de."},
+   {t:"choice", q:"He's married ___ my aunt.", opts:["to", "with", "for"], a:[0], why:"<b>married to</b> = casado con."},
+   {t:"choice", q:"This pizza is different ___ that one.", opts:["from", "of", "with"], a:[0], why:"<b>different from</b> = diferente de."},
+   {t:"choice", q:"We're famous ___ our cakes.", opts:["for", "at", "on"], a:[0], why:"<b>famous for</b> = famoso por."},
+   {t:"choice", q:"I'm good ___ swimming.", opts:["at", "for", "of"], a:[0], why:"<b>good at</b> = bueno en."},
+   {t:"match", q:"Relaciona cada expresión con su traducción.", pairs:[["good at", "bueno en"], ["terrible at", "muy malo en"], ["famous for", "famoso por"], ["good for", "bueno para"], ["bored of", "aburrido de"], ["afraid of", "con miedo de"], ["pleased with", "contento con"], ["angry with", "enfadado con"]], why:"<b>good at</b> bueno en; <b>terrible at</b> muy malo en; <b>famous for</b> famoso por; <b>good for</b> bueno para; <b>bored of</b> aburrido de; <b>afraid of</b> con miedo de; <b>pleased with</b> contento con; <b>angry with</b> enfadado con."},
+   {t:"match", q:"Relaciona cada expresión con su traducción.", pairs:[["different from", "diferente de"], ["married to", "casado con"], ["interested in", "interesado en"], ["keen on", "aficionado a"], ["excited about", "emocionado por"], ["upset about", "disgustado por"], ["proud of", "orgulloso de"], ["similar to", "parecido a"]], why:"<b>different from</b> diferente de; <b>married to</b> casado con; <b>interested in</b> interesado en; <b>keen on</b> aficionado a; <b>excited about</b> emocionado por; <b>upset about</b> disgustado por; <b>proud of</b> orgulloso de; <b>similar to</b> parecido a."}
+  ]},
+
   {n:8, lvl:2, no:1, title:"Los seis tiempos verbales", instr:"Elige el tiempo verbal que pide cada frase.", items:[
    {t:"choice", q:"My dad ___ coffee every morning.", opts:["drinks","is drinking","drank"], a:[0], why:"<i>Every morning</i> = rutina → present simple con -s."},
    {t:"choice", q:"Be quiet! The baby ___.", opts:["is sleeping","sleeps","slept"], a:[0], why:"Está pasando ahora → present continuous."},
@@ -1204,6 +1316,79 @@ const ALL_UNITS = [
    {t:"choice", q:"Tu amigo te pregunta tres cosas. ¿Qué haces?", opts:["Contesto a las tres","Contesto a la que más me guste","Escribo sobre otra cosa"], a:[0], why:"Hay que contestar a <b>todas</b>: es lo que más puntúa."},
    {t:"write", tr:1, q:"Traduce: ¿Qué tal estás?", a:["how are you"], why:"<b>How are you?</b> va siempre al principio."},
    {t:"write", tr:1, q:"Traduce: Gracias por tu email.", a:["thanks for your email","thank you for your email"], why:"<b>Thanks for your email.</b>"}
+  ]},
+
+  {n:22, lvl:2, no:8, nogloss:1, title:"Verbos irregulares: la tabla", instr:"Escribe el pasado y el participio de cada verbo.", items:[
+   {t:"fill", q:"hide – ___ – ___", hint:"esconder", a:[["hid"], ["hidden"]], why:"<b>hide – hid – hidden</b> = esconder."},
+   {t:"fill", q:"ride – ___ – ___", hint:"montar en", a:[["rode"], ["ridden"]], why:"<b>ride – rode – ridden</b> = montar en."},
+   {t:"fill", q:"rise – ___ – ___", hint:"elevarse, subir (precios), salir el sol", a:[["rose"], ["risen"]], why:"<b>rise – rose – risen</b> = elevarse, subir (precios), salir el sol."},
+   {t:"fill", q:"shake – ___ – ___", hint:"agitar, batir", a:[["shook"], ["shaken"]], why:"<b>shake – shook – shaken</b> = agitar, batir."},
+   {t:"fill", q:"speak – ___ – ___", hint:"hablar", a:[["spoke"], ["spoken"]], why:"<b>speak – spoke – spoken</b> = hablar."},
+   {t:"fill", q:"steal – ___ – ___", hint:"robar", a:[["stole"], ["stolen"]], why:"<b>steal – stole – stolen</b> = robar."},
+   {t:"fill", q:"take – ___ – ___", hint:"tomar, coger", a:[["took"], ["taken"]], why:"<b>take – took – taken</b> = tomar, coger."},
+   {t:"fill", q:"wake up – ___ – ___", hint:"despertarse", a:[["woke[ up]"], ["woken[ up]"]], why:"<b>wake up – woke up – woken up</b> = despertarse."},
+   {t:"fill", q:"write – ___ – ___", hint:"escribir", a:[["wrote"], ["written"]], why:"<b>write – wrote – written</b> = escribir."}
+  ]},
+  {n:23, lvl:2, no:9, nogloss:1, title:"Verbos irregulares: en frases", instr:"Escribe el verbo entre paréntesis en la forma que pide la frase (pasado o participio).", items:[
+   {t:"fill", q:"The thief ___ my bag at the station.", hint:"steal", a:[["stole"]], why:"Pasado simple de <b>steal</b>: <i>stole</i>."},
+   {t:"fill", q:"I have ___ my shoes under the bed.", hint:"hide", a:[["hidden"]], why:"<i>Have</i> + participio de <b>hide</b>: <i>hidden</i>."},
+   {t:"fill", q:"She ___ a horse when she was ten years old.", hint:"ride", a:[["rode"]], why:"<i>When she was ten</i> → pasado de <b>ride</b>: <i>rode</i>."},
+   {t:"fill", q:"The water in the bottle has ___.", hint:"freeze", a:[["frozen"]], why:"<i>Has</i> + participio de <b>freeze</b>: <i>frozen</i>."},
+   {t:"fill", q:"He ___ his head and said no.", hint:"shake", a:[["shook"]], why:"Pasado de <b>shake</b>: <i>shook</i>."},
+   {t:"fill", q:"I ___ up at seven o'clock this morning.", hint:"wake", a:[["woke"]], why:"Pasado de <b>wake up</b>: <i>woke up</i>."},
+   {t:"fill", q:"My mum has ___ me to play on the computer today.", hint:"forbid", a:[["forbidden"]], why:"<i>Has</i> + participio de <b>forbid</b>: <i>forbidden</i>."},
+   {t:"fill", q:"Anna has ___ her brother for breaking the toy.", hint:"forgive", a:[["forgiven"]], why:"<i>Has</i> + participio de <b>forgive</b>: <i>forgiven</i>."},
+   {t:"fill", q:"The sun ___ at six o'clock this morning.", hint:"rise", a:[["rose"]], why:"Pasado de <b>rise</b>: <i>rose</i>."},
+   {t:"fill", q:"I haven't ___ to him since Monday.", hint:"speak", a:[["spoken"]], why:"<i>Haven't</i> + participio de <b>speak</b>: <i>spoken</i>."}
+  ]},
+  {n:24, lvl:2, no:10, nogloss:1, title:"Verbos irregulares: elige la forma", instr:"Elige la forma correcta del verbo.", items:[
+   {t:"choice", q:"The robber ___ a lot of money from the bank.", opts:["stole", "stolen", "steal"], a:[0], why:"Pasado simple: <b>stole</b>."},
+   {t:"choice", q:"The cat has ___ under the sofa.", opts:["hidden", "hid", "hide"], a:[0], why:"<i>Has</i> + participio: <b>hidden</b>."},
+   {t:"choice", q:"We ___ our bikes to the park yesterday.", opts:["rode", "ridden", "ride"], a:[0], why:"<i>Yesterday</i> → pasado: <b>rode</b>."},
+   {t:"choice", q:"The lake has ___ because it is so cold.", opts:["frozen", "froze", "freeze"], a:[0], why:"<i>Has</i> + participio: <b>frozen</b>."},
+   {t:"choice", q:"He ___ hands with the new teacher.", opts:["shook", "shaken", "shake"], a:[0], why:"Pasado simple: <b>shook</b>."},
+   {t:"choice", q:"I have ___ up late every day this week.", opts:["woken", "woke", "wake"], a:[0], why:"<i>Have</i> + participio: <b>woken</b>."},
+   {t:"choice", q:"Smoking is ___ in the restaurant.", opts:["forbidden", "forbade", "forbid"], a:[0], why:"<i>Is</i> + participio (pasiva): <b>forbidden</b>."},
+   {t:"choice", q:"She ___ him for being late.", opts:["forgave", "forgiven", "forgive"], a:[0], why:"Pasado simple: <b>forgave</b>."},
+   {t:"choice", q:"The price of petrol has ___ again.", opts:["risen", "rose", "rise"], a:[0], why:"<i>Has</i> + participio: <b>risen</b>."},
+   {t:"choice", q:"The sun ___ at six o'clock.", opts:["rose", "risen", "rise"], a:[0], why:"Pasado simple: <b>rose</b>."}
+  ]},
+  {n:25, lvl:2, no:11, title:"Verbos irregulares: relaciona", instr:"Relaciona cada forma con su infinitivo.", items:[
+   {t:"match", q:"Relaciona cada pasado con su infinitivo.", pairs:[["forbade", "forbid"], ["forgot", "forget"], ["forgave", "forgive"], ["froze", "freeze"], ["hid", "hide"], ["rode", "ride"]], why:"<b>forbade</b> → forbid · <b>forgot</b> → forget · <b>forgave</b> → forgive · <b>froze</b> → freeze · <b>hid</b> → hide · <b>rode</b> → ride."},
+   {t:"match", q:"Relaciona cada participio con su infinitivo.", pairs:[["risen", "rise"], ["shaken", "shake"], ["spoken", "speak"], ["stolen", "steal"], ["taken", "take"], ["woken", "wake up"], ["written", "write"]], why:"<b>risen</b> → rise · <b>shaken</b> → shake · <b>spoken</b> → speak · <b>stolen</b> → steal · <b>taken</b> → take · <b>woken</b> → wake up · <b>written</b> → write."},
+   {t:"match", q:"Relaciona cada palabra en español con el verbo en inglés.", pairs:[["romper", "break"], ["elegir", "choose"], ["conducir", "drive"], ["comer", "eat"], ["caer", "fall"], ["dar", "give"]], why:"romper → <b>break</b> · elegir → <b>choose</b> · conducir → <b>drive</b> · comer → <b>eat</b> · caer → <b>fall</b> · dar → <b>give</b>."}
+  ]},
+  {n:26, lvl:2, no:12, nogloss:1, title:"Verbos irregulares: corrige el error", instr:"Cada frase tiene un error en un verbo irregular. Escribe la frase corregida.", items:[
+   {t:"write", q:"Someone has stole my bike.", a:["someone has stolen my bike"], why:"Con <i>has</i> hace falta el participio: <b>stolen</b>."},
+   {t:"write", q:"The boy hided behind the door.", a:["the boy hid behind the door"], why:"<b>Hide</b> es irregular: pasado <i>hid</i>."},
+   {t:"write", q:"We have rode horses before.", a:["we{ have|'ve} ridden horses before"], why:"Con <i>have</i> hace falta el participio: <b>ridden</b>."},
+   {t:"write", q:"The lake has froze.", a:["the lake has frozen"], why:"Con <i>has</i> hace falta el participio: <b>frozen</b>."},
+   {t:"write", q:"She shaked the bottle.", a:["she shook the bottle"], why:"<b>Shake</b> es irregular: pasado <i>shook</i>."},
+   {t:"write", q:"I waked up at six today.", a:["i woke up at six today"], why:"<b>Wake up</b> es irregular: pasado <i>woke up</i>."},
+   {t:"write", q:"He has spoke to the teacher.", a:["he{ has|'s} spoken to the teacher"], why:"Con <i>has</i> hace falta el participio: <b>spoken</b>."},
+   {t:"write", q:"My mum has forbid me to go.", a:["my mum{ has|'s} forbidden me to go"], why:"El participio de <b>forbid</b> es <i>forbidden</i>."}
+  ]},
+  {n:27, lvl:2, no:13, title:"Adjetivos + preposición (2): completa", instr:"Escribe la preposición que acompaña al adjetivo.", items:[
+   {t:"fill", q:"Luis is good ___ chess.", hint:"preposición", a:[["at"]], why:"<b>good at</b> = bueno en."},
+   {t:"fill", q:"Our town is famous ___ its castle.", hint:"preposición", a:[["for"]], why:"<b>famous for</b> = famoso por."},
+   {t:"fill", q:"I'm afraid ___ the dark.", hint:"preposición", a:[["of"]], why:"<b>afraid of</b> = con miedo de."},
+   {t:"fill", q:"Paula is married ___ a pilot.", hint:"preposición", a:[["to"]], why:"<b>married to</b> = casado con."},
+   {t:"fill", q:"Are you interested ___ history?", hint:"preposición", a:[["in"]], why:"<b>interested in</b> = interesado en."},
+   {t:"fill", q:"This game is different ___ the other one.", hint:"preposición", a:[["from", "to"]], why:"<b>different from</b> = diferente de (también <i>different to</i>)."},
+   {t:"fill", q:"She's bored ___ staying at home.", hint:"preposición", a:[["of", "with"]], why:"<b>bored of</b> = aburrido de (también <i>bored with</i>)."},
+   {t:"fill", q:"The teacher is pleased ___ our work.", hint:"preposición", a:[["with"]], why:"<b>pleased with</b> = contento con."},
+   {t:"fill", q:"My cousin is keen ___ tennis.", hint:"preposición", a:[["on"]], why:"<b>keen on</b> = aficionado a."},
+   {t:"fill", q:"This game is similar ___ chess.", hint:"preposición", a:[["to"]], why:"<b>similar to</b> = parecido a."}
+  ]},
+  {n:28, lvl:2, no:14, title:"Adjetivos + preposición (2): elige y relaciona", instr:"Elige la preposición correcta y relaciona cada expresión con su traducción.", items:[
+   {t:"choice", q:"My brother is keen ___ cycling.", opts:["on", "at", "of"], a:[0], why:"<b>keen on</b> = aficionado a."},
+   {t:"choice", q:"Mum is pleased ___ my test.", opts:["with", "for", "about"], a:[0], why:"<b>pleased with</b> = contento con."},
+   {t:"choice", q:"I'm excited ___ the trip.", opts:["about", "of", "to"], a:[0], why:"<b>excited about</b> = emocionado por."},
+   {t:"choice", q:"He's upset ___ the result.", opts:["about", "at", "with"], a:[0], why:"<b>upset about</b> = disgustado por."},
+   {t:"choice", q:"Chips are not good ___ you.", opts:["for", "at", "to"], a:[0], why:"<b>good for</b> = bueno para."},
+   {t:"choice", q:"She's proud ___ her sister.", opts:["of", "for", "with"], a:[0], why:"<b>proud of</b> = orgullosa de."},
+   {t:"match", q:"Relaciona cada expresión en español con la expresión en inglés.", pairs:[["bueno en", "good at"], ["muy malo en", "terrible at"], ["famoso por", "famous for"], ["bueno para", "good for"], ["aburrido de", "bored of"], ["con miedo de", "afraid of"], ["contento con", "pleased with"], ["enfadado con", "angry with"]], why:"bueno en → <b>good at</b>; muy malo en → <b>terrible at</b>; famoso por → <b>famous for</b>; bueno para → <b>good for</b>; aburrido de → <b>bored of</b>; con miedo de → <b>afraid of</b>; contento con → <b>pleased with</b>; enfadado con → <b>angry with</b>."},
+   {t:"match", q:"Relaciona cada expresión en español con la expresión en inglés.", pairs:[["diferente de", "different from"], ["casado con", "married to"], ["interesado en", "interested in"], ["aficionado a", "keen on"], ["emocionado por", "excited about"], ["disgustado por", "upset about"], ["orgulloso de", "proud of"], ["parecido a", "similar to"]], why:"diferente de → <b>different from</b>; casado con → <b>married to</b>; interesado en → <b>interested in</b>; aficionado a → <b>keen on</b>; emocionado por → <b>excited about</b>; disgustado por → <b>upset about</b>; orgulloso de → <b>proud of</b>; parecido a → <b>similar to</b>."}
   ]}
  ]
 },
@@ -2384,7 +2569,13 @@ const VERB_SRC=[
 "snowboard|hacer snowboard",
 "skateboard|montar en monopatín",
 "queue|hacer cola||||queuing,queueing,queues,queued",
-"babysit|cuidar niños|babysat|babysat|babysits,babysitting"
+"babysit|cuidar niños|babysat|babysat|babysits,babysitting",
+"forbid|prohibir|forbade|forbidden|forbids,forbidding,forbad",
+"forgive|perdonar|forgave|forgiven|forgives,forgiving",
+"freeze|congelar|froze|frozen|freezes,freezing",
+"hide|esconder|hid|hidden|hides,hiding",
+"rise|elevarse, subir|rose|risen|rises,rising",
+"shake|agitar, batir|shook|shaken|shakes,shaking"
 ];
 const VERBS={}, VERB_FORMS={};
 (function(){
