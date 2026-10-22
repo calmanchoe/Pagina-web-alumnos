@@ -757,6 +757,12 @@ input{font:inherit;color:inherit}
 }
 
 .dot.ko{background:var(--red)}
+.dot.rec{background:var(--green);box-shadow:0 0 0 1.5px var(--red)}
+.rvdot.rec{background:var(--green-soft);border:2px solid var(--red);color:var(--green)}
+.rv-first{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;margin:0 0 14px;padding:10px 13px;border-radius:12px;
+  border:1px solid color-mix(in srgb,var(--red) 40%,transparent);background:var(--red-soft);
+  font-family:var(--f-read);font-size:14.5px;line-height:1.45;color:var(--ink)}
+.rv-first span{flex:1 1 240px}
 /* revisión del profe */
 .rvnav{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 12px}
 .rvdot{min-width:32px;height:32px;padding:0 6px;border-radius:9px;border:1px solid var(--glass-brd);background:var(--glass-3);
@@ -1101,14 +1107,14 @@ const ALL_UNITS = [
  exercises:[
   {n:1, lvl:1, no:1, title:"Los seis tiempos verbales", instr:"Elige el tiempo verbal que pide cada frase.", items:[
    {t:"choice", q:"My sister ___ to school by bus every day.", opts:["goes","is going","went"], a:[0], why:"<i>Every day</i> = rutina → <b>present simple</b>."},
-   {t:"choice", q:"Look! The dog ___ with your shoes.", opts:["is playing","plays","played"], a:[0], why:"<i>Look!</i> señala algo que pasa ahora → <b>present continuous</b>."},
+   {t:"choice", q:"Look! The dog ___ with your shoes.", opts:["is playing", "was playing", "plays"], a:[0], why:"<i>Look!</i> señala algo que pasa ahora → <b>present continuous</b>."},
    {t:"choice", q:"We ___ a great film last Saturday.", opts:["saw","see","have seen"], a:[0], why:"<i>Last Saturday</i> dice cuándo → <b>past simple</b>."},
    {t:"choice", q:"While I ___ my homework, the lights went out.", opts:["was doing","did","have done"], a:[0], why:"Con <i>while</i>, la acción larga de fondo va en <b>past continuous</b>."},
-   {t:"choice", q:"Don't worry, I ___ you tomorrow.", opts:["will call","call","called"], a:[0], why:"<i>Tomorrow</i> + decisión del momento → <b>future simple</b>."},
-   {t:"choice", q:"I ___ to London.", opts:["have never been","am never been","never went"], a:[0], why:"Experiencia sin decir cuándo → <b>present perfect</b>: have + participio."},
+   {t:"choice", q:"Don't worry, I ___ you tomorrow.", opts:["will call", "have called", "called"], a:[0], why:"<i>Tomorrow</i> + decisión del momento → <b>future simple</b>."},
+   {t:"choice", q:"I ___ to London.", opts:["have never been", "has never been", "am never been"], a:[0], why:"Experiencia sin decir cuándo → <b>present perfect</b>: have + participio."},
    {t:"choice", gloss:{"keys": "llaves"}, q:"She ___ her keys yesterday.", opts:["lost","has lost","loses"], a:[0], why:"<i>Yesterday</i> obliga a <b>past simple</b>, nunca present perfect."},
    {t:"choice", q:"They ___ their homework, so they can play now.", opts:["have already finished","already finished","are already finishing"], a:[0], why:"<i>Already</i> + resultado en el presente → <b>present perfect</b>."},
-   {t:"choice", q:"Listen! Somebody ___ at the door.", opts:["is knocking","knocks","knocked"], a:[0], why:"<i>Listen!</i> → present continuous."},
+   {t:"choice", q:"Listen! Somebody ___ at the door.", opts:["is knocking", "was knocking", "knocks"], a:[0], why:"<i>Listen!</i> → present continuous."},
    {t:"choice", q:"What ___ you ___ at 8 o'clock last night?", opts:["were / doing","did / do","have / done"], a:[0], why:"Un momento concreto del pasado → <b>past continuous</b>: were you doing."}
   ]},
   {n:2, lvl:1, no:2, title:"Completa con el tiempo correcto", instr:"Escribe el verbo entre paréntesis en el tiempo que pide la frase.", items:[
@@ -1149,7 +1155,7 @@ const ALL_UNITS = [
    {t:"choice", q:"— I love pizza.\n— ___ I.", opts:["So do","So am","Neither do"], a:[0], why:"Frase afirmativa en present simple → <b>So do I</b>."},
    {t:"choice", q:"— She can't swim.\n— ___ can I.", opts:["Nor","So","Either"], a:[0], why:"Frase negativa → <b>Nor can I</b> (o <i>Neither can I</i>)."},
    {t:"choice", q:"— We went to the park.\n— ___ they.", opts:["So did","So went","Neither did"], a:[0], why:"Frase en pasado afirmativo → el auxiliar es <b>did</b>: So did they."},
-   {t:"choice", q:"— He isn't hungry.\n— ___ am I.", opts:["Neither","So","Not"], a:[0], why:"Negativa con <i>to be</i> → <b>Neither am I</b>."},
+   {t:"choice", q:"— He isn't hungry.\n— ___ am I.", opts:["Neither", "Either", "So"], a:[0], why:"Negativa con <i>to be</i> → <b>Neither am I</b>."},
    {t:"fill", q:"— I'm really tired.\n— So ___ I.", hint:"auxiliar", a:[["am"]], why:"El auxiliar de <i>I'm</i> es <b>am</b>: So am I."},
    {t:"fill", q:"— They haven't finished.\n— Neither ___ we.", hint:"auxiliar", a:[["have"]], why:"Tras <i>neither</i> el auxiliar va en <b>afirmativo</b>: Neither have we."},
    {t:"fill", q:"— My brother doesn't like fish.\n— ___ do I.", hint:"neither o nor", a:[["Neither","neither","Nor","nor"]], why:"<b>Neither do I</b> = yo tampoco."},
@@ -1170,8 +1176,8 @@ const ALL_UNITS = [
   {n:7, lvl:1, no:7, title:"Escribir un email a un amigo", instr:"Las frases que se repiten siempre en el email del examen.", items:[
    {t:"choice", q:"Escribes a tu amigo Tom. ¿Cómo empiezas?", opts:["Hi Tom,","Dear Mr Tom,","Hello Mr,"], a:[0], why:"A un amigo se le escribe <b>Hi Tom,</b> o <i>Dear Tom,</i>. <i>Mr</i> es para adultos y apellidos."},
    {t:"choice", q:"¿Cómo te despides de un amigo?", opts:["See you soon,","Goodbye sir,","The end,"], a:[0], why:"<b>See you soon</b>, <i>Best wishes</i> o <i>Love</i> si es alguien de la familia."},
-   {t:"choice", q:"¿Qué escribes justo después del saludo?", opts:["Thanks for your email! How are you?","My name is and I am years old.","The weather is 20 degrees."], a:[0], why:"Primero se agradece el email y se pregunta cómo está. Es el inicio de siempre."},
-   {t:"choice", q:"¿Qué es lo más importante del email?", opts:["Contestar a todo lo que te preguntan","Escribir muy largo","Usar palabras difíciles"], a:[0], why:"Si dejas una pregunta sin contestar, baja la nota aunque todo lo demás esté bien."},
+   {t:"choice", q:"¿Qué escribes justo después del saludo?", opts:["Thanks for your email! How are you?", "My name is Pablo and I am eleven.", "The weather is hot and the sky is blue."], a:[0], why:"Primero se agradece el email y se pregunta cómo está. Es el inicio de siempre."},
+   {t:"choice", q:"¿Qué es lo más importante del email?", opts:["Contestar a todo lo que te preguntan", "Escribir siempre un texto muy largo", "Usar solo palabras muy difíciles"], a:[0], why:"Si dejas una pregunta sin contestar, baja la nota aunque todo lo demás esté bien."},
    {t:"fill", q:"Thanks ___ your email!", hint:"preposición", a:[["for"]], why:"Siempre <b>thanks for</b>."},
    {t:"fill", q:"I'm writing ___ tell you about my holiday.", hint:"una palabra", a:[["to"]], why:"<b>to + verbo</b> para decir para qué escribes."},
    {t:"write", tr:1, q:"Traduce para tu email: ¡Me encantaría ir!", a:["{i'd|i would} love to {go|come}"], why:"<b>I'd love to go!</b>"},
@@ -1203,16 +1209,16 @@ const ALL_UNITS = [
    {t:"fill", q:"They have ___ the best team for the match.", hint:"choose", a:[["chosen"]], why:"<i>Have</i> + participio de <b>choose</b>: <i>chosen</i>."}
   ]},
   {n:17, lvl:1, no:10, nogloss:1, title:"Verbos irregulares: elige la forma", instr:"Elige la forma correcta del verbo.", items:[
-   {t:"choice", q:"He has ___ his keys at home.", opts:["forgotten", "forgot", "forget"], a:[0], why:"<i>Has</i> + participio: <b>forgotten</b>."},
+   {t:"choice", q:"He has ___ his keys at home.", opts:["forgotten", "forgetten", "forgot"], a:[0], why:"<i>Has</i> + participio: <b>forgotten</b>."},
    {t:"choice", q:"Last summer we ___ a lot of ice cream.", opts:["ate", "eaten", "eat"], a:[0], why:"<i>Last summer</i> → pasado: <b>ate</b>."},
-   {t:"choice", q:"My brother has ___ my bike again!", opts:["broken", "broke", "break"], a:[0], why:"<i>Has</i> + participio: <b>broken</b>."},
+   {t:"choice", q:"My brother has ___ my bike again!", opts:["broken", "broke", "breaked"], a:[0], why:"<i>Has</i> + participio: <b>broken</b>."},
    {t:"choice", q:"She ___ the blue dress yesterday.", opts:["chose", "chosen", "choose"], a:[0], why:"<i>Yesterday</i> → pasado: <b>chose</b>."},
    {t:"choice", q:"Dad ___ us to school this morning.", opts:["drove", "driven", "drive"], a:[0], why:"Pasado simple: <b>drove</b>."},
-   {t:"choice", q:"The leaves have ___ from the tree.", opts:["fallen", "fell", "fall"], a:[0], why:"<i>Have</i> + participio: <b>fallen</b>."},
+   {t:"choice", q:"The leaves have ___ from the tree.", opts:["fallen", "fell", "falled"], a:[0], why:"<i>Have</i> + participio: <b>fallen</b>."},
    {t:"choice", q:"Who ___ you that book?", opts:["gave", "given", "give"], a:[0], why:"Pasado simple: <b>gave</b>."},
-   {t:"choice", q:"I have ___ a letter to Grandma.", opts:["written", "wrote", "write"], a:[0], why:"<i>Have</i> + participio: <b>written</b>."},
+   {t:"choice", q:"I have ___ a letter to Grandma.", opts:["written", "wrote", "writed"], a:[0], why:"<i>Have</i> + participio: <b>written</b>."},
    {t:"choice", q:"She ___ very fast, so I didn't understand.", opts:["spoke", "spoken", "speak"], a:[0], why:"Pasado simple: <b>spoke</b>."},
-   {t:"choice", q:"Somebody has ___ my pencil case!", opts:["taken", "took", "take"], a:[0], why:"<i>Has</i> + participio: <b>taken</b>."}
+   {t:"choice", q:"Somebody has ___ my pencil case!", opts:["taken", "took", "taked"], a:[0], why:"<i>Has</i> + participio: <b>taken</b>."}
   ]},
   {n:18, lvl:1, no:11, title:"Verbos irregulares: relaciona", instr:"Relaciona cada verbo con su traducción.", items:[
    {t:"match", q:"Relaciona cada verbo con su traducción.", pairs:[["break", "romper"], ["choose", "elegir"], ["drive", "conducir"], ["eat", "comer"], ["fall", "caer"], ["give", "dar"]], why:"<b>break</b> romper · <b>choose</b> elegir · <b>drive</b> conducir · <b>eat</b> comer · <b>fall</b> caer · <b>give</b> dar."},
@@ -1254,10 +1260,10 @@ const ALL_UNITS = [
 
   {n:8, lvl:2, no:1, title:"Los seis tiempos verbales", instr:"Elige el tiempo verbal que pide cada frase.", items:[
    {t:"choice", q:"My dad ___ coffee every morning.", opts:["drinks","is drinking","drank"], a:[0], why:"<i>Every morning</i> = rutina → present simple con -s."},
-   {t:"choice", q:"Be quiet! The baby ___.", opts:["is sleeping","sleeps","slept"], a:[0], why:"Está pasando ahora → present continuous."},
+   {t:"choice", q:"Be quiet! The baby ___.", opts:["is sleeping", "was sleeping", "sleeps"], a:[0], why:"Está pasando ahora → present continuous."},
    {t:"choice", q:"We ___ our grandparents last weekend.", opts:["visited","visit","have visited"], a:[0], why:"<i>Last weekend</i> dice cuándo → past simple."},
    {t:"choice", gloss:{"rain": "llover"}, q:"I ___ my bike when it started to rain.", opts:["was riding","rode","have ridden"], a:[0], why:"Acción en curso interrumpida por otra → past continuous."},
-   {t:"choice", q:"I'm sure you ___ the exam.", opts:["will pass","pass","passed"], a:[0], why:"Predicción sobre el futuro → <b>will</b>."},
+   {t:"choice", q:"I'm sure you ___ the exam next week.", opts:["will pass", "have passed", "passed"], a:[0], why:"Predicción sobre el futuro → <b>will</b>."},
    {t:"choice", q:"Oh no! I ___ my phone at home.", opts:["have left","left","am leaving"], a:[0], why:"Lo importante es el resultado ahora → present perfect."},
    {t:"choice", q:"They ___ to the cinema yesterday.", opts:["went","have gone","go"], a:[0], why:"<i>Yesterday</i> → past simple, nunca present perfect."},
    {t:"choice", q:"___ you ever ___ a horse?", opts:["Have / ridden","Did / ride","Are / riding"], a:[0], why:"Pregunta de experiencia con <i>ever</i> → <b>Have you ever ridden…?</b>"},
@@ -1304,7 +1310,7 @@ const ALL_UNITS = [
 
   {n:12, lvl:2, no:5, title:"Respuestas cortas con So / Nor", instr:"«Yo también» y «yo tampoco»: completa la respuesta.", items:[
    {t:"choice", gloss:{"ice": "helado (ice cream)"}, q:"— I like ice cream.\n— ___ I.", opts:["So do","So am","Neither do"], a:[0], why:"Afirmativa en present simple → <b>So do I</b>."},
-   {t:"choice", q:"— He can't cook.\n— ___ can I.", opts:["Neither","So","Not"], a:[0], why:"Negativa con <i>can</i> → <b>Neither can I</b>."},
+   {t:"choice", q:"— He can't cook.\n— ___ can I.", opts:["Neither", "Either", "So"], a:[0], why:"Negativa con <i>can</i> → <b>Neither can I</b>."},
    {t:"choice", q:"— I saw that film.\n— ___ did my sister.", opts:["So","Neither","Also"], a:[0], why:"Afirmativa en pasado → <b>So did…</b>"},
    {t:"choice", q:"— She isn't tired.\n— ___ am I.", opts:["Neither","So","Either"], a:[0], why:"Negativa con <i>to be</i> → <b>Neither am I</b>."},
    {t:"fill", q:"— I'm hungry.\n— So ___ I.", hint:"auxiliar", a:[["am"]], why:"El auxiliar de <i>I'm</i> es <b>am</b>."},
@@ -1328,7 +1334,7 @@ const ALL_UNITS = [
 
   {n:14, lvl:2, no:7, title:"Escribir un email a un amigo", instr:"Las frases que se repiten siempre en el email del examen.", items:[
    {t:"choice", q:"Escribes a tu amiga Anna. ¿Cómo empiezas?", opts:["Hi Anna,","Dear Madam,","Hello teacher,"], a:[0], why:"A una amiga: <b>Hi Anna,</b> o <i>Dear Anna,</i>."},
-   {t:"choice", q:"¿Cuál de estas NO pondrías en un email a un amigo?", opts:["Yours sincerely,","See you soon,","Love,"], a:[0], why:"<i>Yours sincerely</i> es de carta formal. Con un amigo, <b>See you soon</b> o <b>Love</b>."},
+   {t:"choice", q:"¿Cuál de estas NO pondrías en un email a un amigo?", opts:["Yours sincerely,", "Write back soon,", "Take care,"], a:[0], why:"<i>Yours sincerely</i> es de carta formal. Con un amigo, <b>Write back soon</b>, <b>Take care</b> o <b>See you soon</b>."},
    {t:"choice", q:"¿Qué va lo primero de todo?", opts:["El saludo","La despedida","Tu nombre"], a:[0], why:"Saludo → gracias por el email → contestar → despedida → tu nombre."},
    {t:"fill", q:"Sorry ___ not writing before.", hint:"preposición", a:[["for"]], why:"<b>Sorry for</b> + verbo en -ing."},
    {t:"fill", q:"Tell me ___ your new school!", hint:"preposición", a:[["about"]], why:"<b>tell me about</b> = cuéntame sobre."},
@@ -1362,14 +1368,14 @@ const ALL_UNITS = [
   ]},
   {n:24, lvl:2, no:10, nogloss:1, title:"Verbos irregulares: elige la forma", instr:"Elige la forma correcta del verbo.", items:[
    {t:"choice", q:"The robber ___ a lot of money from the bank.", opts:["stole", "stolen", "steal"], a:[0], why:"Pasado simple: <b>stole</b>."},
-   {t:"choice", q:"The cat has ___ under the sofa.", opts:["hidden", "hid", "hide"], a:[0], why:"<i>Has</i> + participio: <b>hidden</b>."},
+   {t:"choice", q:"The cat has ___ under the sofa.", opts:["hidden", "hid", "hided"], a:[0], why:"<i>Has</i> + participio: <b>hidden</b>."},
    {t:"choice", q:"We ___ our bikes to the park yesterday.", opts:["rode", "ridden", "ride"], a:[0], why:"<i>Yesterday</i> → pasado: <b>rode</b>."},
    {t:"choice", q:"The lake has ___ because it is so cold.", opts:["frozen", "froze", "freeze"], a:[0], why:"<i>Has</i> + participio: <b>frozen</b>."},
    {t:"choice", q:"He ___ hands with the new teacher.", opts:["shook", "shaken", "shake"], a:[0], why:"Pasado simple: <b>shook</b>."},
-   {t:"choice", q:"I have ___ up late every day this week.", opts:["woken", "woke", "wake"], a:[0], why:"<i>Have</i> + participio: <b>woken</b>."},
-   {t:"choice", q:"Smoking is ___ in the restaurant.", opts:["forbidden", "forbade", "forbid"], a:[0], why:"<i>Is</i> + participio (pasiva): <b>forbidden</b>."},
+   {t:"choice", q:"I have ___ up late every day this week.", opts:["woken", "woke", "waked"], a:[0], why:"<i>Have</i> + participio: <b>woken</b>."},
+   {t:"choice", q:"Smoking is ___ in the restaurant.", opts:["forbidden", "forbade", "forbidded"], a:[0], why:"<i>Is</i> + participio (pasiva): <b>forbidden</b>."},
    {t:"choice", q:"She ___ him for being late.", opts:["forgave", "forgiven", "forgive"], a:[0], why:"Pasado simple: <b>forgave</b>."},
-   {t:"choice", q:"The price of petrol has ___ again.", opts:["risen", "rose", "rise"], a:[0], why:"<i>Has</i> + participio: <b>risen</b>."},
+   {t:"choice", q:"The price of petrol has ___ again.", opts:["risen", "rose", "rised"], a:[0], why:"<i>Has</i> + participio: <b>risen</b>."},
    {t:"choice", q:"The sun ___ at six o'clock.", opts:["rose", "risen", "rise"], a:[0], why:"Pasado simple: <b>rose</b>."}
   ]},
   {n:25, lvl:2, no:11, title:"Verbos irregulares: relaciona", instr:"Relaciona cada forma con su infinitivo.", items:[
@@ -1402,7 +1408,7 @@ const ALL_UNITS = [
   {n:28, lvl:2, no:14, title:"Adjetivos + preposición (2): elige y relaciona", instr:"Elige la preposición correcta y relaciona cada expresión con su traducción.", items:[
    {t:"choice", q:"My brother is keen ___ cycling.", opts:["on", "at", "of"], a:[0], why:"<b>keen on</b> = aficionado a."},
    {t:"choice", q:"Mum is pleased ___ my test.", opts:["with", "for", "about"], a:[0], why:"<b>pleased with</b> = contento con."},
-   {t:"choice", q:"I'm excited ___ the trip.", opts:["about", "of", "to"], a:[0], why:"<b>excited about</b> = emocionado por."},
+   {t:"choice", q:"I'm excited ___ the trip.", opts:["about", "above", "around"], a:[0], why:"<b>excited about</b> = emocionado por."},
    {t:"choice", q:"He's upset ___ the result.", opts:["about", "at", "with"], a:[0], why:"<b>upset about</b> = disgustado por."},
    {t:"choice", q:"Chips are not good ___ you.", opts:["for", "at", "to"], a:[0], why:"<b>good for</b> = bueno para."},
    {t:"choice", q:"She's proud ___ her sister.", opts:["of", "for", "with"], a:[0], why:"<b>proud of</b> = orgullosa de."},
@@ -1464,7 +1470,7 @@ const ALL_UNITS = [
   /* ------------------------------ NIVEL 1 ------------------------------ */
   {n:1, lvl:1, no:1, vocab:1, title:"Música y baile: vocabulario en contexto", instr:"Elige la opción que completa mejor la frase.", items:[
    {t:"choice", gloss:{"opening": "de estreno (opening night = noche de estreno)"}, q:"After months of ___, the cast finally felt ready for opening night.", opts:["rehearsing","cheering","broadcasting","waving"], a:[0], why:"<b>rehearse</b> = ensayar: es lo que hace un reparto durante meses antes del estreno. <i>Broadcast</i> es retransmitir."},
-   {t:"choice", gloss:{"take": "encajar, aguantar"}, q:"He doesn't take ___ well: every negative comment about his songs makes him furious.", opts:["criticism","rhythm","venue","appeal"], a:[0], why:"<b>take criticism</b> = encajar las críticas."},
+   {t:"choice", gloss:{"take": "encajar, aguantar"}, q:"He doesn't take ___ well: every negative comment about his songs makes him furious.", opts:["criticism", "enjoyment", "location", "atmosphere"], a:[0], why:"<b>take criticism</b> = encajar las críticas."},
    {t:"choice", gloss:{"moves": "movimientos"}, q:"She was ___ her new dance moves to anyone who would watch, even though nobody had asked.", opts:["showing off","starring in","cheering on","waving at"], a:[0], why:"<b>show off</b> = presumir, lucirse. <i>Star in</i> se usa para películas y obras de teatro."},
    {t:"choice", gloss:{"get": ""}, q:"I get the ___ that tonight's concert is going to be something special.", opts:["feeling","rhythm","moves","mind"], a:[0], why:"<b>get the feeling (that)</b> = tener la sensación de que."},
    {t:"choice", q:"Although the costume looked ___ at first, it soon became a trend among teenagers.", opts:["weird","eager","fond","proud"], a:[0], why:"<b>weird</b> = raro. <i>Eager</i> y <i>proud</i> van seguidos de <i>to</i> / <i>of</i> y se dicen de personas."},
@@ -1543,16 +1549,16 @@ const ALL_UNITS = [
   ]},
 
   {n:9, lvl:1, no:9, title:"Mini-lecturas", instr:"Lee el texto y elige la mejor respuesta.", items:[
-   {t:"choice", gloss:{"light": "iluminarse (light up)"}, q:"Silent discos are becoming popular at festivals. Instead of loud speakers, everyone wears wireless headphones and chooses between several music channels. The headphones light up in different colours, so you can see who is listening to the same music as you. The neighbours are happy too, because the party makes no noise.\n\nWhy do the headphones light up in different colours?", opts:["To show which channel each person is listening to","To make the party louder","To stop the neighbours complaining","To help people find the venue"], a:[0], why:"El texto dice que las luces permiten <b>ver quién escucha la misma música</b>, es decir, el mismo canal."},
-   {t:"choice", gloss:{"give": "rendirse (give up)", "keep": "seguir, continuar (keep + -ing)"}, q:"When Jonas started learning the violin, he was a terrible player and wanted to give up after a month. His teacher told him to record himself every week. Hearing his progress motivated him so much that he has been practising every day ever since. Now he plays in the school orchestra.\n\nWhat made Jonas keep practising?", opts:["Listening to recordings that showed his progress","Winning a competition","Being accepted into the orchestra","Receiving criticism from his parents"], a:[0], why:"<i>Hearing his progress motivated him</i>: oír su mejora en las grabaciones le motivó."},
-   {t:"choice", q:"Retro games are back. Although modern consoles offer realistic graphics, many players say older games are more fun because they are simpler and you can learn the rules in minutes. Some developers have even been remaking classic titles with updated graphics, hoping to attract both new and nostalgic players.\n\nWhat does the writer say about retro games?", opts:["They are popular partly because they are easy to learn","They have better graphics than modern games","They are impossible to find nowadays","Developers refuse to remake them"], a:[0], why:"El texto dice que son más divertidos porque son <b>más simples y se aprenden en minutos</b>."},
+   {t:"choice", gloss:{"light": "iluminarse (light up)"}, q:"Silent discos are becoming popular at festivals. Instead of loud speakers, everyone wears wireless headphones and chooses between several music channels. The headphones light up in different colours, so you can see who is listening to the same music as you. The neighbours are happy too, because the party makes no noise.\n\nWhy do the headphones light up in different colours?", opts:["To show which channel each person is listening to", "To make the party look more colourful for everyone", "To stop the neighbours from complaining about noise", "To help people find the venue in the dark"], a:[0], why:"El texto dice que las luces permiten <b>ver quién escucha la misma música</b>, es decir, el mismo canal."},
+   {t:"choice", gloss:{"give": "rendirse (give up)", "keep": "seguir, continuar (keep + -ing)"}, q:"When Jonas started learning the violin, he was a terrible player and wanted to give up after a month. His teacher told him to record himself every week. Hearing his progress motivated him so much that he has been practising every day ever since. Now he plays in the school orchestra.\n\nWhat made Jonas keep practising?", opts:["Listening to recordings that showed his progress", "Winning an important competition at school", "Being accepted into the school orchestra", "Receiving harsh criticism from his parents at home"], a:[0], why:"<i>Hearing his progress motivated him</i>: oír su mejora en las grabaciones le motivó."},
+   {t:"choice", q:"Retro games are back. Although modern consoles offer realistic graphics, many players say older games are more fun because they are simpler and you can learn the rules in minutes. Some developers have even been remaking classic titles with updated graphics, hoping to attract both new and nostalgic players.\n\nWhat does the writer say about retro games?", opts:["They are popular partly because they are easy to learn", "They have much better graphics than modern games", "They are impossible to find in shops nowadays", "Developers refuse to remake them with new graphics"], a:[0], why:"El texto dice que son más divertidos porque son <b>más simples y se aprenden en minutos</b>."},
    {t:"choice", gloss:{"cast": "reparto (los actores)", "sold": "agotarse (sell out)"}, q:"The theatre in our town has been showing a musical every summer since 1998. This year's production is the most ambitious yet: the cast has been rehearsing since March and the set is built entirely by local students. Tickets have sold out for every performance, so the organisers are planning extra shows.\n\nWhat can we infer from the text?", opts:["The musical is very popular this year","The cast has only just started rehearsing","Professional builders made the set","The theatre has never shown a musical before"], a:[0], why:"Las entradas se han agotado en todas las funciones y se planean más: <b>el musical tiene mucho éxito</b>."}
   ]},
 
   /* ------------------------------ NIVEL 2 ------------------------------ */
   {n:10, lvl:2, no:1, vocab:1, title:"Música y baile: vocabulario en contexto", instr:"Elige la opción que completa mejor la frase.", items:[
    {t:"choice", q:"The festival has moved to a bigger ___ because so many people wanted tickets.", opts:["venue","rhythm","criticism","broadcast"], a:[0], why:"<b>venue</b> = lugar donde se celebra el evento."},
-   {t:"choice", q:"Fans who couldn't attend watched the whole show as a live ___ online.", opts:["broadcast","venue","feeling","rhythm"], a:[0], why:"<b>broadcast</b> = retransmisión."},
+   {t:"choice", q:"Fans who couldn't attend watched the whole show as a live ___ online.", opts:["broadcast", "location", "feeling", "criticism"], a:[0], why:"<b>broadcast</b> = retransmisión."},
    {t:"choice", gloss:{"break": "separarse (break up)"}, q:"He has the ___ that the band is about to break up, though nobody has said anything.", opts:["feeling","mind","moves","appeal"], a:[0], why:"<b>have/get the feeling that</b> = tener la sensación de que."},
    {t:"choice", q:"Don't ___ in front of your friends; just enjoy the dance.", opts:["show off","star in","cheer for","broadcast"], a:[0], why:"<b>show off</b> = presumir, lucirse."},
    {t:"choice", q:"The audience started ___ loudly as soon as the band played its biggest hit.", opts:["cheering","rehearsing","starring","broadcasting"], a:[0], why:"<b>cheer</b> = vitorear, animar."},
@@ -1631,10 +1637,10 @@ const ALL_UNITS = [
   ]},
 
   {n:18, lvl:2, no:9, title:"Mini-lecturas", instr:"Lee el texto y elige la mejor respuesta.", items:[
-   {t:"choice", gloss:{"rooms": "salas", "room": "sala", "end": "acabar (end up = acabar haciendo algo)", "taking": "participar (take part)", "get": "salir (get out)"}, q:"Escape rooms have been growing in popularity for the last decade. Teams of four to six players are locked in a themed room and must solve puzzles within an hour to get out. Organisers say the real appeal is cooperation: nobody can win alone, so even shy players end up taking part.\n\nAccording to the text, why are escape rooms attractive?", opts:["Everyone has to cooperate to succeed","They are cheaper than the cinema","Players compete against each other","You can play them alone"], a:[0], why:"<i>The real appeal is cooperation: nobody can win alone</i> → hay que <b>cooperar</b> para conseguirlo."},
-   {t:"choice", gloss:{"landed": "clavar, conseguir (un truco)", "kept": "seguir, continuar (keep + -ing)"}, q:"Marta has been vlogging about her skateboarding practice since January. At first only her friends watched, but one video went viral after she landed a difficult trick. She admits the sudden attention was stressful, yet she has kept posting every week.\n\nHow did Marta feel about becoming popular online?", opts:["It was stressful, but she carried on","She stopped posting immediately","She enjoyed every moment of it","She ignored the comments completely"], a:[0], why:"<i>The sudden attention was stressful, yet she has kept posting</i>: fue estresante, pero siguió."},
-   {t:"choice", gloss:{"fixed": "fijo, establecido", "time": "hora"}, q:"Streaming has changed how we watch entertainment. Instead of waiting for a programme to be broadcast at a fixed time, viewers can choose what to watch and when. However, critics argue that having thousands of options makes it harder to decide, and many people spend longer browsing than watching.\n\nWhat is the critics' main complaint?", opts:["Too many options make choosing difficult","Streaming is more expensive than TV","Programmes are broadcast too late","There are not enough films to watch"], a:[0], why:"<i>Thousands of options makes it harder to decide</i>: demasiadas opciones dificultan elegir."},
-   {t:"choice", gloss:{"had":"tener que (have to)", "meant": "estar pensado para (be meant to)", "take": "participar (take part)"}, q:"The Lip Synch Contest was meant to be a small school event, but this year more than 400 people bought tickets. The organisers have had to move it from the gym to the town theatre. Several teachers have already agreed to take part, which has made the event even more exciting for students.\n\nWhy has the contest moved to the theatre?", opts:["More people wanted to attend than the gym could hold","The gym is being repaired","The teachers requested it","It is going to be broadcast on TV"], a:[0], why:"Más de 400 personas compraron entradas: <b>el gimnasio se quedaba pequeño</b>."}
+   {t:"choice", gloss:{"rooms": "salas", "room": "sala", "end": "acabar (end up = acabar haciendo algo)", "taking": "participar (take part)", "get": "salir (get out)"}, q:"Escape rooms have been growing in popularity for the last decade. Teams of four to six players are locked in a themed room and must solve puzzles within an hour to get out. Organisers say the real appeal is cooperation: nobody can win alone, so even shy players end up taking part.\n\nAccording to the text, why are escape rooms attractive?", opts:["Everyone has to cooperate to succeed", "They are cheaper than going to the cinema", "Players compete against each other", "You can play them alone at home"], a:[0], why:"<i>The real appeal is cooperation: nobody can win alone</i> → hay que <b>cooperar</b> para conseguirlo."},
+   {t:"choice", gloss:{"landed": "clavar, conseguir (un truco)", "kept": "seguir, continuar (keep + -ing)"}, q:"Marta has been vlogging about her skateboarding practice since January. At first only her friends watched, but one video went viral after she landed a difficult trick. She admits the sudden attention was stressful, yet she has kept posting every week.\n\nHow did Marta feel about becoming popular online?", opts:["It was stressful, but she carried on", "She stopped posting videos immediately", "She enjoyed every moment of it", "She ignored all the comments completely"], a:[0], why:"<i>The sudden attention was stressful, yet she has kept posting</i>: fue estresante, pero siguió."},
+   {t:"choice", gloss:{"fixed": "fijo, establecido", "time": "hora"}, q:"Streaming has changed how we watch entertainment. Instead of waiting for a programme to be broadcast at a fixed time, viewers can choose what to watch and when. However, critics argue that having thousands of options makes it harder to decide, and many people spend longer browsing than watching.\n\nWhat is the critics' main complaint?", opts:["Too many options make choosing difficult", "Streaming is more expensive than normal TV", "Programmes are always broadcast too late", "There are not enough films to watch"], a:[0], why:"<i>Thousands of options makes it harder to decide</i>: demasiadas opciones dificultan elegir."},
+   {t:"choice", gloss:{"had":"tener que (have to)", "meant": "estar pensado para (be meant to)", "take": "participar (take part)"}, q:"The Lip Synch Contest was meant to be a small school event, but this year more than 400 people bought tickets. The organisers have had to move it from the gym to the town theatre. Several teachers have already agreed to take part, which has made the event even more exciting for students.\n\nWhy has the contest moved to the theatre?", opts:["The gym was too small for so many people", "The gym is being repaired after a storm", "The teachers asked for a bigger stage", "It is going to be broadcast on national TV"], a:[0], why:"Más de 400 personas compraron entradas: <b>el gimnasio se quedaba pequeño</b>."}
   ]}
  ]
 }
@@ -2071,11 +2077,30 @@ async function renderTeacher(){
 let TDATA={};   /* progreso de cada alumno, cargado al abrir el panel */
 function tdata(id){ return TDATA[id]||hydrate({}); }
 function lastAtt(d,it){ const a=(d.answers||{})[it.id]; return a&&a.length?a[a.length-1]:null; }
-/* ok · ko · mid (casi / dada por buena) · "" sin contestar */
+const clean=a=>!!a&&a.r==="ok"&&!a.s;
+function firstAtt(d,it){ const a=(d.answers||{})[it.id]; return a&&a.length?a[0]:null; }
+/* ok (a la primera) · rec (acertada, pero no a la primera) · ko · mid (casi / dada por buena) */
 function itemState(d,it){
   const a=lastAtt(d,it);
-  if(a){ if(a.s) return "mid"; return a.r==="ok"?"ok":a.r==="near"?"mid":"ko"; }
+  if(a){
+    if(a.s) return "mid";
+    if(a.r==="ok") return clean(firstAtt(d,it))?"ok":"rec";
+    return a.r==="near"?"mid":"ko";
+  }
   const e=d.ex[it.id]; return e==="ok"?"ok":e==="ko"?"ko":e==="self"?"mid":"";
+}
+function stableShuffle(arr,seed){
+  let s=0; for(const c of String(seed)) s=(s*31+c.charCodeAt(0))>>>0;
+  const r=arr.slice();
+  for(let i=r.length-1;i>0;i--){ s=(s*1664525+1013904223)>>>0; const j=s%(i+1); [r[i],r[j]]=[r[j],r[i]]; }
+  return r;
+}
+function attSummary(it,a){
+  if(a.r==="rev") return "vio la respuesta sin contestar";
+  if(it.t==="choice") return a.p!=null&&a.p>=0?"«"+it.opts[a.p]+"»":"—";
+  if(it.t==="match") return (a.e||0)+" fallo(s) al emparejar";
+  const v=Array.isArray(a.v)?a.v.join(" / "):(a.v||"");
+  return v?"«"+v+"»":"(en blanco)";
 }
 function escAttr(s){ return esc(String(s==null?"":s)).replace(/"/g,"&quot;"); }
 function modelOf(it){
@@ -2110,6 +2135,7 @@ async function renderTStudent(){
     <div class="tags" style="margin-top:4px">
       <span class="tag2" style="border-color:color-mix(in srgb,var(--green) 45%,transparent);color:var(--green)">■ acertada</span>
       <span class="tag2" style="border-color:color-mix(in srgb,var(--red) 45%,transparent);color:var(--red)">■ fallada</span>
+      <span class="tag2" style="border:2px solid var(--red);color:var(--green)">■ acertada tras fallar (↺)</span>
       <span class="tag2 v">■ casi / dada por buena</span>
       <span class="tag2">■ sin contestar</span>
     </div>
@@ -2124,13 +2150,13 @@ async function renderTStudent(){
   <div class="exlist">
     ${group.map(ex=>{
       const st=ex.items.map(i=>itemState(d,i));
-      const ok=st.filter(s=>s==="ok").length, done=st.filter(Boolean).length;
+      const ok=st.filter(s=>s==="ok"||s==="rec").length, rec=st.filter(s=>s==="rec").length, done=st.filter(Boolean).length;
       return `<button class="ex" data-ex="${ex.id}">
         <span class="ex-n">${String(ex.no||ex.n).padStart(2,"0")}</span>
         <span class="ex-body"><span class="ex-t">${ex.title}</span><br><span class="ex-d">${ex.instr}</span></span>
         <span class="ex-score">
-          <span class="dotrow">${st.map(s=>`<span class="dot ${s==="ok"?"on":s==="mid"?"mid":s==="ko"?"ko":""}"></span>`).join("")}</span>
-          ${done?ok+"/"+ex.items.length:"sin hacer"}
+          <span class="dotrow">${st.map(s=>`<span class="dot ${s==="ok"?"on":s==="rec"?"rec":s==="mid"?"mid":s==="ko"?"ko":""}"></span>`).join("")}</span>
+          ${done?ok+"/"+ex.items.length+(rec?" · ↺"+rec:""):"sin hacer"}
         </span>
       </button>`;
     }).join("")}
@@ -2151,12 +2177,15 @@ function reviewBody(it,att){
   const bank=ex.bank?`<div class="instr" style="margin-top:8px">Banco: <span style="font-family:var(--f-mono);color:var(--ink)">${ex.bank.join(" · ")}</span></div>`:"";
   if(it.t==="choice"){
     const pick=has&&att.p!=null?att.p:-1;
+    const seen=has&&Array.isArray(att.o)&&att.o.length===it.opts.length;
+    /* si no se guardó el orden (respuestas antiguas) se baraja sin letras, para no enseñar siempre la correcta arriba */
+    const order=seen?att.o:stableShuffle(it.opts.map((_,i)=>i),it.id);
     return `<div class="stem">${esc(it.q).replace(/___/g,'<span style="color:var(--ink-faint)">______</span>')}</div>
     <div class="opts ${it.opts.length>4?"bank":""}">
-      ${it.opts.map((o,k)=>{
-        const right=it.a.includes(k); let cls="";
+      ${order.map((k,pos)=>{
+        const o=it.opts[k], right=it.a.includes(k); let cls="";
         if(has&&right) cls="ok"; if(k===pick&&!right) cls="no";
-        return `<button class="opt ${cls}" disabled><span class="key">${L[k]}</span><span>${esc(o)}</span>${k===pick?'<span class="rv-tag">respuesta del alumno</span>':""}</button>`;
+        return `<button class="opt ${cls}" disabled><span class="key">${seen?L[pos]:"•"}</span><span>${esc(o)}</span>${k===pick?'<span class="rv-tag">respuesta del alumno</span>':""}</button>`;
       }).join("")}
     </div>`;
   }
@@ -2231,8 +2260,17 @@ function renderTReview(){
       <span class="instr">${esc(ex.instr)}</span>
     </div>
     ${att?`<div class="rv-att">Contestada el ${fecha(att.t)}${arr.length>1?" · intento":""}
-      ${arr.length>1?arr.map((a,k)=>`<button class="chip ${k===ai?"on":""}" data-att="${k}" style="${k===ai?"background:var(--pen-soft);border-color:var(--pen)":""}">${k+1}${a.r==="ok"&&!a.s?" ✓":a.r==="ok"?"":" ✕"}</button>`).join(""):""}
+      ${arr.length>1?arr.map((a,k)=>`<button class="chip ${k===ai?"on":""}" data-att="${k}" style="${k===ai?"background:var(--pen-soft);border-color:var(--pen)":""}">${k===0?"1.º ":k+1}${a.r==="ok"&&!a.s?" ✓":" ✕"}</button>`).join(""):""}
     </div>`:""}
+    ${(()=>{
+      const f=arr[0];
+      if(!f||clean(f)||arr.length<2) return "";
+      const last=arr[arr.length-1];
+      return `<div class="rv-first">
+        <span>⚠ <b>Falló al primer intento</b> (${fecha(f.t)}): ${esc(attSummary(it,f))}. ${clean(last)?"Después la acertó.":"Todavía no la tiene bien."}</span>
+        ${ai!==0?`<button class="btn ghost small" data-att="0">Ver ese intento</button>`:""}
+      </div>`;
+    })()}
     ${reviewBody(it,att)}
     ${reviewFeedback(it,att,d)}
   </div>
@@ -2919,6 +2957,12 @@ function bindGloss(card){
 }
 document.addEventListener("click",()=>{ glossEl.hidden=true; document.querySelectorAll(".voc.open, .vrb.open").forEach(x=>x.classList.remove("open")); });
 
+/* El banco de palabras y las pistas con varias opciones se enseñan en orden
+   aleatorio (si no, su orden delataría el de los huecos); dentro de una ronda
+   se quedan fijos. */
+function shuffledOnce(key,list){ run.shuf=run.shuf||{}; return run.shuf[key]||(run.shuf[key]=shuffle(list)); }
+function bankFor(ex){ return shuffledOnce("b"+ex.id,ex.bank); }
+function hintFor(it){ return it.hint&&it.hint.includes(" · ")?shuffledOnce("h"+it.id,it.hint.split(" · ")).join(" · "):it.hint; }
 function paintQuestion(it){
   const card=document.getElementById("qcard"), ex=it.ex;
   let body="";
@@ -2929,6 +2973,7 @@ function paintQuestion(it){
        siempre la primera. Cada botón guarda su índice original (data-i): la
        corrección compara con ese índice, no con la posición en pantalla. */
     const order=shuffle(it.opts.map((_,i)=>i));
+    run.lastOrder=order;   /* el profe verá las opciones en el orden en que las vio el alumno */
     body=`<div class="stem">${stemHTML(it.q).replace(/___/g,'<span style="color:var(--ink-faint)">______</span>')}</div>
     <div class="opts ${it.opts.length>4?"bank":""}" id="opts">
       ${order.map((i,pos)=>`<button class="opt" data-i="${i}" aria-pressed="false"><span class="key">${String.fromCharCode(65+pos)}</span><span>${esc(it.opts[i])}</span></button>`).join("")}
@@ -2937,11 +2982,11 @@ function paintQuestion(it){
     let n=0;
     const stem=stemHTML(it.q).replace(/___/g,()=>`<input class="blank" data-b="${n++}" autocomplete="off" autocapitalize="off" spellcheck="false">`);
     body=`<div class="stem">${stem}</div>
-      ${it.hint?`<div style="margin-top:12px" class="instr">Pista: <span class="hint" style="font-family:var(--f-mono)">${esc(it.hint)}</span></div>`:""}
-      ${ex.bank?`<div class="instr" style="margin-top:6px">Banco: <span style="font-family:var(--f-mono);color:var(--ink)">${ex.bank.join(" · ")}</span></div>`:""}`;
+      ${it.hint?`<div style="margin-top:12px" class="instr">Pista: <span class="hint" style="font-family:var(--f-mono)">${esc(hintFor(it))}</span></div>`:""}
+      ${ex.bank?`<div class="instr" style="margin-top:6px">Banco: <span style="font-family:var(--f-mono);color:var(--ink)">${bankFor(ex).join(" · ")}</span></div>`:""}`;
   } else if(it.t==="write"){
     body=`<div class="stem">${stemHTML(it.q)}</div>
-      ${ex.bank?`<div class="instr" style="margin-top:10px">Banco: <span style="font-family:var(--f-mono);color:var(--ink)">${ex.bank.join(" · ")}</span></div>`:""}
+      ${ex.bank?`<div class="instr" style="margin-top:10px">Banco: <span style="font-family:var(--f-mono);color:var(--ink)">${bankFor(ex).join(" · ")}</span></div>`:""}
       <div class="answerline">
         ${it.lead?`<div class="stem lead" style="font-size:15px">${esc(it.lead)} …</div>`:""}
         <input id="wr" placeholder="${it.tr?"Escribe la frase en inglés":"Escribe la frase completa"}" autocomplete="off" autocapitalize="off" spellcheck="false">
@@ -3041,7 +3086,7 @@ function resolveChoice(it,pick){
   document.querySelectorAll(".opt").forEach(b=>{ b.disabled=true; b.classList.remove("sel"); });
   optBtn(pick).classList.add(ok?"ok":"no");
   if(!ok) optBtn(it.a[0]).classList.add("ok");
-  finish(it,ok,it.opts[it.a[0]],it.opts[pick],false,false,false,{p:pick});
+  finish(it,ok,it.opts[it.a[0]],it.opts[pick],false,false,false,{p:pick,o:run.lastOrder});
 }
 function resolveFill(it){
   const inputs=[...document.querySelectorAll(".blank")];
@@ -3103,7 +3148,7 @@ function reveal(it){
     document.querySelectorAll(".mitem").forEach(b=>b.classList.add("done"));
     model=it.pairs.map((p,i)=>(i+1)+" → "+p[1]).join(" · ");
   }
-  finish(it,false,model,"",false,false,true,typed!==undefined?{v:typed}:{});
+  finish(it,false,model,"",false,false,true,typed!==undefined?{v:typed}:(it.t==="choice"?{o:run.lastOrder}:{}));
 }
 
 /* ---------- ¿puede autocorregirse? ---------- */
@@ -3115,15 +3160,16 @@ function canSelfMark(given,model){
 }
 
 /* ---------- feedback ---------- */
-/* Lo que contesta el alumno se guarda (las últimas MAX_ATT veces por pregunta)
-   para que el profe pueda revisarlo como si estuviera dentro del ejercicio.
-   ans: {p} opción elegida · {v} lo escrito · {e,w} fallos al emparejar. */
+/* Lo que contesta el alumno se guarda para que el profe pueda revisarlo como si
+   estuviera dentro del ejercicio: el PRIMER intento (siempre) y los últimos
+   MAX_ATT. ans: {p,o} opción elegida y orden en que la vio · {v} lo escrito ·
+   {e,w} fallos al emparejar. */
 const MAX_ATT=5;
 function recordAnswer(it,r,ans){
   const A=S.answers||(S.answers={});
   const arr=A[it.id]||(A[it.id]=[]);
   arr.push(Object.assign({t:Date.now(),r},ans||{}));
-  while(arr.length>MAX_ATT) arr.shift();
+  while(arr.length>MAX_ATT) arr.splice(1,1);   /* se descarta el segundo más antiguo: el primero se queda */
 }
 function finish(it,ok,model,given,near,selfmarkable,revealed,ans){
   run.answered=true; run.checkedAt=Date.now();
