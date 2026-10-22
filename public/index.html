@@ -756,6 +756,25 @@ input{font:inherit;color:inherit}
   background:var(--glass-3);border:1px solid var(--glass-brd);padding:3px 8px;border-radius:99px;
 }
 
+.dot.ko{background:var(--red)}
+/* revisión del profe */
+.rvnav{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 12px}
+.rvdot{min-width:32px;height:32px;padding:0 6px;border-radius:9px;border:1px solid var(--glass-brd);background:var(--glass-3);
+  font-family:var(--f-mono);font-size:12px;font-weight:600;color:var(--ink-faint);font-variant-numeric:tabular-nums}
+.rvdot:hover{background:var(--glass-hi)}
+.rvdot.ok{background:var(--green-soft);border-color:color-mix(in srgb,var(--green) 45%,transparent);color:var(--green)}
+.rvdot.ko{background:var(--red-soft);border-color:color-mix(in srgb,var(--red) 45%,transparent);color:var(--red)}
+.rvdot.mid{background:color-mix(in srgb,var(--mark) 22%,transparent);border-color:color-mix(in srgb,var(--mark) 55%,transparent);color:var(--mark-deep)}
+.rvdot.cur{outline:2.5px solid var(--pen);outline-offset:1px}
+.rv-banner{font-family:var(--f-mono);font-size:11px;letter-spacing:.04em;color:var(--ink-soft);background:var(--glass-3);
+  border:1px solid var(--glass-brd);border-radius:99px;padding:3px 10px}
+.rv-tag{margin-left:auto;padding-left:12px;font-family:var(--f-mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint)}
+.rv-att{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:0 0 12px;font-family:var(--f-mono);font-size:12px;color:var(--ink-faint)}
+.rv-att .chip{padding:2px 9px;font-size:12px;cursor:pointer}
+.rv-foot{display:flex;align-items:center;gap:10px;margin-top:16px}
+.rv-foot .qcount{margin:0 auto}
+#rvcard .blank[disabled],#rvcard .answerline input[disabled]{opacity:1;-webkit-text-fill-color:currentColor}
+#rvcard .mitem.done{opacity:1;color:var(--ink);pointer-events:auto}
 /* selector de alumno compacto en móvil (va después de sus estilos base) */
 @media (max-width:640px){
   .picks{grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}
@@ -1646,7 +1665,7 @@ const TKEY="cuaderno-arcade-theme";
 const LASTKEY="cuaderno-arcade-last";
 function skey(){ return "cuaderno-arcade-v3-"+PROFILE; }
 function blank(){
-  return {xp:0, tokens:3, lvl:0, ex:{}, wrong:[], resume:{},
+  return {xp:0, tokens:3, lvl:0, ex:{}, wrong:[], resume:{}, answers:{},
     stats:{answers:0, correct:0, bestStreak:0, bestMult:1, saves:0, tokensSpent:0,
            byUnit:{}, sessions:[], selfmarks:[]}};
 }
@@ -1813,19 +1832,21 @@ function syncTop(){
   const cc=document.getElementById("cloudchip"); if(cc){ cc.hidden=!on; if(on) setCloud(cloudState); }
   document.querySelector(".topbar").classList.toggle("in",on);
   const sub=document.querySelector(".brand-sub");
-  if(sub && !on) sub.textContent="Elige alumno";
+  if(sub && !on) sub.textContent=/^(teacher|tstudent|treview)$/.test(view.name)?"Panel del profesor":"Elige alumno";
   document.getElementById("s-xp").textContent=S.xp;
   document.getElementById("s-tok").textContent=S.tokens;
   const sc=document.getElementById("s-streak-chip"), mc=document.getElementById("s-mult-chip");
-  if(run && run.streak>=1){ sc.hidden=false; document.getElementById("s-streak").textContent=run.streak; }
+  if(on && run && run.streak>=1){ sc.hidden=false; document.getElementById("s-streak").textContent=run.streak; }
   else sc.hidden=true;
-  if(run){ mc.hidden=false; document.getElementById("s-mult").textContent=fmtMult(multOf(run.streak+1)); }
+  if(on && run){ mc.hidden=false; document.getElementById("s-mult").textContent=fmtMult(multOf(run.streak+1)); }
   else mc.hidden=true;
 }
 function go(v){ view=v; glossEl.hidden=true; render(); window.scrollTo({top:0,behavior:"instant"}); }
 function render(){
   syncTop();
   if(view.name==="teacher") return renderTeacher();
+  if(view.name==="tstudent") return renderTStudent();
+  if(view.name==="treview") return renderTReview();
   if(view.name==="resume" && PROFILE) return renderResume();
   if(view.name==="profiles" || !PROFILE) return renderProfiles();
   if(view.name==="home") return renderHome();
@@ -1969,7 +1990,7 @@ async function renderTeacher(){
   document.getElementById("back").onclick=()=>leave();
 
   const data=[];
-  for(const p of PROFILES) data.push({p, s:statsFor(p, await loadStudent(p.id))});
+  for(const p of PROFILES){ const d0=await loadStudent(p.id); TDATA[p.id]=d0; data.push({p, s:statsFor(p, d0)}); }
 
   app.innerHTML=`
   <button class="back" id="back2">← Salir del panel</button>
@@ -1992,6 +2013,7 @@ async function renderTeacher(){
         </div>
         <span class="chip">${d&&d.updatedAt?"Última vez: "+fecha(d.updatedAt):"Sin actividad todavía"}</span>
       </div>
+      <div style="margin:10px 0 4px"><button class="btn small" data-tv="${p.id}">🔎 Ver los ejercicios de ${p.name}</button></div>
 
       ${!d?`<p class="empty">Todavía no ha practicado nada.</p>`:`
       <div class="tiles" style="margin:14px 0 6px">
@@ -2013,8 +2035,8 @@ async function renderTeacher(){
       ${s.wrong.length?`
         <div class="eyebrow" style="margin:18px 0 8px">Pendientes de repasar (${s.wrong.length})</div>
         <div class="misslist">
-          ${s.wrong.slice(0,8).map(it=>`<div class="miss">
-            <div style="color:var(--ink-faint);font-size:12px">${it.ex.unit.short} · N${it.ex.lvl||1} · Ej. ${it.ex.no||it.ex.n}</div>
+          ${s.wrong.slice(0,8).map(it=>`<div class="miss" data-rev="${it.id}" data-sid="${p.id}" style="cursor:pointer" title="Ver la pregunta con la respuesta del alumno">
+            <div style="color:var(--ink-faint);font-size:12px">${it.ex.unit.short} · N${it.ex.lvl||1} · Ej. ${it.ex.no||it.ex.n} · ver →</div>
             ${esc(it.q.split("\n")[0]).slice(0,110)}
           </div>`).join("")}
         </div>`:`<p class="empty" style="margin-top:14px">No tiene nada pendiente de repasar.</p>`}
@@ -2036,7 +2058,203 @@ async function renderTeacher(){
   <p class="footnote">${window.CLOUD?"Datos en vivo desde la nube.":"Sin conexión con la nube: viendo solo lo guardado en este dispositivo."}</p>`;
 
   document.getElementById("back2").onclick=()=>leave();
+  app.querySelectorAll("[data-tv]").forEach(b=>b.onclick=()=>go({name:"tstudent",id:b.dataset.tv}));
+  app.querySelectorAll("[data-rev]").forEach(el=>el.onclick=()=>{
+    const it=INDEX[el.dataset.rev]; if(!it) return;
+    go({name:"treview",sid:el.dataset.sid,ex:it.ex,i:it.ex.items.indexOf(it)});
+  });
 }
+
+/* =====================================================================
+   REVISIÓN DE UN ALUMNO · ejercicios y respuestas, solo lectura
+   ===================================================================== */
+let TDATA={};   /* progreso de cada alumno, cargado al abrir el panel */
+function tdata(id){ return TDATA[id]||hydrate({}); }
+function lastAtt(d,it){ const a=(d.answers||{})[it.id]; return a&&a.length?a[a.length-1]:null; }
+/* ok · ko · mid (casi / dada por buena) · "" sin contestar */
+function itemState(d,it){
+  const a=lastAtt(d,it);
+  if(a){ if(a.s) return "mid"; return a.r==="ok"?"ok":a.r==="near"?"mid":"ko"; }
+  const e=d.ex[it.id]; return e==="ok"?"ok":e==="ko"?"ko":e==="self"?"mid":"";
+}
+function escAttr(s){ return esc(String(s==null?"":s)).replace(/"/g,"&quot;"); }
+function modelOf(it){
+  if(it.t==="choice") return it.opts[it.a[0]];
+  if(it.t==="fill") return it.a.map(t=>expand(t[0])[0]).join(" / ");
+  if(it.t==="write") return (it.lead?it.lead+" ":"")+expand(it.a[0])[0];
+  return "Todas emparejadas";
+}
+
+async function renderTStudent(){
+  const id=view.id, p=profileOf(id);
+  app.innerHTML=`
+  <button class="back" id="tb">← Volver al panel</button>
+  <section class="hero" style="padding:8px 0 4px">
+    <div class="eyebrow">Panel del profesor</div>
+    <h1 style="font-size:clamp(26px,4.4vw,38px)">Ejercicios de ${p.name}</h1>
+    <p class="lede">Cargando…</p>
+  </section>`;
+  document.getElementById("tb").onclick=()=>go({name:"teacher"});
+  if(!TDATA[id]) TDATA[id]=await loadStudent(id);
+  if(view.name!=="tstudent"||view.id!==id) return;
+  const d=tdata(id);
+  const saved=Object.keys(d.answers||{}).length;
+  const units=UNITS.filter(u=>u.owner===id);
+  app.innerHTML=`
+  <button class="back" id="tb2">← Volver al panel</button>
+  <section class="hero" style="padding:8px 0 4px">
+    <div class="eyebrow">Panel del profesor · ${p.level}</div>
+    <h1 style="font-size:clamp(26px,4.4vw,38px)">Ejercicios de ${p.name}</h1>
+    <p class="lede">Abre un ejercicio para ver, pregunta a pregunta, lo que contestó ${p.name}, tal como lo vio. Es solo lectura: no se puede cambiar nada.</p>
+    ${!saved?`<p class="fb-note" style="display:block;line-height:1.5">${d.updatedAt?"Las respuestas se guardan desde esta actualización de la web: lo que hizo antes solo consta como acertado o fallado, sin el texto que escribió.":"Todavía no ha contestado nada."}</p>`:""}
+    <div class="tags" style="margin-top:4px">
+      <span class="tag2" style="border-color:color-mix(in srgb,var(--green) 45%,transparent);color:var(--green)">■ acertada</span>
+      <span class="tag2" style="border-color:color-mix(in srgb,var(--red) 45%,transparent);color:var(--red)">■ fallada</span>
+      <span class="tag2 v">■ casi / dada por buena</span>
+      <span class="tag2">■ sin contestar</span>
+    </div>
+  </section>
+  ${units.map(u=>[...new Set(u.exercises.map(e=>e.lvl||1))].sort((a,b)=>a-b).map(L=>{
+    const group=u.exercises.filter(e=>(e.lvl||1)===L);
+    return `
+  <div class="lvlhead">
+    <span class="lvlnum">${u.short} · Nivel ${L}</span>
+    <span class="lvldesc">${esc(u.title)}</span>
+  </div>
+  <div class="exlist">
+    ${group.map(ex=>{
+      const st=ex.items.map(i=>itemState(d,i));
+      const ok=st.filter(s=>s==="ok").length, done=st.filter(Boolean).length;
+      return `<button class="ex" data-ex="${ex.id}">
+        <span class="ex-n">${String(ex.no||ex.n).padStart(2,"0")}</span>
+        <span class="ex-body"><span class="ex-t">${ex.title}</span><br><span class="ex-d">${ex.instr}</span></span>
+        <span class="ex-score">
+          <span class="dotrow">${st.map(s=>`<span class="dot ${s==="ok"?"on":s==="mid"?"mid":s==="ko"?"ko":""}"></span>`).join("")}</span>
+          ${done?ok+"/"+ex.items.length:"sin hacer"}
+        </span>
+      </button>`;
+    }).join("")}
+  </div>`;}).join("")).join("")}`;
+  document.getElementById("tb2").onclick=()=>go({name:"teacher"});
+  app.querySelectorAll("[data-ex]").forEach(b=>b.onclick=()=>{
+    const ex=units.flatMap(u=>u.exercises).find(e=>e.id===b.dataset.ex);
+    go({name:"treview",sid:id,ex,i:0});
+  });
+}
+
+/* lo que ve el profe de una pregunta: igual que dentro del ejercicio, con las
+   respuestas del alumno puestas y todo desactivado */
+function reviewBody(it,att){
+  const ex=it.ex, has=!!att, L="ABCDEFGHI";
+  const rev=has&&att.r==="rev";
+  const vals=has&&Array.isArray(att.v)?att.v:[];
+  const bank=ex.bank?`<div class="instr" style="margin-top:8px">Banco: <span style="font-family:var(--f-mono);color:var(--ink)">${ex.bank.join(" · ")}</span></div>`:"";
+  if(it.t==="choice"){
+    const pick=has&&att.p!=null?att.p:-1;
+    return `<div class="stem">${esc(it.q).replace(/___/g,'<span style="color:var(--ink-faint)">______</span>')}</div>
+    <div class="opts ${it.opts.length>4?"bank":""}">
+      ${it.opts.map((o,k)=>{
+        const right=it.a.includes(k); let cls="";
+        if(has&&right) cls="ok"; if(k===pick&&!right) cls="no";
+        return `<button class="opt ${cls}" disabled><span class="key">${L[k]}</span><span>${esc(o)}</span>${k===pick?'<span class="rv-tag">respuesta del alumno</span>':""}</button>`;
+      }).join("")}
+    </div>`;
+  }
+  if(it.t==="fill"){
+    let n=0;
+    const stem=esc(it.q).replace(/___/g,()=>{
+      const k=n++, v=vals[k]; let cls="";
+      if(has&&!rev&&v!=null) cls=judge(v,it.a[k])==="ok"?"ok":"no";
+      return `<input class="blank ${cls}" value="${escAttr(v)}" disabled>`;
+    });
+    return `<div class="stem">${stem}</div>
+      ${it.hint?`<div style="margin-top:12px" class="instr">Pista: <span class="hint" style="font-family:var(--f-mono)">${esc(it.hint)}</span></div>`:""}${bank}`;
+  }
+  if(it.t==="write"){
+    const v=has&&typeof att.v==="string"?att.v:"";
+    const cls=has&&!rev?(judge(v,it.a,it.lead)==="ok"?"ok":"no"):"";
+    return `<div class="stem">${esc(it.q)}</div>${bank}
+      <div class="answerline">
+        ${it.lead?`<div class="stem lead" style="font-size:15px">${esc(it.lead)} …</div>`:""}
+        <input class="${cls}" value="${escAttr(v)}" placeholder="${has?"(sin escribir nada)":""}" disabled>
+      </div>`;
+  }
+  /* match */
+  return `<div class="stem" style="font-size:16px">${esc(it.q)}</div>
+    <div class="mcol" style="margin-top:14px">${it.pairs.map((q,k)=>`<div class="mitem done"><span class="tag">${k+1}</span>${esc(q[0])} <b>→</b> ${esc(q[1])}</div>`).join("")}</div>
+    ${has&&!rev?(att.e?`<p class="fb-note" style="margin-top:12px;display:block;line-height:1.55">Fallos al emparejar (${att.e}): ${(att.w||[]).map(w=>esc(it.pairs[w[0]][0])+" ↔ "+esc(it.pairs[w[1]][1])).join(" · ")}</p>`
+        :`<p class="fb-note" style="margin-top:12px;display:block">Lo emparejó todo a la primera.</p>`):""}`;
+}
+function reviewFeedback(it,att,d){
+  let cls="", title="";
+  if(att){
+    if(att.s){ cls="near"; title="≈ La dio por buena el alumno (autocorrección)"; }
+    else if(att.r==="ok") { cls="good"; title="✓ Correcta"; }
+    else if(att.r==="near"){ cls="near"; title="≈ Casi: error de ortografía"; }
+    else if(att.r==="rev") { cls="bad"; title="Vio la respuesta sin contestar"; }
+    else if(it.t==="match"){ cls="bad"; title="✕ Las emparejó todas, pero con "+(att.e||0)+" fallo(s) por el camino"; }
+    else { cls="bad"; title="✕ Incorrecta"; }
+  } else {
+    const e=d.ex[it.id];
+    if(e){ cls=e==="ok"?"good":e==="self"?"near":"bad";
+      title=(e==="ok"?"✓ Constaba como acertada":e==="self"?"≈ Constaba como dada por buena":"✕ Constaba como fallada")+" · su respuesta no se guardó (la hizo antes de que la web guardara las respuestas)"; }
+    else title="Todavía no ha contestado esta pregunta";
+  }
+  const correct=att&&att.r==="ok"&&!att.s;
+  return `<div class="fb ${cls}">
+    <div class="fb-t">${title}</div>
+    ${correct?"":`<div class="fb-sol"><b>Solución:</b> ${esc(modelOf(it))}</div>`}
+    ${it.why?`<div class="fb-why">${it.why}</div>`:""}
+  </div>`;
+}
+function renderTReview(){
+  const {sid,ex}=view, i=view.i, p=profileOf(sid), d=tdata(sid);
+  const it=ex.items[i], n=ex.items.length;
+  const arr=(d.answers||{})[it.id]||[];
+  const ai=view.att!=null&&arr[view.att]?view.att:arr.length-1;
+  const att=arr[ai]||null;
+  const st=itemState(d,it);
+  app.innerHTML=`
+  <button class="back" id="rv-back">← Ejercicios de ${p.name}</button>
+  <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:6px 0 2px">
+    <span class="av" style="background:${p.hue};width:26px;height:26px;font-size:13px">${p.initial}</span>
+    <div class="eyebrow">${p.name} · ${ex.unit.short} · N${ex.lvl||1} · Ej. ${ex.no||ex.n} · ${esc(ex.title)}</div>
+    <span class="rv-banner">👁 Solo lectura</span>
+  </div>
+  <div class="rvnav" role="navigation" aria-label="Preguntas del ejercicio">
+    ${ex.items.map((q,k)=>{ const s=itemState(d,q); return `<button class="rvdot ${s} ${k===i?"cur":""}" data-k="${k}" title="Pregunta ${k+1}" aria-label="Pregunta ${k+1}" ${k===i?'aria-current="true"':""}>${k+1}</button>`; }).join("")}
+  </div>
+  <div class="qcard ${st==="ok"?"good":st==="ko"?"bad":""}" id="rvcard">
+    <div class="qtag">
+      <span class="badge">${typeBadge(it)}</span>
+      <span class="badge">${ex.unit.short} · N${ex.lvl||1} · Ej. ${ex.no||ex.n}</span>
+      <span class="instr">${esc(ex.instr)}</span>
+    </div>
+    ${att?`<div class="rv-att">Contestada el ${fecha(att.t)}${arr.length>1?" · intento":""}
+      ${arr.length>1?arr.map((a,k)=>`<button class="chip ${k===ai?"on":""}" data-att="${k}" style="${k===ai?"background:var(--pen-soft);border-color:var(--pen)":""}">${k+1}${a.r==="ok"&&!a.s?" ✓":a.r==="ok"?"":" ✕"}</button>`).join(""):""}
+    </div>`:""}
+    ${reviewBody(it,att)}
+    ${reviewFeedback(it,att,d)}
+  </div>
+  <div class="rv-foot">
+    <button class="btn ghost" id="rv-prev" ${i===0?"disabled":""}>← Anterior</button>
+    <span class="qcount">${i+1} / ${n}</span>
+    <button class="btn" id="rv-next" ${i===n-1?"disabled":""}>Siguiente →</button>
+  </div>
+  <p class="footnote">Puedes moverte con las flechas ← → del teclado.</p>`;
+  const to=k=>go(Object.assign({},view,{i:k,att:null}));
+  document.getElementById("rv-back").onclick=()=>go({name:"tstudent",id:sid});
+  document.getElementById("rv-prev").onclick=()=>{ if(i>0) to(i-1); };
+  document.getElementById("rv-next").onclick=()=>{ if(i<n-1) to(i+1); };
+  app.querySelectorAll(".rvdot").forEach(b=>b.onclick=()=>to(+b.dataset.k));
+  app.querySelectorAll("[data-att]").forEach(b=>b.onclick=()=>{ view.att=+b.dataset.att; render(); });
+}
+document.addEventListener("keydown",e=>{
+  if(view.name!=="treview"||e.ctrlKey||e.metaKey||e.altKey) return;
+  const t=e.target; if(t&&/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)) return;
+  if(e.key==="ArrowLeft"){ const b=document.getElementById("rv-prev"); if(b&&!b.disabled){ e.preventDefault(); b.click(); } }
+  if(e.key==="ArrowRight"){ const b=document.getElementById("rv-next"); if(b&&!b.disabled){ e.preventDefault(); b.click(); } }
+});
 
 /* =====================================================================
    HOME
@@ -2823,7 +3041,7 @@ function resolveChoice(it,pick){
   document.querySelectorAll(".opt").forEach(b=>{ b.disabled=true; b.classList.remove("sel"); });
   optBtn(pick).classList.add(ok?"ok":"no");
   if(!ok) optBtn(it.a[0]).classList.add("ok");
-  finish(it,ok,it.opts[it.a[0]],it.opts[pick],false,false);
+  finish(it,ok,it.opts[it.a[0]],it.opts[pick],false,false,false,{p:pick});
 }
 function resolveFill(it){
   const inputs=[...document.querySelectorAll(".blank")];
@@ -2835,7 +3053,7 @@ function resolveFill(it){
     inp.disabled=true;
   });
   const model=it.a.map(t=>expand(t[0])[0]).join(" / ");
-  finish(it,allOk,model,inputs.map(i=>i.value).join(" / "),near&&!allOk,false);
+  finish(it,allOk,model,inputs.map(i=>i.value).join(" / "),near&&!allOk,false,false,{v:inputs.map(i=>i.value)});
 }
 function resolveWrite(it){
   const inp=document.getElementById("wr");
@@ -2843,10 +3061,11 @@ function resolveWrite(it){
   const ok=r==="ok";
   inp.classList.add(ok?"ok":"no"); inp.disabled=true;
   const model=(it.lead?it.lead+" ":"")+expand(it.a[0])[0];
-  finish(it,ok,model,inp.value,r==="near",!ok);
+  finish(it,ok,model,inp.value,r==="near",!ok,false,{v:inp.value});
 }
 function setupMatch(it,card){
   let sel=null,errs=0,left=it.pairs.length;
+  const wrongs=[];   /* parejas equivocadas: [izquierda, derecha] */
   card.querySelectorAll(".mitem").forEach(b=>b.onclick=()=>{
     if(!sel){ sel=b; b.classList.add("sel"); SFX.play("pick"); return; }
     if(sel===b){ b.classList.remove("sel"); sel=null; return; }
@@ -2855,9 +3074,10 @@ function setupMatch(it,card){
       sel.classList.remove("sel"); sel.classList.add("done"); b.classList.add("done");
       sel=null; left--;
       if(left>0) SFX.play("matchOk");   /* la última pareja suena como acierto de la pregunta */
-      if(left===0) finish(it,errs===0,"Todas emparejadas",errs+" fallo(s) por el camino",false,false);
+      if(left===0) finish(it,errs===0,"Todas emparejadas",errs+" fallo(s) por el camino",false,false,false,{e:errs,w:wrongs});
     } else {
-      errs++; SFX.play("matchBad"); b.classList.add("shake"); sel.classList.add("shake");
+      errs++; wrongs.push(sel.dataset.side==="L"?[+sel.dataset.i,+b.dataset.i]:[+b.dataset.i,+sel.dataset.i]);
+      SFX.play("matchBad"); b.classList.add("shake"); sel.classList.add("shake");
       const a=sel; setTimeout(()=>{a.classList.remove("shake","sel");b.classList.remove("shake");},320);
       sel=null;
     }
@@ -2865,23 +3085,25 @@ function setupMatch(it,card){
 }
 function reveal(it){
   if(run.answered) return;
-  let model="";
+  let model="", typed;
   if(it.t==="choice"){
     document.querySelectorAll(".opt").forEach(b=>{ b.disabled=true; b.classList.remove("sel"); });
     optBtn(it.a[0]).classList.add("ok");
     model=it.opts[it.a[0]];
   } else if(it.t==="fill"){
+    typed=[...document.querySelectorAll(".blank")].map(i=>i.value);
     [...document.querySelectorAll(".blank")].forEach((inp,k)=>{ inp.value=expand(it.a[k][0])[0]; inp.classList.add("ok"); inp.disabled=true; });
     model=it.a.map(t=>expand(t[0])[0]).join(" / ");
   } else if(it.t==="write"){
     const inp=document.getElementById("wr");
+    typed=inp.value;
     model=(it.lead?it.lead+" ":"")+expand(it.a[0])[0];
     inp.value=model; inp.classList.add("ok"); inp.disabled=true;
   } else if(it.t==="match"){
     document.querySelectorAll(".mitem").forEach(b=>b.classList.add("done"));
     model=it.pairs.map((p,i)=>(i+1)+" → "+p[1]).join(" · ");
   }
-  finish(it,false,model,"",false,false,true);
+  finish(it,false,model,"",false,false,true,typed!==undefined?{v:typed}:{});
 }
 
 /* ---------- ¿puede autocorregirse? ---------- */
@@ -2893,7 +3115,17 @@ function canSelfMark(given,model){
 }
 
 /* ---------- feedback ---------- */
-function finish(it,ok,model,given,near,selfmarkable,revealed){
+/* Lo que contesta el alumno se guarda (las últimas MAX_ATT veces por pregunta)
+   para que el profe pueda revisarlo como si estuviera dentro del ejercicio.
+   ans: {p} opción elegida · {v} lo escrito · {e,w} fallos al emparejar. */
+const MAX_ATT=5;
+function recordAnswer(it,r,ans){
+  const A=S.answers||(S.answers={});
+  const arr=A[it.id]||(A[it.id]=[]);
+  arr.push(Object.assign({t:Date.now(),r},ans||{}));
+  while(arr.length>MAX_ATT) arr.shift();
+}
+function finish(it,ok,model,given,near,selfmarkable,revealed,ans){
   run.answered=true; run.checkedAt=Date.now();
   const slot=document.getElementById("fbslot"), foot=document.querySelector(".qfoot");
   const prevStreak=run.streak;
@@ -2920,6 +3152,7 @@ function finish(it,ok,model,given,near,selfmarkable,revealed){
     if(S.ex[it.id]!=="ok") S.ex[it.id]="ko";
     if(!S.wrong.includes(it.id)) S.wrong.push(it.id);
   }
+  recordAnswer(it, ok?"ok":revealed?"rev":near?"near":"ko", ans);
   saveResume();
   save(); syncTop();
   reactCard(ok);
@@ -2981,6 +3214,7 @@ function finish(it,ok,model,given,near,selfmarkable,revealed){
     sb.disabled=true; sb.textContent="Anotada en el informe ✓";
     run.selfUsed++; run.correct++;
     S.ex[it.id]="self";
+    { const arr=(S.answers||{})[it.id]; if(arr&&arr.length) arr[arr.length-1].s=1; }
     S.stats.selfmarks.push({ts:Date.now(),unit:it.ex.unit.short,unitTitle:it.ex.unit.title,
       exN:it.ex.n,exTitle:it.ex.title,q:it.q.replace(/\n/g," "),given:given,model:model});
     run.misses=run.misses.filter(m=>m.it!==it);
