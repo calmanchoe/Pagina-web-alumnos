@@ -1028,6 +1028,7 @@ button.card:active,.resume:active,.xt:active,.pk:active{transform:scale(.98)}
 .qwrap .answerline input:focus{border-color:var(--pen);background:var(--pensoft)}
 .qwrap .answerline input.ok{border-color:var(--green)}
 .qwrap .answerline input.no{border-color:var(--red)}
+.qwrap .answerline input.self{border-color:var(--mark);background:var(--marksoft)}
 .qwrap .opts{gap:10px;margin-top:0}
 .qwrap .opt{
   min-height:64px;border-radius:18px;background:var(--card);border:2px solid transparent;gap:14px;padding:10px 14px;
@@ -3601,8 +3602,17 @@ function finish(it,ok,model,given,near,selfmarkable,revealed,ans){
       exN:it.ex.n,exTitle:it.ex.title,q:it.q.replace(/\n/g," "),given:given,model:model});
     run.misses=run.misses.filter(m=>m.it!==it);
     run.lastOk=true;
+    /* dada por buena: no corta la racha (se recupera la que llevaba) y
+       la pregunta queda en amarillo, pendiente de que la revise el profe */
+    run.streak=Math.max(run.streak,prevStreak); run.drop=0;
+    if(tk) tk.remove();
+    foot.querySelector(".acts").classList.remove("two");
+    foot.className="qsheet near";
+    foot.querySelector("h3").textContent="Dada por buena · la revisará tu profe";
+    const card=document.getElementById("qcard");
+    if(card){ card.classList.remove("bad"); card.querySelectorAll(".no").forEach(e=>{ e.classList.remove("no"); e.classList.add("self"); }); }
     run.xp=(run.xp||0)+addXP(5,1); saveResume(); save(); syncTop();
-    toast("Cuenta como acierto, pero queda anotada para que la revise tu profe.");
+    toast(prevStreak?"Cuenta como acierto y mantienes la racha de "+prevStreak+". Tu profe la revisará.":"Cuenta como acierto, pero queda anotada para que la revise tu profe.");
   };
 }
 
