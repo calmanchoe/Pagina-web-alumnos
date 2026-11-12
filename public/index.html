@@ -35,6 +35,18 @@
   --viol:#5A3BB0;
   --viol-soft:rgba(107,75,196,.13);
 
+  /* ---- rediseño móvil (1b Marcador) ---- */
+  --soft:#46566E;
+  --card:#fff;
+  --card2:#EEF2F8;
+  --onpen:#fff;
+  --pensoft:rgba(37,71,184,.12);
+  --marksoft:rgba(245,197,66,.28);
+  --markdeep:#6E4C00;
+  --greensoft:rgba(18,112,74,.14);
+  --redsoft:rgba(158,39,29,.1);
+  --band:#2547B8;
+
   /* ---- cristal ---- */
   --glass:rgba(255,255,255,.34);
   --glass-2:rgba(255,255,255,.20);
@@ -64,19 +76,28 @@
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --paper:#0A0F18;
+    --paper:#0E1420;
     --paper-2:#101827;
     --grid:rgba(225,235,245,.05);
-    --ink:#E9EFF7;
-    --ink-soft:#AEBCCE;
+    --ink:#E8EDF6;
+    --ink-soft:#A9B6CC;
+    --soft:#A9B6CC;
+    --card:#1A2334;
+    --card2:#243047;
+    --onpen:#0B1220;
+    --pensoft:rgba(143,176,255,.16);
+    --marksoft:rgba(245,197,66,.18);
+    --markdeep:#F5C542;
+    --greensoft:rgba(95,211,160,.16);
+    --redsoft:rgba(255,154,143,.16);
     --ink-faint:#8C9CB0;
     --line:rgba(255,255,255,.12);
     --line-soft:rgba(255,255,255,.07);
-    --pen:#8FA9FF;
+    --pen:#8FB0FF;
     --pen-soft:rgba(143,169,255,.16);
-    --red:#F5907F;
+    --red:#FF9A8F;
     --red-soft:rgba(245,144,127,.16);
-    --green:#63D3A0;
+    --green:#5FD3A0;
     --green-soft:rgba(99,211,160,.15);
     --mark:#F5C542;
     --mark-deep:#F5C542;
@@ -101,19 +122,28 @@
   }
 }
 :root[data-theme="dark"]{
-  --paper:#0A0F18;
+  --paper:#0E1420;
   --paper-2:#101827;
   --grid:rgba(225,235,245,.05);
-  --ink:#E9EFF7;
-  --ink-soft:#AEBCCE;
+  --ink:#E8EDF6;
+  --ink-soft:#A9B6CC;
+  --soft:#A9B6CC;
+  --card:#1A2334;
+  --card2:#243047;
+  --onpen:#0B1220;
+  --pensoft:rgba(143,176,255,.16);
+  --marksoft:rgba(245,197,66,.18);
+  --markdeep:#F5C542;
+  --greensoft:rgba(95,211,160,.16);
+  --redsoft:rgba(255,154,143,.16);
   --ink-faint:#8C9CB0;
   --line:rgba(255,255,255,.12);
   --line-soft:rgba(255,255,255,.07);
-  --pen:#8FA9FF;
+  --pen:#8FB0FF;
   --pen-soft:rgba(143,169,255,.16);
-  --red:#F5907F;
+  --red:#FF9A8F;
   --red-soft:rgba(245,144,127,.16);
-  --green:#63D3A0;
+  --green:#5FD3A0;
   --green-soft:rgba(99,211,160,.15);
   --mark:#F5C542;
   --mark-deep:#F5C542;
@@ -813,30 +843,300 @@ input{font:inherit;color:inherit}
     -webkit-backdrop-filter:none;backdrop-filter:none;
   }
 }
-</style>
 
-<header class="topbar">
-  <div class="topbar-in">
-    <div class="brand">
-      <div class="brand-mark">CA</div>
-      <div>
-        <div class="brand-name">Cuaderno Arcade</div>
-        <div class="brand-sub">Elige alumno</div>
-      </div>
-    </div>
-    <div class="stats">
-      <button class="chip who" id="whobtn" hidden title="Cambiar de alumno"><span class="av" id="who-av">Á</span><b id="who-name">Álvaro</b><span class="swap">⇄</span></button>
-      <div class="chip mult" id="s-mult-chip" hidden title="Multiplicador de XP: sube 0,1 por cada acierto seguido, desde ×1.0 hasta el tope de ×2.0"><span class="lab">XP</span><b id="s-mult">×1.0</b></div>
-      <div class="chip streak" id="s-streak-chip" hidden>🔥<b id="s-streak">0</b></div>
-      <div class="chip tok" title="Tokens para salvar la racha">🎟️<b id="s-tok">0</b></div>
-      <div class="chip xp"><span class="lab">XP</span><b id="s-xp">0</b></div>
-      <span class="cloudchip" id="cloudchip" hidden title="Sincronización">☁︎</span>
-      <button class="iconbtn" id="statsbtn" title="Estadísticas" aria-label="Estadísticas">📊</button>
-      <button class="iconbtn" id="sndbtn" title="Sonido" aria-label="Activar o silenciar el sonido" aria-pressed="true">🔊</button>
-      <button class="iconbtn" id="themebtn" title="Cambiar tema" aria-label="Cambiar tema">◐</button>
-    </div>
-  </div>
-</header>
+/* =====================================================================
+   REDISEÑO MÓVIL · propuesta 1b «Marcador»
+   Racha, nivel y XP arriba en una banda de color; barra inferior fija;
+   texto de 15 px como mínimo y botones de 48 px o más.
+   ===================================================================== */
+body{background:var(--paper);background-image:none;font-size:17px;line-height:1.35}
+body::before{display:none}
+body.bandbg{background:var(--band)}
+.wrap{max-width:560px;padding:0}
+body.has-nav .wrap{padding-bottom:calc(100px + env(safe-area-inset-bottom,0px))}
+.wrap.classic{max-width:940px;padding:14px 18px 28px}
+.mono{font-family:var(--f-mono)}
+.grow{flex:1;min-width:0;display:grid}
+.f15{font-size:15px}
+.screen{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column}
+
+/* banda de color de la cabecera */
+.band{
+  background:var(--band);color:#fff;border-radius:0 0 28px 28px;
+  padding:calc(env(safe-area-inset-top,0px) + 20px) 20px 18px;display:grid;gap:14px;
+}
+.row{display:flex;align-items:center;gap:12px}
+.av2{width:48px;height:48px;border-radius:50%;background:#fff;color:#111E33;display:grid;place-items:center;font-size:22px;font-weight:800;flex:none}
+.hname{font-size:24px;font-weight:800;letter-spacing:-.02em;line-height:1.1}
+.htitle{font-size:23px;font-weight:800;letter-spacing:-.02em;line-height:1.15}
+.heb{font-family:var(--f-mono);font-size:13px;font-weight:600;letter-spacing:.06em}
+.gold{color:#F5C542}
+.xpbig{font-family:var(--f-mono);font-size:20px;font-weight:600;color:#F5C542;white-space:nowrap}
+.hbtn{width:48px;height:48px;border-radius:14px;background:rgba(255,255,255,.16);color:#fff;display:grid;place-items:center;font-size:21px;flex:none}
+.hbtn:active{transform:scale(.95)}
+.bar{height:14px;border-radius:99px;background:rgba(255,255,255,.25);overflow:hidden}
+.bar > i{display:block;height:100%;border-radius:99px;background:#F5C542;transition:width .5s cubic-bezier(.2,.8,.2,1)}
+.bar.thin{height:6px;flex:1}
+.bar.paper{height:12px;background:var(--card2)}
+.bar.paper > i{background:var(--pen)}
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stat{border-radius:16px;background:rgba(255,255,255,.16);padding:10px 6px;display:grid;justify-items:center;text-align:center;min-width:0}
+.stat b{font-family:var(--f-mono);font-size:22px;font-weight:600;white-space:nowrap}
+.stat span{font-size:15px;white-space:nowrap}
+.stat.gold{background:#F5C542;color:#2a2000}
+.stat.gold span{font-weight:600}
+
+/* cuerpo */
+.sec{padding:16px 20px 0;display:grid;gap:12px;align-content:start}
+.card{
+  border-radius:20px;background:var(--card);color:var(--ink);padding:16px;display:grid;gap:4px;
+  text-align:left;width:100%;animation:enterUp .34s cubic-bezier(.2,.85,.3,1) both;
+}
+button.card{transition:transform .12s ease}
+button.card:active,.resume:active,.xt:active,.pk:active{transform:scale(.98)}
+.card[aria-disabled="true"]{opacity:.6}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.mcard{min-height:104px;align-content:start}
+.mcard .t{font-size:19px;font-weight:800;line-height:1.2}
+.mcard .s{font-size:15px;color:var(--soft)}
+.mcard .s.red{color:var(--red);font-weight:600}
+.resume{
+  width:100%;text-align:left;border-radius:22px;background:var(--mark);color:#2a2000;padding:16px 18px;
+  display:grid;grid-template-columns:1fr 60px;gap:12px;align-items:center;
+  animation:enterUp .34s cubic-bezier(.2,.85,.3,1) both;transition:transform .12s ease;
+}
+.resume .txt{display:grid;gap:2px}
+.resume .eb{font-family:var(--f-mono);font-size:13px;font-weight:600;letter-spacing:.1em}
+.resume .t{font-size:19px;font-weight:800;line-height:1.15}
+.resume .play{width:60px;height:60px;border-radius:50%;background:#2a2000;color:#F5C542;display:grid;place-items:center;font-size:24px}
+.urow{display:flex;align-items:center;gap:14px;padding:14px 16px;position:relative}
+.urow .t{font-size:19px;font-weight:800;line-height:1.2}
+.urow .arrow{font-size:22px;color:var(--soft)}
+.ring{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;flex:none}
+.ring > span{width:42px;height:42px;border-radius:50%;background:var(--card);display:grid;place-items:center;font-family:var(--f-mono);font-size:14px;font-weight:600}
+.eyeb{font-family:var(--f-mono);font-size:13px;font-weight:600;color:var(--pen)}
+.empty2{font-family:var(--f-read);font-size:16px;color:var(--soft);padding:6px 2px}
+
+/* barra inferior fija */
+.nav{
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(560px,100%);z-index:30;
+  display:grid;grid-template-columns:repeat(4,1fr);background:var(--card);border-top:1px solid var(--line);
+  padding:8px 8px calc(8px + env(safe-area-inset-bottom,0px));
+}
+.nav button{height:56px;display:grid;place-items:center;align-content:center;gap:2px;color:var(--soft);font-size:13px;font-weight:600;border-top:4px solid transparent}
+.nav button .i{font-size:20px;line-height:1.1}
+.nav button.on{color:var(--pen);font-weight:800;border-top-color:var(--pen)}
+
+/* botones */
+.bigbtn{width:100%;min-height:58px;border-radius:16px;background:var(--pen);color:var(--onpen);display:grid;place-items:center;font-size:19px;font-weight:800;padding:0 14px;text-align:center;transition:transform .12s ease}
+.bigbtn:active,.sqbtn:active,.softbtn:active,.tokbtn:active,.ghostbtn:active{transform:scale(.98)}
+.bigbtn[disabled]{opacity:.45}
+.bigbtn.white{background:#fff;color:#111E33}
+.sqbtn{height:60px;border-radius:18px;background:var(--card);display:grid;place-items:center;font-size:24px}
+.softbtn{min-height:52px;border-radius:14px;background:rgba(255,255,255,.16);color:#fff;display:grid;place-items:center;font-size:16px;font-weight:600;padding:0 10px;text-align:center}
+.ghostbtn{min-height:52px;padding:0 22px;border-radius:14px;border:1.5px solid var(--line);display:grid;place-items:center;font-size:16px;font-weight:600;color:var(--soft);text-align:center}
+.ghostbtn.wide{width:100%}
+.ghostbtn.red{color:var(--red)}
+.ghostbtn.on{border-color:var(--pen);color:var(--pen);background:var(--pensoft)}
+.textbtn{min-height:44px;font-size:16px;font-weight:600;color:var(--soft)}
+.tokbtn{min-height:58px;border-radius:16px;background:var(--marksoft);color:var(--markdeep);display:grid;place-items:center;font-size:16px;font-weight:800;padding:0 8px;text-align:center}
+.tokbtn[disabled]{opacity:.7}
+
+/* ---------- selector + contraseña ---------- */
+.sel-top{padding:calc(env(safe-area-inset-top,0px) + 28px) 20px 0;display:grid;gap:6px}
+.eyebrow2{font-family:var(--f-mono);font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--soft)}
+.h34{font-size:34px;font-weight:800;letter-spacing:-.03em;line-height:1.1}
+.picks2{padding:22px 20px 0;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pk{
+  position:relative;border-radius:24px;color:#fff;padding:16px;display:grid;gap:4px;min-height:210px;
+  align-content:end;text-align:left;border:4px solid transparent;overflow:hidden;
+  animation:enterUp .4s cubic-bezier(.2,.85,.3,1) both;transition:transform .12s ease, border-color .15s ease;
+}
+.pk.on{border-color:var(--mark)}
+.pk .big{position:absolute;top:8px;left:14px;font-size:72px;font-weight:800;line-height:1}
+.pk .nm{font-size:24px;font-weight:800;letter-spacing:-.02em}
+.pk .lv{font-size:15px}
+.pk .xp{font-family:var(--f-mono);font-size:15px;font-weight:600;color:#F5C542}
+.pk .lastchip{background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.3);color:#fff;font-size:11px}
+.lock2{margin:16px 20px 0;border-radius:24px;background:var(--card);padding:20px;display:grid;gap:14px;animation:popIn .3s cubic-bezier(.2,.9,.3,1.1) both}
+.lock2.wrong{animation:shakeX .5s cubic-bezier(.36,.07,.19,.97)}
+.lock2 .t{font-size:20px;font-weight:800}
+.lock2 input{
+  width:100%;height:58px;border-radius:14px;border:2px solid var(--pen);background:var(--pensoft);color:var(--ink);
+  padding:0 18px;font-family:var(--f-mono);font-size:22px;letter-spacing:.2em;
+}
+.lock2 input[type="email"]{font-size:18px;letter-spacing:0}
+.lock2 input:focus{outline:none;box-shadow:0 0 0 3px color-mix(in srgb,var(--pen) 30%,transparent)}
+.lock2 .lockmsg{font-size:16px}
+.selhint{margin:18px 20px 0;font-family:var(--f-read);font-size:17px;color:var(--soft);text-align:center}
+.sel-foot{margin-top:auto;padding:24px 20px calc(env(safe-area-inset-bottom,0px) + 28px);display:grid;justify-items:center}
+
+/* ---------- unidad ---------- */
+.seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;background:rgba(255,255,255,.16);border-radius:14px;padding:4px}
+.seg button{min-height:44px;border-radius:11px;font-size:16px;font-weight:600;color:#fff;white-space:nowrap}
+.seg button.on{background:#fff;color:#111E33;font-weight:800}
+.exgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.xt{
+  border-radius:20px;background:var(--card);color:var(--ink);padding:14px;display:grid;gap:6px;min-height:128px;
+  align-content:space-between;text-align:left;animation:enterUp .34s cubic-bezier(.2,.85,.3,1) both;transition:transform .12s ease;
+}
+.xt .top{display:flex;justify-content:space-between;align-items:center;gap:6px}
+.xt .n{font-family:var(--f-mono);font-size:22px;font-weight:600}
+.xt .sc{font-family:var(--f-mono);font-size:15px;color:var(--soft);white-space:nowrap}
+.xt .t{font-size:16px;font-weight:700;line-height:1.2}
+.xt.done{background:var(--greensoft)}
+.xt.done .sc{color:var(--green);font-weight:600}
+.xt.part .sc{color:var(--markdeep);font-weight:600}
+.xt.now{background:var(--mark);color:#2a2000}
+.xt.now .sc{color:#2a2000;font-weight:600}
+.xt.now .t{font-weight:800}
+
+/* ---------- pregunta ---------- */
+.pband{gap:12px;padding-bottom:16px}
+.qcnt{flex:1;font-family:var(--f-mono);font-size:17px;font-weight:600;white-space:nowrap}
+.badge2{display:flex;align-items:stretch;border-radius:99px;overflow:hidden;font-family:var(--f-mono);font-weight:600;flex:none}
+.badge2 .s{background:rgba(255,255,255,.16);padding:8px 8px 8px 12px;font-size:15px;display:grid;place-items:center}
+.badge2 .m{background:#F5C542;color:#2a2000;padding:8px 12px 8px 9px;font-size:17px;display:grid;place-items:center}
+.badge2.solo .m{padding:8px 12px}
+.badge2.drop{background:rgba(255,255,255,.16);align-items:center;gap:8px;padding:8px 12px}
+.badge2.drop s{font-size:15px}
+.badge2.drop span{font-size:17px}
+.badge2.bump{animation:bump .5s cubic-bezier(.2,.9,.3,1.3)}
+.multrow{display:flex;align-items:center;gap:10px;font-size:15px}
+.multrow b{font-family:var(--f-mono)}
+.segs{display:grid;gap:4px}
+.segs i{height:10px;border-radius:99px;background:rgba(255,255,255,.25);transition:background .3s ease}
+.segs i.ok{background:#F5C542}
+.segs i.ko{background:#FF9A8F}
+.segs i.cur{background:#fff}
+.qwrap{flex:1;display:flex;flex-direction:column}
+.qbody{padding:20px 20px 16px;display:grid;gap:16px;align-content:start}
+.qbox{border-radius:22px;background:var(--card);padding:20px;display:grid;gap:10px;animation:enterUp .3s cubic-bezier(.2,.85,.3,1) both;transition:box-shadow .35s ease}
+.qbox .instr{font-family:var(--f-read);font-size:16px;font-style:italic;color:var(--soft)}
+.qbox .stem{font-family:var(--f-mono);font-size:clamp(19px,5.4vw,22px);line-height:1.55;letter-spacing:-.01em}
+.qbox .stem.lead{font-size:17px}
+.qbox .vochelp{font-size:15px;margin-top:0}
+.qbox .hintline{font-family:var(--f-read);font-size:16px;color:var(--soft)}
+.qbox .hintline span{font-family:var(--f-mono);color:var(--pen);font-weight:600;font-style:normal}
+.qbox .hintline.bank span{color:var(--ink)}
+.qwrap.good .qbox{box-shadow:0 0 0 3px color-mix(in srgb,var(--green) 70%,transparent)}
+.qwrap.bad .qbox{box-shadow:0 0 0 3px color-mix(in srgb,var(--red) 55%,transparent)}
+.qwrap.bad .qbox .stem{animation:shakeX .45s cubic-bezier(.36,.07,.19,.97)}
+.qwrap .blank{font-size:clamp(18px,5vw,20px);width:9em;min-width:0;max-width:100%;padding:4px 10px;background:var(--card2)}
+.qwrap .answerline{margin-top:4px}
+.qwrap .answerline input{font-size:18px;min-height:56px;padding:14px 16px;background:var(--card2);border:2px solid transparent;border-radius:14px}
+.qwrap .answerline input:focus{border-color:var(--pen);background:var(--pensoft)}
+.qwrap .answerline input.ok{border-color:var(--green)}
+.qwrap .answerline input.no{border-color:var(--red)}
+.qwrap .opts{gap:10px;margin-top:0}
+.qwrap .opt{
+  min-height:64px;border-radius:18px;background:var(--card);border:2px solid transparent;gap:14px;padding:10px 14px;
+  font-size:19px;line-height:1.3;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;
+}
+.qwrap .opt:hover{background:var(--card)}
+.qwrap .opt .key{width:36px;height:36px;border-radius:10px;background:var(--card2);border:none;font-size:16px;color:var(--ink)}
+.qwrap .opt.sel{background:var(--pensoft);border-color:var(--pen);font-weight:600;box-shadow:none}
+.qwrap .opt.sel .key{background:var(--pen);color:var(--onpen)}
+.qwrap .opt.ok{background:var(--greensoft);border-color:var(--green);font-weight:600}
+.qwrap .opt.ok .key{background:var(--green);color:var(--onpen);font-size:0}
+.qwrap .opt.ok .key::after{content:"✓";font-size:16px}
+.qwrap .opt.no{background:var(--redsoft);border-color:var(--red)}
+.qwrap .opt.no .key{background:var(--red);color:var(--onpen);font-size:0}
+.qwrap .opt.no .key::after{content:"✕";font-size:16px}
+.qwrap .opt[disabled]:not(.ok):not(.no){animation:none;opacity:.5}
+.qwrap .opts.bank{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
+.qwrap .matchgrid{margin-top:0;grid-template-columns:1fr 1fr}
+.qwrap .mitem{min-height:56px;border-radius:14px;background:var(--card);border:2px solid transparent;font-size:16px;padding:12px;box-shadow:none}
+.qwrap .mitem.sel{border-color:var(--pen);background:var(--pensoft)}
+.qwrap .mitem.done{border-color:var(--green);background:var(--greensoft)}
+.qfoot2{
+  position:sticky;bottom:0;margin-top:auto;display:grid;grid-template-columns:60px 1fr;gap:12px;
+  padding:14px 20px calc(env(safe-area-inset-bottom,0px) + 18px);
+  background:linear-gradient(to bottom, transparent, var(--paper) 22px);
+}
+.qfoot2.solo{grid-template-columns:1fr}
+.qfoot2 .bigbtn{min-height:60px;border-radius:18px;font-size:20px}
+.qfoot2 .textbtn{grid-column:1 / -1;margin-top:-4px}
+.qsheet{
+  position:sticky;bottom:0;margin-top:auto;display:grid;gap:10px;
+  padding:20px 20px calc(env(safe-area-inset-bottom,0px) + 20px);background:var(--card);
+  border-top:4px solid var(--red);border-radius:28px 28px 0 0;
+  box-shadow:0 -14px 34px -20px rgba(10,16,26,.45);animation:sheetUp .32s cubic-bezier(.2,.9,.3,1) both;
+}
+.qsheet.good{border-top-color:var(--green)}
+.qsheet.near{border-top-color:var(--mark)}
+.qsheet .sh-top{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.qsheet h3{font-size:23px;font-weight:800;letter-spacing:-.02em;color:var(--red);animation:tickIn .34s .06s cubic-bezier(.2,.9,.3,1.4) both}
+.qsheet.good h3{color:var(--green)}
+.qsheet.near h3{color:var(--markdeep)}
+.xpp{font-family:var(--f-mono);font-size:17px;font-weight:600;background:var(--mark);color:#2a2000;padding:6px 12px;border-radius:99px;white-space:nowrap;animation:popIn .4s .1s cubic-bezier(.2,.9,.3,1.3) both}
+.qsheet .sol{font-family:var(--f-mono);font-size:17px;line-height:1.5}
+.qsheet .why{font-family:var(--f-read);font-size:17px;line-height:1.45}
+.qsheet .why b{font-weight:600}
+.qsheet .fb-note{font-size:14px}
+.qsheet .acts{display:grid;grid-template-columns:1fr;gap:10px;margin-top:6px}
+.qsheet .acts.two{grid-template-columns:1fr 1fr}
+
+/* ---------- resultado ---------- */
+.donescr{color:#fff}
+.dtop{padding:calc(env(safe-area-inset-top,0px) + 32px) 22px 0;display:grid;gap:8px;justify-items:center;text-align:center}
+.dtop .heb{text-transform:uppercase;letter-spacing:.12em}
+.dtop h1{font-size:30px;letter-spacing:-.02em}
+.donut{width:190px;height:190px;border-radius:50%;display:grid;place-items:center;margin-top:10px;animation:popIn .6s .1s cubic-bezier(.2,.9,.3,1.25) both}
+.donut > div{width:150px;height:150px;border-radius:50%;background:var(--band);display:grid;place-items:center;font-family:var(--f-mono);font-size:60px;font-weight:600;letter-spacing:-.04em;line-height:1}
+.donut > div.exam{font-size:46px}
+.donut small{font-size:24px}
+.dtop .msg{font-family:var(--f-read);font-size:18px;max-width:300px}
+.lvcard{margin:16px 20px 0;border-radius:16px;background:rgba(255,255,255,.16);padding:14px 16px;display:grid;gap:8px}
+.lvcard .bar{height:12px}
+.dnote{margin:12px 20px 0;font-size:15px;text-align:center;opacity:.9}
+.dfoot{margin-top:auto;padding:18px 20px calc(env(safe-area-inset-bottom,0px) + 24px);display:grid;gap:8px}
+
+/* ---------- progreso ---------- */
+.lvsegs{display:grid;gap:5px}
+.lvsegs i{height:14px;border-radius:99px;background:rgba(255,255,255,.25)}
+.tile2{border-radius:20px;background:var(--card);padding:14px 16px;display:grid;gap:2px;animation:enterUp .34s cubic-bezier(.2,.85,.3,1) both}
+.tile2 .k,.tile2 .s{font-size:15px;color:var(--soft)}
+.tile2 .v{font-family:var(--f-mono);font-size:30px;font-weight:600;line-height:1.15;white-space:nowrap}
+.lvrow{display:grid;grid-template-columns:66px 1fr 48px;gap:10px;align-items:center;font-size:15px}
+.lvrow .vv{font-family:var(--f-mono);text-align:right}
+.ctitle{font-size:17px;font-weight:800}
+.setrow{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.setrow .ghostbtn{padding:0 6px;font-size:15px}
+.cloudline{font-size:15px;color:var(--soft)}
+.more{border-radius:20px;background:var(--card);padding:0 16px}
+.more > summary{min-height:56px;display:flex;align-items:center;font-size:17px;font-weight:800;cursor:pointer;list-style:none}
+.more > summary::-webkit-details-marker{display:none}
+.more > summary::after{content:"▾";margin-left:auto;color:var(--soft);transition:transform .2s ease}
+.more[open] > summary::after{transform:rotate(180deg)}
+.more .inner{display:grid;gap:12px;padding:0 0 16px}
+.more h4{font-size:16px}
+.more .sub{font-family:var(--f-read);font-size:15px;color:var(--soft)}
+.more .btn{min-height:48px}
+
+/* ---------- panel del profe ---------- */
+.thead2{padding:calc(env(safe-area-inset-top,0px) + 20px) 20px 0;display:flex;align-items:center;gap:10px}
+.thead2 .eyebrow2{letter-spacing:.12em}
+.h28{font-size:28px;font-weight:800;letter-spacing:-.03em;line-height:1.1}
+.pillbtn{min-height:48px;min-width:48px;padding:0 16px;border-radius:14px;background:var(--card);display:grid;place-items:center;font-size:16px;font-weight:600}
+.tcard{border-radius:24px;color:#fff;padding:18px;display:grid;gap:12px;animation:enterUp .34s cubic-bezier(.2,.85,.3,1) both}
+.tcard .av2{width:52px;height:52px;font-size:24px}
+.tcard .nm{font-size:22px;font-weight:800}
+.tcard .stat{border-radius:14px}
+.tcard .stat b{font-size:20px}
+.tcard .bigbtn{min-height:52px;font-size:17px;border-radius:14px}
+.more .miss{background:var(--card2);border:none;font-size:15px}
+
+/* ---------- chuleta, avisos y pantallas clásicas ---------- */
+.drawer-in .btn{min-height:48px;padding:0 18px;font-size:16px}
+.drawer h3{font-size:23px}
+.tblock p,.trow dd{font-size:16px}
+.toast{bottom:auto;top:calc(env(safe-area-inset-top,0px) + 14px);font-size:15px;max-width:calc(100% - 32px);text-align:center}
+.xpfly{color:#F5C542;text-shadow:0 2px 8px rgba(0,0,0,.45);font-size:16px}
+.xpfly.tok{color:#fff}
+.wrap.classic .back{font-size:15px;min-height:44px}
+.wrap.classic .btn{min-height:48px}
+</style>
 
 <main class="wrap" id="app"></main>
 
@@ -1010,13 +1310,13 @@ const SFX=(()=>{
 document.addEventListener("click",e=>{
   const b=e.target.closest&&e.target.closest("button");
   if(!b||b.disabled) return;
-  if(b.matches(".opt,.mitem,#check,#sndbtn,.voc,.vrb")) return;
+  if(b.matches(".opt,.mitem,#check,#st-snd,.voc,.vrb")) return;
   SFX.play("tick");
 },true);
 
 const PROFILES=[
-  {id:"alvaro", name:"Álvaro", level:"6.º de Primaria", initial:"Á", hue:"var(--pen)"},
-  {id:"marcos", name:"Marcos", level:"3.º de ESO",      initial:"M", hue:"var(--viol)"}
+  {id:"alvaro", name:"Álvaro", level:"6.º de Primaria", initial:"Á", hue:"var(--pen)",  bg:"#2547B8"},
+  {id:"marcos", name:"Marcos", level:"3.º de ESO",      initial:"M", hue:"var(--viol)", bg:"#5A3BB0"}
 ];
 /* Acceso con Firebase Authentication. La contraseña la comprueba el servidor
    de Firebase; aquí no hay ninguna guardada.
@@ -1703,15 +2003,14 @@ function save(){
 let cloudState="…", pushT=null;
 function setCloud(st){
   cloudState=st;
-  const c=document.getElementById("cloudchip"); if(!c) return;
-  c.hidden=!PROFILE || view.name==="profiles";
+  const c=document.getElementById("cloudline"); if(!c) return;
   const map={ok:["☁︎","Guardado en la nube","var(--green)"],
               wait:["⟳","Guardando…","var(--ink-faint)"],
               off:["⚠","Sin conexión: se guardará al volver","var(--mark-deep)"],
               deny:["🔒","Sin permiso para guardar: cierra sesión y vuelve a entrar","var(--red)"],
               none:["☁︎","Solo en este dispositivo","var(--ink-faint)"]};
   const [ico,title,col]=map[st]||map.none;
-  c.textContent=ico; c.title=title; c.style.color=col;
+  c.textContent=ico+" "+title; c.style.color=col;
 }
 async function syncDown(id){
   if(!window.CLOUD) return setCloud("none");
@@ -1754,16 +2053,8 @@ window.addEventListener("auth-state",e=>{
 });
 window.addEventListener("online",()=>{ if(PROFILE) pushUp(); });
 document.addEventListener("visibilitychange",()=>{ if(document.visibilityState==="hidden") pushUp(); });
-function paintWho(){
-  const btn=document.getElementById("whobtn"), p=me();
-  const sub=document.querySelector(".brand-sub");
-  if(!p){ btn.hidden=true; if(sub) sub.textContent="Elige alumno"; return; }
-  btn.hidden=false;
-  document.getElementById("who-av").textContent=p.initial;
-  document.getElementById("who-av").style.background=p.hue;
-  document.getElementById("who-name").textContent=p.name;
-  if(sub) sub.textContent=p.level;
-}
+/* el nombre del alumno va en la banda de cada pantalla: aquí solo el título de la pestaña */
+function paintWho(){ const p=me(); document.title=p?"Cuaderno Arcade · "+p.name:"Cuaderno Arcade"; }
 
 const LEVELS=[
   {xp:0,name:"Rookie"},{xp:250,name:"A2 Explorer"},{xp:600,name:"B1 Runner"},
@@ -1786,8 +2077,8 @@ function addXP(base, mult){
   if(up){ S.tokens+=up; S.lvl=nl; toast("¡Nivel "+LEVELS[nl].name+"! +"+up+" 🎟️"); setTimeout(()=>SFX.play("levelup"),380); }
   setTimeout(()=>{
     if(g) flyXP("+"+g+" XP");
-    bumpChip(".chip.xp");
-    if(up){ bumpChip(".chip.tok"); setTimeout(()=>flyXP("+"+up+" 🎟️","tok"),240); }
+    bumpChip("[data-fly]");
+    if(up) setTimeout(()=>flyXP("+"+up+" 🎟️","tok"),240);
   },0);
   return g;
 }
@@ -1814,8 +2105,8 @@ function bumpChip(sel){
   setTimeout(()=>el.classList.remove("bump"),600);
 }
 function flyXP(text,cls){
-  const chip=document.querySelector(cls==="tok"?".chip.tok":".chip.xp"); if(!chip) return;
-  const r=chip.getBoundingClientRect();
+  const chip=document.querySelector("[data-fly]");
+  const r=chip?chip.getBoundingClientRect():{left:window.innerWidth/2-20,width:40,bottom:72};
   const d=document.createElement("div");
   d.className="xpfly"+(cls?" "+cls:"");
   d.textContent=text;
@@ -1829,27 +2120,35 @@ function reactCard(ok){
   qc.classList.remove("good","bad"); void qc.offsetWidth;
   qc.classList.add(ok?"good":"bad");
 }
+/* repinta la banda de la partida (racha, multiplicador y progreso) */
 function syncTop(){
-  const xpc=document.querySelector(".chip.xp"), tkc=document.querySelector(".chip.tok");
-  const on=!!PROFILE && view.name!=="profiles";
-  xpc.hidden=!on; tkc.hidden=!on;
-  document.getElementById("statsbtn").hidden=!on;
-  document.getElementById("whobtn").hidden=!on;
-  const cc=document.getElementById("cloudchip"); if(cc){ cc.hidden=!on; if(on) setCloud(cloudState); }
-  document.querySelector(".topbar").classList.toggle("in",on);
-  const sub=document.querySelector(".brand-sub");
-  if(sub && !on) sub.textContent=/^(teacher|tstudent|treview)$/.test(view.name)?"Panel del profesor":"Elige alumno";
-  document.getElementById("s-xp").textContent=S.xp;
-  document.getElementById("s-tok").textContent=S.tokens;
-  const sc=document.getElementById("s-streak-chip"), mc=document.getElementById("s-mult-chip");
-  if(on && run && run.streak>=1){ sc.hidden=false; document.getElementById("s-streak").textContent=run.streak; }
-  else sc.hidden=true;
-  if(on && run){ mc.hidden=false; document.getElementById("s-mult").textContent=fmtMult(multOf(run.streak+1)); }
-  else mc.hidden=true;
+  const h=document.getElementById("phead");
+  if(!h || !run || view.name!=="play") return;
+  h.innerHTML=playHeadInner();
+  h.querySelector("#exit").onclick=exitRun;
+}
+/* ---------- barra inferior ---------- */
+function navHTML(on){
+  const tabs=[["home","🏠","Inicio"],["units","📝","Unidades"],["wrong","🩹","Repaso"],["stats","📊","Progreso"]];
+  return `<nav class="nav" aria-label="Secciones">${tabs.map(([k,i,l])=>
+    `<button data-nav="${k}" class="${k===on?"on":""}" ${k===on?'aria-current="page"':""}><span class="i" aria-hidden="true">${i}</span>${l}</button>`).join("")}</nav>`;
+}
+function bindNav(){
+  app.querySelectorAll("[data-nav]").forEach(b=>b.onclick=()=>{
+    const k=b.dataset.nav;
+    if(k==="home") go({name:"home"});
+    else if(k==="stats") go({name:"stats"});
+    else if(k==="units"){ const l=myUnits(); if(l.length===1) go({name:"unit",unit:l[0]}); else go({name:"units"}); }
+    else if(k==="wrong"){ if(S.wrong.length) startWrong(); else toast("No tienes fallos pendientes. ¡Bien hecho!"); }
+  });
 }
 function go(v){ view=v; glossEl.hidden=true; render(); window.scrollTo({top:0,behavior:"instant"}); }
 function render(){
-  syncTop();
+  const vn=view.name;
+  document.body.classList.toggle("has-nav", !!PROFILE && /^(home|units|unit|stats)$/.test(vn));
+  document.body.classList.toggle("bandbg", vn==="done" && !!PROFILE);
+  app.classList.toggle("classic", /^(tstudent|treview)$/.test(vn));
+  if(vn==="units" && PROFILE) return renderUnits();
   if(view.name==="teacher") return renderTeacher();
   if(view.name==="tstudent") return renderTStudent();
   if(view.name==="treview") return renderTReview();
@@ -1866,63 +2165,52 @@ function render(){
    SELECTOR DE ALUMNO
    ===================================================================== */
 function renderProfiles(){
-  if(view.ask) return renderUnlock(view.ask);
   let last=null; try{ last=localStorage.getItem(LASTKEY); }catch(e){}
+  const sel=view.ask||null;
   app.innerHTML=`
-  <section class="hero" style="padding:clamp(14px,5vh,48px) 0 10px;text-align:center;justify-items:center">
-    <div class="eyebrow">Cuaderno Arcade</div>
-    <h1 style="font-size:clamp(28px,5vw,42px)">¿Quién practica <span class="mk">hoy</span>?</h1>
-    <p class="lede" style="margin:0 auto">Cada alumno tiene sus propias unidades, su progreso y sus estadísticas.</p>
-  </section>
+  <div class="screen">
+    <div class="sel-top">
+      <div class="eyebrow2">Cuaderno Arcade</div>
+      <h1 class="h34">¿Quién practica hoy?</h1>
+    </div>
+    <div class="picks2">
+      ${PROFILES.map((p,i)=>{
+        let xp=0, best=0;
+        try{ const raw=localStorage.getItem("cuaderno-arcade-v3-"+p.id); if(raw){ const o=JSON.parse(raw); xp=o.xp||0; best=(o.stats&&o.stats.bestStreak)||0; } }catch(e){}
+        return `<button class="pk ${sel===p.id?"on":""}" data-p="${p.id}" aria-pressed="${sel===p.id}" style="background:${p.bg};animation-delay:${30+i*60}ms">
+          ${last===p.id&&!sel?'<span class="lastchip">última vez</span>':""}
+          <span class="big" aria-hidden="true">${p.initial}</span>
+          <span class="nm">${p.name}</span>
+          <span class="lv">${p.level}</span>
+          <span class="xp">${xp} XP${best?" · 🔥 "+best:""}</span>
+        </button>`;
+      }).join("")}
+    </div>
+    ${sel?lockHTML(sel):`<p class="selhint">Toca tu tarjeta para entrar.</p>`}
+    <div class="sel-foot"><button class="ghostbtn ${sel===TEACHER.id?"on":""}" id="teacherlink">Soy el profe</button></div>
+  </div>`;
 
-  <div class="picks">
-    ${PROFILES.map((p,i)=>{
-      const n=UNITS.filter(u=>u.owner===p.id).length;
-      const q=ALL_ITEMS.filter(it=>it.ex.unit.owner===p.id).length;
-      let xp=0; try{ const raw=localStorage.getItem("cuaderno-arcade-v3-"+p.id); if(raw) xp=(JSON.parse(raw).xp)||0; }catch(e){}
-      return `<button class="pick" data-p="${p.id}" style="animation-delay:${40+i*70}ms">
-        ${last===p.id?'<span class="lastchip">última vez</span>':""}
-        <span class="pick-av" style="background:${p.hue}">${p.initial}</span>
-        <span class="pick-name">${p.name}</span>
-        <span class="pick-lv">${p.level}</span>
-        <span class="pick-meta">${n?n+" unidad"+(n===1?"":"es")+" · "+q+" preguntas":"Sin unidades todavía"}</span>
-        <span class="pick-xp">${xp} XP</span>
-      </button>`;
-    }).join("")}
-  </div>
-  <p class="footnote">
-    El progreso de cada alumno se guarda en la nube y se recupera desde cualquier dispositivo.<br>
-    <button class="teacherlink" id="teacherlink">Soy el profe</button>
-  </p>`;
-
-  app.querySelectorAll("[data-p]").forEach(b=>b.onclick=()=>go({name:"profiles",ask:b.dataset.p}));
-  const t=document.getElementById("teacherlink");
-  if(t) t.onclick=()=>go({name:"profiles",ask:"profe"});
+  /* tocar la tarjeta elegida otra vez la suelta */
+  app.querySelectorAll("[data-p]").forEach(b=>b.onclick=()=>go({name:"profiles",ask:sel===b.dataset.p?null:b.dataset.p}));
+  document.getElementById("teacherlink").onclick=()=>go({name:"profiles",ask:sel===TEACHER.id?null:TEACHER.id});
+  if(sel) bindLock(sel);
 }
 
-function renderUnlock(id){
+function lockHTML(id){
   const p=profileOf(id), isT=id===TEACHER.id;
-  app.innerHTML=`
-  <section class="hero" style="padding:clamp(14px,5vh,48px) 0 10px;text-align:center;justify-items:center">
-    <div class="eyebrow">Cuaderno Arcade</div>
-    <h1 style="font-size:clamp(26px,4.4vw,36px)">Hola, <span class="mk">${p.name}</span></h1>
-    <p class="lede" style="margin:0 auto">${isT?"Escribe tu correo y tu contraseña para entrar.":"Escribe tu contraseña para entrar."}</p>
-  </section>
-
-  <form class="lockbox" id="lockbox" autocomplete="on">
-    <span class="pick-av" style="background:${p.hue};width:56px;height:56px;font-size:25px">${p.initial}</span>
+  return `<form class="lock2" id="lockbox" autocomplete="on">
+    <div class="t">${isT?"Acceso del profe":"Contraseña de "+p.name}</div>
     ${isT?`<input id="em" type="email" name="email" autocomplete="username" autocapitalize="off"
            spellcheck="false" placeholder="Correo" aria-label="Correo del profesor">`
          :`<input type="text" name="username" value="${p.id}" autocomplete="username" hidden>`}
     <input id="pw" type="password" name="password" autocomplete="current-password" autocapitalize="off"
-           spellcheck="false" placeholder="Contraseña" aria-label="Contraseña${isT?"":" de "+p.name}">
-    <div class="lockmsg" id="lockmsg" hidden></div>
-    <div class="lockacts">
-      <button class="btn" id="enter" type="submit">Entrar</button>
-      <button class="btn ghost" id="backsel" type="button">Volver</button>
-    </div>
+           spellcheck="false" placeholder="••••••" aria-label="Contraseña${isT?"":" de "+p.name}">
+    <div class="lockmsg" id="lockmsg" role="alert" hidden></div>
+    <button class="bigbtn" id="enter" type="submit">Entrar</button>
   </form>`;
-
+}
+function bindLock(id){
+  const p=profileOf(id), isT=id===TEACHER.id;
   const form=document.getElementById("lockbox"), pw=document.getElementById("pw"),
         em=document.getElementById("em"), msg=document.getElementById("lockmsg"),
         btn=document.getElementById("enter");
@@ -1950,7 +2238,6 @@ function renderUnlock(id){
       fail(authMsg(err));
     }
   });
-  document.getElementById("backsel").onclick=()=>go({name:"profiles"});
 }
 
 /* Cerrar sesión: antes de soltarla, sube lo último que se haya hecho. */
@@ -1985,85 +2272,77 @@ function statsFor(p, d){
   const wrong=(d?d.wrong:[]).map(id=>INDEX[id]).filter(Boolean);
   return {units, items, ok, levels, acc, wrong, d};
 }
+function teacherHead(){
+  return `<div class="thead2">
+    <div class="grow"><span class="eyebrow2">Panel del profe</span><span class="h28">Cómo van</span></div>
+    <button class="pillbtn" id="t-theme" aria-label="Cambiar entre tema claro y oscuro">${isDark()?"☀️":"🌙"}</button>
+    <button class="pillbtn" id="t-out">Salir</button>
+  </div>`;
+}
+function bindTeacherHead(){
+  document.getElementById("t-out").onclick=()=>leave();
+  const tb=document.getElementById("t-theme");
+  tb.onclick=()=>{ toggleTheme(); tb.textContent=isDark()?"☀️":"🌙"; };
+}
 async function renderTeacher(){
-  app.innerHTML=`
-  <button class="back" id="back">← Salir del panel</button>
-  <section class="hero" style="padding:16px 0 4px">
-    <div class="eyebrow">Panel del profesor</div>
-    <h1 style="font-size:clamp(26px,4.4vw,38px)">Cómo van</h1>
-    <p class="lede">Cargando el progreso de los alumnos…</p>
-  </section>`;
-  document.getElementById("back").onclick=()=>leave();
+  app.innerHTML=`<div class="screen">${teacherHead()}<div class="sec"><p class="empty2">Cargando el progreso de los alumnos…</p></div></div>`;
+  bindTeacherHead();
 
   const data=[];
   for(const p of PROFILES){ const d0=await loadStudent(p.id); TDATA[p.id]=d0; data.push({p, s:statsFor(p, d0)}); }
+  if(view.name!=="teacher") return;
 
-  app.innerHTML=`
-  <button class="back" id="back2">← Salir del panel</button>
-  <section class="hero" style="padding:16px 0 4px">
-    <div class="eyebrow">Panel del profesor</div>
-    <h1 style="font-size:clamp(26px,4.4vw,38px)">Cómo van</h1>
-    <p class="lede">Lo que ha hecho cada alumno, con el progreso que tengan guardado en la nube.</p>
-  </section>
-
+  app.innerHTML=`<div class="screen">${teacherHead()}
+  <div class="sec" style="padding-bottom:28px">
   ${data.map(({p,s})=>{
     const d=s.d;
-    const lv=d?levelOf(d.xp):levelOf(0);
     return `
-    <div class="panel">
-      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:4px">
-        <span class="av" style="background:${p.hue};width:34px;height:34px;font-size:16px">${p.initial}</span>
-        <div style="margin-right:auto">
-          <h3 style="font-size:19px">${p.name}</h3>
-          <div class="eyebrow">${p.level}</div>
-        </div>
-        <span class="chip">${d&&d.updatedAt?"Última vez: "+fecha(d.updatedAt):"Sin actividad todavía"}</span>
+    <div class="tcard" style="background:${p.bg}">
+      <div class="row">
+        <span class="av2">${p.initial}</span>
+        <div class="grow"><span class="nm">${p.name}</span><span class="f15">${d&&d.updatedAt?"Última vez: "+fecha(d.updatedAt):"Sin actividad todavía"}</span></div>
+        <span class="xpbig" style="font-size:17px">${d?d.xp:0} XP</span>
       </div>
-      <div style="margin:10px 0 4px"><button class="btn small" data-tv="${p.id}">🔎 Ver los ejercicios de ${p.name}</button></div>
-
-      ${!d?`<p class="empty">Todavía no ha practicado nada.</p>`:`
-      <div class="tiles" style="margin:14px 0 6px">
-        <div class="tile hi"><span class="k">XP</span><span class="v">${d.xp}</span><span class="s">${lv.name}</span></div>
-        <div class="tile"><span class="k">Dominadas</span><span class="v">${s.ok}</span><span class="s">de ${s.items.length}</span></div>
-        <div class="tile"><span class="k">Precisión</span><span class="v">${s.acc}%</span><span class="s">${d.stats.correct} de ${d.stats.answers}</span></div>
-        <div class="tile"><span class="k">Mejor racha</span><span class="v">${d.stats.bestStreak} 🔥</span><span class="s">${d.stats.sessions.length} ronda${d.stats.sessions.length===1?"":"s"}</span></div>
+      <div class="trio">
+        <div class="stat"><b>${s.acc}%</b><span>Precisión</span></div>
+        <div class="stat"><b>${s.ok}</b><span>Dominadas</span></div>
+        <div class="stat"><b>${s.wrong.length}</b><span>Fallos</span></div>
       </div>
-
-      <div class="bars" style="margin-top:12px">
+      <button class="bigbtn white" data-tv="${p.id}">🔎 Ver sus ejercicios</button>
+    </div>
+    ${d?`<details class="more">
+      <summary>Detalle de ${p.name}</summary>
+      <div class="inner">
+        <div class="f15" style="color:var(--soft)">${levelOf(d.xp).name} · mejor racha ${d.stats.bestStreak} 🔥 · ${d.stats.sessions.length} ronda${d.stats.sessions.length===1?"":"s"} · ${d.stats.correct} de ${d.stats.answers} respuestas bien</div>
         ${Object.keys(s.levels).sort().map(L=>{
           const g=s.levels[L], pc=Math.round(g.ok/g.tot*100);
-          return `<div class="barrow"><span class="nm">Nivel ${L}</span>
-            <span class="bartrack"><span class="barfill" style="width:${Math.max(1,pc)}%"></span></span>
-            <span class="vv">${pc}%</span></div>`;
+          return `<div class="lvrow"><span>Nivel ${L}</span><div class="bar paper"><i style="width:${pc}%"></i></div><span class="vv">${pc}%</span></div>`;
         }).join("")}
+        ${s.wrong.length?`
+          <h4>Pendientes de repasar (${s.wrong.length})</h4>
+          <div class="misslist">
+            ${s.wrong.slice(0,8).map(it=>`<div class="miss" data-rev="${it.id}" data-sid="${p.id}" style="cursor:pointer" title="Ver la pregunta con la respuesta del alumno">
+              <div style="color:var(--ink-faint);font-size:13px">${it.ex.unit.short} · N${it.ex.lvl||1} · Ej. ${it.ex.no||it.ex.n} · ver →</div>
+              ${esc(it.q.split("\n")[0]).slice(0,110)}
+            </div>`).join("")}
+          </div>`:`<p class="empty2">No tiene nada pendiente de repasar.</p>`}
+        ${d.stats.selfmarks.length?`
+          <h4>Se ha dado por bueno (${d.stats.selfmarks.length}) — revísalas</h4>
+          <div class="tablewrap"><table class="rep">
+            <thead><tr><th>Fecha</th><th>Ejercicio</th><th>Lo que escribió / la respuesta</th></tr></thead>
+            <tbody>${d.stats.selfmarks.slice().reverse().slice(0,10).map(r=>`<tr>
+              <td class="mono">${fecha(r.ts)}</td>
+              <td class="mono">${r.unit} · Ej. ${r.exN}</td>
+              <td><span class="yours">${esc(r.given)}</span><br><span class="right">${esc(r.model)}</span></td>
+            </tr>`).join("")}</tbody>
+          </table></div>`:""}
       </div>
-
-      ${s.wrong.length?`
-        <div class="eyebrow" style="margin:18px 0 8px">Pendientes de repasar (${s.wrong.length})</div>
-        <div class="misslist">
-          ${s.wrong.slice(0,8).map(it=>`<div class="miss" data-rev="${it.id}" data-sid="${p.id}" style="cursor:pointer" title="Ver la pregunta con la respuesta del alumno">
-            <div style="color:var(--ink-faint);font-size:12px">${it.ex.unit.short} · N${it.ex.lvl||1} · Ej. ${it.ex.no||it.ex.n} · ver →</div>
-            ${esc(it.q.split("\n")[0]).slice(0,110)}
-          </div>`).join("")}
-        </div>`:`<p class="empty" style="margin-top:14px">No tiene nada pendiente de repasar.</p>`}
-
-      ${d.stats.selfmarks.length?`
-        <div class="eyebrow" style="margin:18px 0 8px">Se ha dado por bueno (${d.stats.selfmarks.length}) — revísalas</div>
-        <div class="tablewrap"><table class="rep">
-          <thead><tr><th>Fecha</th><th>Ejercicio</th><th>Lo que escribió / la respuesta</th></tr></thead>
-          <tbody>${d.stats.selfmarks.slice().reverse().slice(0,10).map(r=>`<tr>
-            <td class="mono">${fecha(r.ts)}</td>
-            <td class="mono">${r.unit} · Ej. ${r.exN}</td>
-            <td><span class="yours">${esc(r.given)}</span><br><span class="right">${esc(r.model)}</span></td>
-          </tr>`).join("")}</tbody>
-        </table></div>`:""}
-      `}
-    </div>`;
+    </details>`:`<p class="empty2">${p.name} todavía no ha practicado nada.</p>`}`;
   }).join("")}
+  <p class="footnote">${window.CLOUD?"Datos en vivo desde la nube.":"Sin conexión con la nube: viendo solo lo guardado en este dispositivo."}</p>
+  </div></div>`;
 
-  <p class="footnote">${window.CLOUD?"Datos en vivo desde la nube.":"Sin conexión con la nube: viendo solo lo guardado en este dispositivo."}</p>`;
-
-  document.getElementById("back2").onclick=()=>leave();
+  bindTeacherHead();
   app.querySelectorAll("[data-tv]").forEach(b=>b.onclick=()=>go({name:"tstudent",id:b.dataset.tv}));
   app.querySelectorAll("[data-rev]").forEach(el=>el.onclick=()=>{
     const it=INDEX[el.dataset.rev]; if(!it) return;
@@ -2302,126 +2581,142 @@ function unitStats(u){
   const ok=items.filter(i=>S.ex[i.id]==="ok").length;
   return {items, ok, pct:Math.round(ok/items.length*100)};
 }
+function unitRow(u,i){
+  const st=unitStats(u);
+  return `<button class="card urow" data-unit="${u.id}" style="animation-delay:${60+i*45}ms">
+    <span class="ring" style="background:conic-gradient(var(--pen) ${st.pct}%,var(--card2) 0)" aria-hidden="true"><span>${st.pct}%</span></span>
+    <span class="grow"><span class="eyeb">${esc(u.num.toUpperCase())}</span><span class="t">${u.icon} ${esc(u.title)}${st.pct===100?" 🏅":""}</span></span>
+    <span class="arrow" aria-hidden="true">→</span>
+  </button>`;
+}
+function bindUnitRows(){
+  app.querySelectorAll("[data-unit]").forEach(b=>b.onclick=()=>go({name:"unit",unit:UNITS.find(u=>u.id===b.dataset.unit)}));
+}
 function renderHome(){
-  const lv=levelOf(S.xp);
+  const p=me(), lv=levelOf(S.xp);
   const wrongN=S.wrong.length;
   const mine=myItems();
-  const mastered=mine.filter(it=>S.ex[it.id]==="ok").length;
   const list=myUnits();
   const pend=pendingList()[0];
+  /* racha y bonus de la ronda a medias; sin ronda, la mejor racha */
+  const streak=pend?(pend.streak||0):0;
   app.innerHTML=`
-  <section class="hero">
-    <div class="eyebrow">${me().name} · ${me().level}</div>
-    <h1>Entrena la gramática hasta que te salga <span class="mk">sin pensar</span>.</h1>
-    <p class="lede">${list.length?list.length+" unidad"+(list.length===1?"":"es")+" y "+mine.length+" preguntas":"Todavía sin ejercicios"}, con corrección automática, explicación en español y vocabulario traducible de un toque.</p>
-    <div class="levelbar">
-      <span class="chip"><span class="lab">Nivel</span><b>${lv.name}</b></span>
-      <div class="track" title="Progreso hasta el siguiente nivel"><i style="width:${lv.pct}%"></i></div>
-      <span class="pct" style="min-width:auto;white-space:nowrap">${lv.nxt?"faltan "+(lv.nxt.xp-S.xp)+" XP":"nivel máximo"}</span>
+  <header class="band">
+    <div class="row">
+      <span class="av2" aria-hidden="true">${p.initial}</span>
+      <div class="grow"><span class="f15">${p.name}</span><span class="hname">${lv.name}</span></div>
+      <span class="xpbig" data-fly>${S.xp} XP</span>
     </div>
-  </section>
+    <div style="display:grid;gap:6px">
+      <div class="bar" role="progressbar" aria-label="Progreso hasta el siguiente nivel" aria-valuenow="${lv.pct}" aria-valuemin="0" aria-valuemax="100"><i style="width:${lv.pct}%"></i></div>
+      <div class="f15">${lv.nxt?"Faltan "+(lv.nxt.xp-S.xp)+" XP para "+lv.nxt.name:"¡Has llegado al nivel máximo!"}</div>
+    </div>
+    <div class="trio">
+      <div class="stat"><b>🔥 ${pend?streak:S.stats.bestStreak}</b><span>${pend?"Racha":"Mejor racha"}</span></div>
+      <div class="stat gold" title="Multiplicador de XP: sube 0,1 por cada acierto seguido, hasta ×2.0"><b>${fmtMult(multOf(streak))}</b><span>Bonus XP</span></div>
+      <div class="stat" title="Tokens para salvar la racha"><b>🎟️ ${S.tokens}</b><span>Tokens</span></div>
+    </div>
+  </header>
 
-  <div class="modes">
-    ${pend?`<button class="mode mode-resume" data-act="resume">
-      <span class="mode-ico">▶</span>
-      <span><span class="mode-t">Retomar donde lo dejaste</span><br><span class="mode-d">${esc(pend.meta.title||"Tu ronda")} · pregunta ${Math.min(pend.i+1,pend.ids.length)} de ${pend.ids.length}</span></span>
-      <span class="mode-n">${Math.min(pend.i,pend.ids.length)} / ${pend.ids.length}</span>
+  <div class="sec">
+    ${pend?`<button class="resume" data-act="resume">
+      <span class="txt">
+        <span class="eb">SIGUE JUGANDO</span>
+        <span class="t">${esc(pend.meta.title||"Tu ronda")}</span>
+        <span class="f15">Pregunta ${Math.min(pend.i+1,pend.ids.length)} de ${pend.ids.length}</span>
+      </span>
+      <span class="play" aria-hidden="true">▶</span>
     </button>`:""}
-    <button class="mode" data-act="exam">
-      <span class="mode-ico">🎯</span>
-      <span><span class="mode-t">Examen mixto</span><br><span class="mode-d">${Math.min(20,mine.length)} preguntas al azar de las unidades de ${me().name}. Nota sobre 10.</span></span>
-      <span class="mode-n">${Math.min(20,mine.length)} preguntas</span>
-    </button>
-    <button class="mode" data-act="wrong" ${wrongN?"":'disabled style="opacity:.45"'}>
-      <span class="mode-ico">🩹</span>
-      <span><span class="mode-t">Repasar mis fallos</span><br><span class="mode-d">${wrongN?"Vuelven las preguntas que fallaste y las que te autocorregiste.":"Aquí se irán guardando las preguntas que falles."}</span></span>
-      <span class="mode-n">${wrongN} pendiente${wrongN===1?"":"s"}</span>
-    </button>
-    <button class="mode" data-act="stats">
-      <span class="mode-ico">📊</span>
-      <span><span class="mode-t">Estadísticas e informe</span><br><span class="mode-d">Nivel, XP, precisión por unidad y las frases que se han autocorregido.</span></span>
-      <span class="mode-n">${mastered} / ${mine.length} dominadas</span>
-    </button>
+    <div class="duo">
+      <button class="card mcard" data-act="exam" style="animation-delay:30ms">
+        <span class="t">🎯 Examen mixto</span><span class="s">${Math.min(20,mine.length)} preguntas</span>
+      </button>
+      <button class="card mcard" data-act="wrong" style="animation-delay:60ms" ${wrongN?"":'aria-disabled="true"'}>
+        <span class="t">🩹 Repasar</span><span class="s ${wrongN?"red":""}">${wrongN?wrongN+" fallo"+(wrongN===1?"":"s")+" pendiente"+(wrongN===1?"":"s"):"Sin fallos pendientes"}</span>
+      </button>
+    </div>
+    ${list.length?list.map(unitRow).join(""):`<p class="empty2">Todavía no hay unidades para ${p.name}. En cuanto haya ejercicios aparecerán aquí.</p>`}
   </div>
+  ${navHTML("home")}`;
 
-  <div class="eyebrow" style="margin:26px 0 12px">Unidades de ${me().name}</div>
-
-  <div class="units">
-    ${list.length?list.map((u,i)=>{
-      const st=unitStats(u);
-      return `<button class="unit" data-unit="${u.id}" style="animation-delay:${30+i*45}ms">
-        ${st.pct===100?'<span class="medal">🏅</span>':""}
-        <div class="unit-top"><span class="unit-num">${u.num.toUpperCase()}</span></div>
-        <h3>${u.icon} ${u.title}</h3>
-        <p class="unit-d">${u.desc}</p>
-        <div class="tags">
-          ${(u.gram||[]).slice(0,3).map(g=>`<span class="tag2 g">${g}</span>`).join("")}
-          ${(u.lex||[]).slice(0,1).map(g=>`<span class="tag2 v">${g}</span>`).join("")}
-        </div>
-        <div class="unit-foot">
-          <div class="track"><i style="width:${st.pct}%"></i></div>
-          <span class="pct">${st.pct}%</span>
-        </div>
-      </button>`;
-    }).join(""):`<p class="empty">Todavía no hay unidades para ${me().name}. En cuanto añadas ejercicios aparecerán aquí.</p>`}
-  </div>
-  <p class="footnote">El progreso de cada alumno se guarda por separado en este navegador.</p>`;
-
-  app.querySelectorAll("[data-unit]").forEach(b=>b.onclick=()=>go({name:"unit",unit:UNITS.find(u=>u.id===b.dataset.unit)}));
+  bindNav(); bindUnitRows();
   const rs=app.querySelector('[data-act="resume"]'); if(rs&&pend) rs.onclick=()=>resumeRun(pend.key);
-  const ex=app.querySelector('[data-act="exam"]'); if(ex) ex.onclick=startExam;
-  const wr=app.querySelector('[data-act="wrong"]'); if(wr&&wrongN) wr.onclick=startWrong;
-  app.querySelector('[data-act="stats"]').onclick=()=>go({name:"stats"});
+  app.querySelector('[data-act="exam"]').onclick=startExam;
+  app.querySelector('[data-act="wrong"]').onclick=()=>{ if(wrongN) startWrong(); else toast("No tienes fallos pendientes. ¡Bien hecho!"); };
+}
+
+/* lista de unidades (solo hace falta cuando un alumno tiene más de una) */
+function renderUnits(){
+  const list=myUnits();
+  app.innerHTML=`
+  <header class="band">
+    <div class="row"><div class="grow"><span class="heb">${esc(me().name.toUpperCase())}</span><span class="htitle">Tus unidades</span></div></div>
+  </header>
+  <div class="sec">${list.length?list.map(unitRow).join(""):`<p class="empty2">Todavía no hay unidades.</p>`}</div>
+  ${navHTML("units")}`;
+  bindNav(); bindUnitRows();
 }
 
 /* =====================================================================
    UNIDAD
    ===================================================================== */
+function levelsOf(u){ return [...new Set(u.exercises.map(e=>e.lvl||1))].sort((a,b)=>a-b); }
+/* al abrir la unidad se enseña el nivel con algo a medias o, si no, el primero sin terminar */
+function defaultLevel(u){
+  const L=levelsOf(u);
+  const pend=u.exercises.find(e=>resumeValid(S.resume&&S.resume["ex:"+e.id]));
+  if(pend) return pend.lvl||1;
+  const open=L.find(l=>u.exercises.filter(e=>(e.lvl||1)===l).some(e=>e.items.some(i=>S.ex[i.id]!=="ok")));
+  return open||L[0];
+}
 function renderUnit(u){
+  const levels=levelsOf(u);
+  if(!levels.includes(view.lvl)) view.lvl=defaultLevel(u);
+  const L=view.lvl;
+  const lvPct=l=>{ const it=u.exercises.filter(e=>(e.lvl||1)===l).flatMap(e=>e.items); return Math.round(it.filter(i=>S.ex[i.id]==="ok").length/it.length*100); };
+  const group=u.exercises.filter(e=>(e.lvl||1)===L);
+  const unitPend=resumeValid(S.resume&&S.resume["unit:"+u.id]);
+  const many=myUnits().length>1;
   app.innerHTML=`
-  <button class="back" id="back">← Todas las unidades</button>
-  <section class="hero" style="padding-top:8px">
-    <div class="eyebrow">${u.num} · ${me().name} · ${me().level}</div>
-    <h1 style="font-size:clamp(26px,4.4vw,38px)">${u.icon} ${u.title}</h1>
-    <p class="lede">${u.desc}</p>
-    <div class="tags" style="margin-top:2px">
-      ${(u.gram||[]).map(g=>`<span class="tag2 g">${g}</span>`).join("")}
-      ${(u.lex||[]).map(g=>`<span class="tag2 v">${g}</span>`).join("")}
+  <header class="band">
+    <div class="row" style="gap:10px">
+      <button class="hbtn" id="back" aria-label="${many?"Volver a las unidades":"Volver al inicio"}">←</button>
+      <div class="grow"><span class="heb">${esc(u.num.toUpperCase())}</span><span class="htitle">${u.icon} ${esc(u.title)}</span></div>
+      ${(u.theory||[]).length?'<button class="hbtn" id="theory" aria-label="Ver la chuleta">📖</button>':""}
     </div>
-    <div style="display:flex;gap:9px;flex-wrap:wrap;margin-top:8px">
-      <button class="btn small" id="playall">${resumeValid(S.resume&&S.resume["unit:"+u.id])?"▶ Continuar la unidad":"▶ Jugar la unidad entera"}</button>
-      <button class="btn ghost small" id="theory">📖 Ver la chuleta</button>
+    ${levels.length>1?`<div class="seg" role="tablist" aria-label="Niveles">
+      ${levels.map(l=>`<button role="tab" data-lvl="${l}" class="${l===L?"on":""}" aria-selected="${l===L}">Nivel ${l} · ${lvPct(l)}%</button>`).join("")}
+    </div>`:""}
+  </header>
+  <div class="sec">
+    <div class="exgrid">
+      ${group.map((ex,ix)=>{
+        const n=ex.items.length;
+        const done=ex.items.filter(i=>S.ex[i.id]).length;
+        const ok=ex.items.filter(i=>S.ex[i.id]==="ok").length;
+        const r=S.resume&&S.resume["ex:"+ex.id], pending=resumeValid(r);
+        const cls=pending?"now":done===n?"done":done?"part":"";
+        const sc=pending?"▶ "+Math.min(r.i,r.ids.length)+"/"+r.ids.length
+          :done===n?"✓ "+ok+"/"+n
+          :done?ok+"/"+n
+          :n+" preg.";
+        return `<button class="xt ${cls}" data-ex="${ex.id}" style="animation-delay:${30+ix*40}ms">
+          <span class="top"><span class="n">${ex.no||ex.n}</span><span class="sc">${sc}</span></span>
+          <span class="t">${esc(ex.title)}${ex.vocab?" 🔤":""}</span>
+        </button>`;
+      }).join("")}
     </div>
-  </section>
-  ${[...new Set(u.exercises.map(e=>e.lvl||1))].sort((a,b)=>a-b).map(L=>{
-    const group=u.exercises.filter(e=>(e.lvl||1)===L);
-    const gok=group.flatMap(e=>e.items).filter(i=>S.ex[i.id]==="ok").length;
-    const gtot=group.flatMap(e=>e.items).length;
-    return `
-  <div class="lvlhead">
-    <span class="lvlnum">Nivel ${L}</span>
-    <span class="lvldesc">${group.length} ejercicios · ${gtot} preguntas · frases distintas, misma dificultad</span>
-    <span class="lvlpct">${Math.round(gok/gtot*100)}%</span>
+    <button class="card urow" id="playall" style="animation-delay:120ms">
+      <span class="grow"><span class="t" style="font-size:17px">${unitPend?"▶ Continuar la unidad entera":"▶ Jugar la unidad entera"}</span><span class="f15" style="color:var(--soft)">Todos los ejercicios seguidos</span></span>
+      <span class="arrow" aria-hidden="true">→</span>
+    </button>
   </div>
-  <div class="exlist">
-    ${group.map((ex,ix)=>{
-      const done=ex.items.filter(i=>S.ex[i.id]).length;
-      const ok=ex.items.filter(i=>S.ex[i.id]==="ok").length;
-      return `<button class="ex" data-ex="${ex.id}" style="animation-delay:${40+ix*55}ms">
-        <span class="ex-n">${String(ex.no||ex.n).padStart(2,"0")}</span>
-        <span class="ex-body"><span class="ex-t">${ex.title}${ex.vocab?" 🔤":""}</span>${(()=>{
-          const r=S.resume&&S.resume["ex:"+ex.id];
-          return resumeValid(r)?` <span class="pendchip">A medias · ${Math.min(r.i,r.ids.length)}/${r.ids.length}</span>`:"";
-        })()}<br><span class="ex-d">${ex.instr}</span></span>
-        <span class="ex-score">
-          <span class="dotrow">${ex.items.map(i=>`<span class="dot ${S.ex[i.id]==="ok"?"on":(S.ex[i.id]?"mid":"")}"></span>`).join("")}</span>
-          ${done?ok+"/"+ex.items.length:ex.items.length+" preg."}
-        </span>
-      </button>`;
-    }).join("")}
-  </div>`;}).join("")}`;
-  document.getElementById("back").onclick=()=>go({name:"home"});
-  document.getElementById("theory").onclick=()=>openTheory(u);
+  ${navHTML("units")}`;
+
+  bindNav();
+  document.getElementById("back").onclick=()=>go({name:many?"units":"home"});
+  const th=document.getElementById("theory"); if(th) th.onclick=()=>openTheory(u);
+  app.querySelectorAll("[data-lvl]").forEach(b=>b.onclick=()=>{ view.lvl=+b.dataset.lvl; renderUnit(u); });
   document.getElementById("playall").onclick=()=>startRun(u.exercises.flatMap(e=>e.items),{title:u.title,unit:u});
   app.querySelectorAll("[data-ex]").forEach(b=>b.onclick=()=>{
     const ex=u.exercises.find(e=>e.id===b.dataset.ex);
@@ -2518,32 +2813,35 @@ function renderResume(){
   const {key,items,meta}=view, r=S.resume[key];
   const total=r.ids.length, doneN=Math.min(r.i,total), finished=r.i>=total;
   app.innerHTML=`
-  <section class="hero" style="padding:44px 0 6px;text-align:center;justify-items:center">
-    <div class="eyebrow">Ronda a medias</div>
-    <h1 style="font-size:clamp(24px,4.2vw,34px)">${esc(r.meta.title||"Tu ronda")}</h1>
-    <p class="lede" style="margin:0 auto">${finished
-      ?"Ya contestaste todas las preguntas. Puedes ver cómo te salió."
-      :"La dejaste en la pregunta "+(doneN+1)+" de "+total+"."}</p>
-  </section>
-  <div class="lockbox" style="max-width:420px">
-    <div class="track" style="width:100%"><i style="width:${Math.round(doneN/total*100)}%"></i></div>
-    <div class="resume-meta">
-      <span class="chip">${doneN} / ${total}</span>
-      <span class="chip">Aciertos <b>${r.correct}</b></span>
-      <span class="chip streak">🔥 <b>${r.streak}</b></span>
+  <div class="screen">
+    <header class="band">
+      <div class="row" style="gap:10px">
+        <button class="hbtn" id="res-back" aria-label="Volver">←</button>
+        <div class="grow"><span class="heb">RONDA A MEDIAS</span><span class="htitle">${esc(r.meta.title||"Tu ronda")}</span></div>
+      </div>
+      <div class="bar" aria-hidden="true"><i style="width:${Math.round(doneN/total*100)}%"></i></div>
+      <div class="trio">
+        <div class="stat"><b>${doneN}/${total}</b><span>Hechas</span></div>
+        <div class="stat"><b>${r.correct}</b><span>Aciertos</span></div>
+        <div class="stat"><b>🔥 ${r.streak||0}</b><span>Racha</span></div>
+      </div>
+    </header>
+    <div class="sec">
+      <p class="empty2" style="font-size:17px">${finished
+        ?"Ya contestaste todas las preguntas. Puedes ver cómo te salió."
+        :"La dejaste en la pregunta "+(doneN+1)+" de "+total+". Si sigues, conservas la racha y el multiplicador."}</p>
     </div>
-    <div class="lockacts">
-      <button class="btn" id="res-go">${finished?"Ver resultados":"Continuar"}</button>
-      <button class="btn ghost" id="res-new">Empezar de nuevo</button>
+    <div class="dfoot">
+      <button class="bigbtn" id="res-go">${finished?"Ver resultados":"▶ Seguir"}</button>
+      <button class="ghostbtn wide" id="res-new">Empezar de nuevo</button>
     </div>
-    <button class="back" id="res-back" style="margin-top:2px">← Volver</button>
   </div>`;
   document.getElementById("res-go").onclick=()=>resumeRun(key);
   document.getElementById("res-new").onclick=()=>{
     clearResume(key); save();
     startRun(items, Object.assign({}, meta, {fresh:true}));
   };
-  document.getElementById("res-back").onclick=()=>{ meta.unit?go({name:"unit",unit:meta.unit}):go({name:"home"}); };
+  document.getElementById("res-back").onclick=()=>{ meta.unit?go({name:"unit",unit:meta.unit,lvl:meta.ex?meta.ex.lvl:undefined}):go({name:"home"}); };
 }
 function startExam(){
   const pool=myItems();
@@ -2561,17 +2859,47 @@ function typeBadge(it){
   if(it.tr) return "Traduce";
   return "Escribe";
 }
-function renderPlay(){
+/* banda de la partida: salir, contador, racha × multiplicador y una casilla por pregunta */
+function playHeadInner(){
+  const n=run.items.length, i=run.i;
+  const m=multOf(run.streak), nx=multOf(run.streak+1);
+  const badge=run.drop
+    ? `<span class="badge2 drop" data-fly aria-label="Multiplicador perdido: de ${fmtMult(run.drop)} a ×1.0"><s>${fmtMult(run.drop)}</s><span>×1.0</span></span>`
+    : `<span class="badge2 ${run.streak?"":"solo"}" data-fly title="Racha y multiplicador de XP">${run.streak?`<span class="s">🔥 ${run.streak}</span>`:""}<span class="m">${fmtMult(m)}</span></span>`;
+  const multLine=run.drop?""
+    :`<div class="multrow"><b class="gold">${fmtMult(m)}</b><span class="bar thin" title="Hacia el tope de ×2.0"><i style="width:${Math.round((m-1)*100)}%"></i></span><span>${
+      m>=2?"¡Multiplicador al máximo!"
+      :nx>m?`Acierta y sube a <b>${fmtMult(nx)}</b>`
+      :`Encadena aciertos para <b>×1.1</b>`}</span></div>`;
+  let prog;
+  if(n<=30){
+    const miss=new Set(run.misses.map(x=>x.it.id));
+    prog=`<div class="segs" style="grid-template-columns:repeat(${n},1fr)" aria-hidden="true">${run.items.map((it,k)=>{
+      const c=k<i?(miss.has(it.id)?"ko":"ok"):k===i?(run.answered?(run.lastOk?"ok":"ko"):"cur"):"";
+      return `<i class="${c}"></i>`;
+    }).join("")}</div>`;
+  } else prog=`<div class="bar" style="height:10px" aria-hidden="true"><i style="width:${(i+(run.answered?1:0))/n*100}%"></i></div>`;
+  return `<div class="row" style="gap:10px">
+      <button class="hbtn" id="exit" aria-label="Salir de la ronda">✕</button>
+      <span class="qcnt" aria-label="Pregunta ${i+1} de ${n}">${i+1} / ${n}</span>
+      ${badge}
+    </div>
+    ${multLine}
+    ${prog}`;
+}
+function exitRun(){
   const m=run.meta;
-  app.innerHTML=`
-  <button class="back" id="back">← Salir</button>
-  <div class="playhead">
-    <div class="track"><i style="width:${run.i/run.items.length*100}%"></i></div>
-    <span class="qcount">${run.i+1} / ${run.items.length}</span>
-  </div>
-  <div class="qcard" id="qcard"></div>`;
-  document.getElementById("back").onclick=()=>{ m.unit?go({name:"unit",unit:m.unit}):go({name:"home"}); };
+  if(m.unit) go({name:"unit",unit:m.unit,lvl:m.ex?m.ex.lvl:undefined}); else go({name:"home"});
+}
+function renderPlay(){
+  run.drop=0;
+  app.innerHTML=`<div class="screen">
+    <header class="band pband" id="phead"></header>
+    <div class="qwrap" id="qcard"></div>
+  </div>`;
+  syncTop();
   paintQuestion(run.items[run.i]);
+  window.scrollTo({top:0,behavior:"instant"});
 }
 
 /* ---------- glosas de vocabulario ----------
@@ -2965,7 +3293,7 @@ function bankFor(ex){ return shuffledOnce("b"+ex.id,ex.bank); }
 function hintFor(it){ return it.hint&&it.hint.includes(" · ")?shuffledOnce("h"+it.id,it.hint.split(" · ")).join(" · "):it.hint; }
 function paintQuestion(it){
   const card=document.getElementById("qcard"), ex=it.ex;
-  let body="";
+  let box="", below="";
   const stemHTML=t=>wrapGloss(t, it.gloss, !(it.tr||ex.nogloss));
 
   if(it.t==="choice"){
@@ -2974,48 +3302,49 @@ function paintQuestion(it){
        corrección compara con ese índice, no con la posición en pantalla. */
     const order=shuffle(it.opts.map((_,i)=>i));
     run.lastOrder=order;   /* el profe verá las opciones en el orden en que las vio el alumno */
-    body=`<div class="stem">${stemHTML(it.q).replace(/___/g,'<span style="color:var(--ink-faint)">______</span>')}</div>
-    <div class="opts ${it.opts.length>4?"bank":""}" id="opts">
+    box=`<div class="stem">${stemHTML(it.q).replace(/___/g,'<span style="color:var(--soft)">______</span>')}</div>`;
+    below=`<div class="opts ${it.opts.length>4?"bank":""}" id="opts">
       ${order.map((i,pos)=>`<button class="opt" data-i="${i}" aria-pressed="false"><span class="key">${String.fromCharCode(65+pos)}</span><span>${esc(it.opts[i])}</span></button>`).join("")}
     </div>`;
   } else if(it.t==="fill"){
     let n=0;
-    const stem=stemHTML(it.q).replace(/___/g,()=>`<input class="blank" data-b="${n++}" autocomplete="off" autocapitalize="off" spellcheck="false">`);
-    body=`<div class="stem">${stem}</div>
-      ${it.hint?`<div style="margin-top:12px" class="instr">Pista: <span class="hint" style="font-family:var(--f-mono)">${esc(hintFor(it))}</span></div>`:""}
-      ${ex.bank?`<div class="instr" style="margin-top:6px">Banco: <span style="font-family:var(--f-mono);color:var(--ink)">${bankFor(ex).join(" · ")}</span></div>`:""}`;
+    const stem=stemHTML(it.q).replace(/___/g,()=>`<input class="blank" data-b="${n++}" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Hueco ${n}">`);
+    box=`<div class="stem">${stem}</div>
+      ${it.hint?`<div class="hintline">Pista: <span>${esc(hintFor(it))}</span></div>`:""}
+      ${ex.bank?`<div class="hintline bank">Banco: <span>${bankFor(ex).join(" · ")}</span></div>`:""}`;
   } else if(it.t==="write"){
-    body=`<div class="stem">${stemHTML(it.q)}</div>
-      ${ex.bank?`<div class="instr" style="margin-top:10px">Banco: <span style="font-family:var(--f-mono);color:var(--ink)">${bankFor(ex).join(" · ")}</span></div>`:""}
+    box=`<div class="stem">${stemHTML(it.q)}</div>
+      ${ex.bank?`<div class="hintline bank">Banco: <span>${bankFor(ex).join(" · ")}</span></div>`:""}
       <div class="answerline">
-        ${it.lead?`<div class="stem lead" style="font-size:15px">${esc(it.lead)} …</div>`:""}
-        <input id="wr" placeholder="${it.tr?"Escribe la frase en inglés":"Escribe la frase completa"}" autocomplete="off" autocapitalize="off" spellcheck="false">
+        ${it.lead?`<div class="stem lead">${esc(it.lead)} …</div>`:""}
+        <input id="wr" placeholder="${it.tr?"Escribe la frase en inglés":"Escribe la frase completa"}" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Tu respuesta">
       </div>`;
   } else if(it.t==="match"){
     const left=it.pairs.map((p,i)=>({txt:p[0],i}));
     const right=shuffle(it.pairs.map((p,i)=>({txt:p[1],i})));
-    body=`<div class="stem" style="font-size:16px">${esc(it.q)}</div>
-    <div class="matchgrid">
+    box=`<div class="stem" style="font-size:18px">${esc(it.q)}</div>`;
+    below=`<div class="matchgrid">
       <div class="mcol">${left.map(o=>`<button class="mitem" data-side="L" data-i="${o.i}"><span class="tag">${o.i+1}</span>${esc(o.txt)}</button>`).join("")}</div>
       <div class="mcol">${right.map(o=>`<button class="mitem" data-side="R" data-i="${o.i}">${esc(o.txt)}</button>`).join("")}</div>
     </div>`;
   }
+  const hasTheory=theoryFor(ex.unit,ex).length>0;
+  const glossy=box.indexOf('class="voc"')>=0||box.indexOf('class="vrb"')>=0;
 
+  card.classList.remove("good","bad");
   card.innerHTML=`
-    <div class="qtag">
-      <span class="badge">${typeBadge(it)}</span>
-      <span class="badge">${ex.unit.short} · N${ex.lvl||1} · Ej. ${ex.no||ex.n}</span>
-      <span class="instr">${esc(ex.instr)}</span>
+    <div class="qbody">
+      <div class="qbox">
+        ${ex.instr&&ex.instr!==it.q?`<div class="instr">${esc(ex.instr)}</div>`:""}
+        ${box}
+        ${glossy?`<div class="vochelp">Toca las palabras subrayadas: <span class="lg-n">azul</span> = sustantivos y adjetivos, <span class="lg-v">rojo</span> = verbos con sus tres columnas.</div>`:""}
+      </div>
+      ${below}
     </div>
-    ${body}
-    ${(body.indexOf('class="voc"')>=0||body.indexOf('class="vrb"')>=0)?`<div class="vochelp">Toca las palabras subrayadas: <span class="lg-n">azul</span> = sustantivos y adjetivos, <span class="lg-v">rojo</span> = verbos con sus tres columnas.</div>`:""}
-    <div id="fbslot"></div>
-    <div class="qfoot">
-      <button class="btn" id="check">Comprobar</button>
-      <button class="btn ghost" id="skip">Ver la respuesta</button>
-      <span class="spacer"></span>
-      ${theoryFor(ex.unit,ex).length?'<button class="btn ghost small" id="cheat">📖 Chuleta</button>':""}
-      <span class="kbd">Enter</span>
+    <div class="qfoot2 ${hasTheory?"":"solo"}" id="qfoot">
+      ${hasTheory?'<button class="sqbtn" id="cheat" aria-label="Ver la chuleta">📖</button>':""}
+      <button class="bigbtn" id="check">Comprobar</button>
+      <button class="textbtn" id="skip">Ver la respuesta</button>
     </div>`;
 
   bindGloss(card);
@@ -3030,10 +3359,10 @@ function paintQuestion(it){
       if(run.answered) return;
       picked=+b.dataset.i;
       card.querySelectorAll(".opt").forEach(x=>{ const on=x===b; x.classList.toggle("sel",on); x.setAttribute("aria-pressed",String(on)); });
-      checkBtn.disabled=false; checkBtn.style.opacity="";
+      checkBtn.disabled=false;
       SFX.play("pick");
     });
-    checkBtn.disabled=true; checkBtn.style.opacity=".45";
+    checkBtn.disabled=true;
     checkBtn.onclick=()=>{ if(picked!==null) resolveChoice(it,picked); };
   }
   if(it.t==="fill"){
@@ -3046,7 +3375,7 @@ function paintQuestion(it){
     inp.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();onEnter();}});
     checkBtn.onclick=()=>resolveWrite(it);
   }
-  if(it.t==="match"){ setupMatch(it,card); checkBtn.disabled=true; checkBtn.style.opacity=".45"; }
+  if(it.t==="match"){ setupMatch(it,card); checkBtn.disabled=true; }
   document.getElementById("skip").onclick=()=>reveal(it);
 }
 /* En las preguntas de elegir: A, B, C… o 1, 2, 3… seleccionan la opción que
@@ -3173,7 +3502,7 @@ function recordAnswer(it,r,ans){
 }
 function finish(it,ok,model,given,near,selfmarkable,revealed,ans){
   run.answered=true; run.checkedAt=Date.now();
-  const slot=document.getElementById("fbslot"), foot=document.querySelector(".qfoot");
+  const foot=document.getElementById("qfoot");
   const prevStreak=run.streak;
   let gained=0, mult=1;
 
@@ -3198,18 +3527,26 @@ function finish(it,ok,model,given,near,selfmarkable,revealed,ans){
     if(S.ex[it.id]!=="ok") S.ex[it.id]="ko";
     if(!S.wrong.includes(it.id)) S.wrong.push(it.id);
   }
+  /* la banda enseña cómo cae el multiplicador: ×1.2 tachado → ×1.0 */
+  run.lastOk=ok;
+  run.drop=!ok&&multOf(prevStreak)>1?multOf(prevStreak):0;
   recordAnswer(it, ok?"ok":revealed?"rev":near?"near":"ko", ans);
   saveResume();
   save(); syncTop();
   reactCard(ok);
   /* el acierto suena más rico cuanto más larga es la racha */
   SFX.play(ok?(run.streak>=6?"good3":run.streak>=3?"good2":"good"):near?"near":revealed?"reveal":"bad");
-  if(ok&&run.streak>=2) bumpChip(".chip.streak");
+  if(ok&&run.streak>=2) bumpChip("[data-fly]");
 
   const cls=ok?"good":(near?"near":"bad");
+  const short=!!model && model.length<=28 && it.t!=="match";
   const title=ok?(run.streak>=2?"¡Correcto! Racha de "+run.streak:"¡Correcto!")
     :near?"¡Casi! Revisa la ortografía"
-    :revealed?"Respuesta modelo":"No es esa";
+    :revealed?"Respuesta modelo"
+    :it.t==="match"?"Emparejadas, con "+esc(given)
+    :short?"Casi. Era «"+esc(model)+"»":"No es esa";
+  const showSol=!ok && it.t!=="match" && (near||revealed||!short);
+  const xpPill=gained?`<span class="xpp">${mult>1?"10 × "+mult.toFixed(1)+" = ":""}+${gained} XP</span>`:"";
 
   const canSave = !ok && !revealed && prevStreak>=2 && S.tokens>0;
   const selfOK  = selfmarkable && !revealed && canSelfMark(given,model) && run.selfUsed<SELFMARK_MAX;
@@ -3218,41 +3555,40 @@ function finish(it,ok,model,given,near,selfmarkable,revealed,ans){
     if(run.selfUsed>=SELFMARK_MAX) selfNote="Ya has usado las "+SELFMARK_MAX+" autocorrecciones de esta ronda.";
     else selfNote="La autocorrección necesita una respuesta completa, no una palabra suelta.";
   }
+  const hasTheory=theoryFor(it.ex.unit,it.ex).length>0;
+  const last=run.i+1>=run.items.length;
 
-  slot.innerHTML=`<div class="fb ${cls}">
-    <div class="fb-t">${ok?"✓":(near?"≈":"✕")} ${title}
-      ${gained?`<span class="xpgain">+${gained} XP ${mult>1?"("+fmtMult(mult)+")":""}</span>`:""}</div>
-    ${ok?"":`<div class="fb-sol"><b>Solución:</b> ${esc(model)}</div>`}
-    ${it.why?`<div class="fb-why">${it.why}</div>`:""}
-    ${(canSave||selfOK||selfNote)?`<div class="fb-acts">
-      ${canSave?`<button class="btn tok small" id="usetok">🎟️ Salvar la racha de ${prevStreak} (1 token)</button>`:""}
-      ${selfOK?`<button class="btn ghost small" id="selfok">Mi frase también vale ✓ (${SELFMARK_MAX-run.selfUsed} restante${SELFMARK_MAX-run.selfUsed===1?"":"s"})</button>`:""}
-      ${selfNote?`<span class="fb-note">${selfNote}</span>`:""}
-    </div>`:""}
-  </div>`;
-
-  foot.innerHTML=`<button class="btn" id="next">${run.i+1<run.items.length?"Siguiente →":"Ver resultados →"}</button>
-    <span class="spacer"></span>
-    ${theoryFor(it.ex.unit,it.ex).length?'<button class="btn ghost small" id="cheat2">📖 Chuleta</button>':""}
-    <span class="kbd">Enter</span>`;
+  foot.className="qsheet "+cls;
+  foot.setAttribute("role","status");
+  foot.innerHTML=`
+    <div class="sh-top"><h3>${title}</h3>${xpPill}</div>
+    ${showSol?`<div class="sol"><b>Solución:</b> ${esc(model)}</div>`:""}
+    ${it.why?`<div class="why">${it.why}</div>`:""}
+    ${selfOK?`<button class="ghostbtn wide" id="selfok">Mi frase también vale ✓ (${SELFMARK_MAX-run.selfUsed} restante${SELFMARK_MAX-run.selfUsed===1?"":"s"})</button>`:""}
+    ${selfNote?`<p class="fb-note">${selfNote}</p>`:""}
+    <div class="acts ${canSave?"two":""}">
+      ${canSave?`<button class="tokbtn" id="usetok" title="Gasta 1 token para salvar la racha de ${prevStreak}">🎟️ Mantener ${fmtMult(multOf(prevStreak))}</button>`:""}
+      <button class="bigbtn" id="next">${last?"Ver resultados":"Siguiente"}</button>
+    </div>
+    ${hasTheory?'<button class="textbtn" id="cheat2">📖 Ver la chuleta</button>':""}`;
   const cheat2=document.getElementById("cheat2"); if(cheat2) cheat2.onclick=e=>{e.stopPropagation();openTheory(it.ex.unit,it.ex);};
   document.getElementById("next").onclick=()=>{
     run.i++;
     if(run.i>=run.items.length) go({name:"done"}); else renderPlay();
   };
-  document.getElementById("next").focus();
+  document.getElementById("next").focus({preventScroll:true});
 
   const tk=document.getElementById("usetok");
   if(tk) tk.onclick=()=>{
     if(S.tokens<=0) return;
     S.tokens--; S.stats.tokensSpent++; S.stats.saves++;
-    run.streak=prevStreak; run.saves++;
-    tk.disabled=true; tk.textContent="Racha salvada 🎟️ ("+prevStreak+")";
+    run.streak=prevStreak; run.saves++; run.drop=0;
+    tk.disabled=true; tk.textContent="Racha salvada 🎟️";
     save(); syncTop();
-    bumpChip(".chip.tok"); bumpChip(".chip.streak"); flyXP("−1 🎟️","tok");
+    bumpChip("[data-fly]"); flyXP("−1 🎟️","tok");
     SFX.play("token");
     reactCard(true);
-    toast("Racha restaurada: "+prevStreak+" · multiplicador "+fmtMult(multOf(prevStreak+1)));
+    toast("Racha restaurada: "+prevStreak+" · multiplicador "+fmtMult(multOf(prevStreak)));
   };
 
   const sb=document.getElementById("selfok");
@@ -3264,6 +3600,7 @@ function finish(it,ok,model,given,near,selfmarkable,revealed,ans){
     S.stats.selfmarks.push({ts:Date.now(),unit:it.ex.unit.short,unitTitle:it.ex.unit.title,
       exN:it.ex.n,exTitle:it.ex.title,q:it.q.replace(/\n/g," "),given:given,model:model});
     run.misses=run.misses.filter(m=>m.it!==it);
+    run.lastOk=true;
     run.xp=(run.xp||0)+addXP(5,1); saveResume(); save(); syncTop();
     toast("Cuenta como acierto, pero queda anotada para que la revise tu profe.");
   };
@@ -3285,40 +3622,40 @@ function renderDone(){
     :pct>=80?"Muy buen control. Solo quedan detalles."
     :pct>=60?"Vas bien: repasa los fallos y vuelve a intentarlo."
     :"Toca repasar la chuleta y volver a la carga. Es normal al principio.";
+  const lv=levelOf(S.xp), missN=run.misses.length;
+  const extra=[run.saves?"🎟️ "+run.saves+" racha"+(run.saves===1?"":"s")+" salvada"+(run.saves===1?"":"s"):"",
+               run.selfUsed?run.selfUsed+" autocorregida"+(run.selfUsed===1?"":"s"):""].filter(Boolean).join(" · ");
+  /* Sin lista de fallos con la respuesta correcta: se repiten con el botón
+     y así hay que volver a pensarlos. */
   app.innerHTML=`
-  <div class="playhead"><div class="track"><i style="width:100%"></i></div><span class="qcount">${total} / ${total}</span></div>
-  <div class="result">
-    <div class="eyebrow">${esc(m.title||"Ronda completada")}</div>
-    <div class="score">${m.exam?grade+'<small>/10</small>':run.correct+'<small>/'+total+'</small>'}</div>
-    <p class="lede">${msg}</p>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
-      <span class="chip">Aciertos <b>${pct}%</b></span>
-      <span class="chip xp">XP <b>+${run.xp||0}</b></span>
-      <span class="chip streak">🔥 Mejor racha <b>${run.best}</b></span>
-      <span class="chip mult">Máx. <b>${fmtMult(run.bestMult)}</b></span>
-      ${run.saves?`<span class="chip tok">🎟️ Salvadas <b>${run.saves}</b></span>`:""}
-      ${run.selfUsed?`<span class="chip">Autocorregidas <b>${run.selfUsed}</b></span>`:""}
+  <div class="screen donescr">
+    <div class="dtop">
+      <div class="heb">${esc(m.title||"Ronda completada")}</div>
+      <h1>${pct===100?"¡Pleno!":"¡Ronda terminada!"}</h1>
+      <div class="donut" style="background:conic-gradient(#F5C542 ${pct}%,rgba(255,255,255,.22) 0)" role="img" aria-label="${run.correct} de ${total} aciertos">
+        <div class="${m.exam?"exam":""}"><span>${m.exam?grade+'<small>/10</small>':run.correct+'<small>/'+total+'</small>'}</span></div>
+      </div>
+      <p class="msg">${msg}</p>
     </div>
-    ${run.misses.length?`
-      <div style="width:100%;text-align:left;margin-top:10px">
-        <div class="eyebrow" style="margin-bottom:8px">Para repasar (${run.misses.length})</div>
-        <div class="misslist">
-          ${run.misses.map(x=>`<div class="miss">
-            <div style="color:var(--ink-soft)">${esc(x.it.q.split("\n")[0]).slice(0,110)}</div>
-            ${x.given?`<div class="yours">${esc(x.given)}</div>`:""}
-            <div class="right">${esc(x.model)}</div>
-          </div>`).join("")}
-        </div>
-      </div>`:""}
-    <div style="display:flex;gap:9px;flex-wrap:wrap;justify-content:center;margin-top:8px">
-      ${run.misses.length?`<button class="btn" id="retry">Repetir solo los fallos</button>`:""}
-      <button class="btn ${run.misses.length?"ghost":""}" id="again">Repetir la ronda</button>
-      <button class="btn ghost" id="stats">📊 Estadísticas</button>
-      <button class="btn ghost" id="home">Ir al inicio</button>
+    <div class="sec" style="padding-top:20px">
+      <div class="trio">
+        <div class="stat gold"><b>+${run.xp||0}</b><span>XP</span></div>
+        <div class="stat"><b>🔥 ${run.best}</b><span>Mejor racha</span></div>
+        <div class="stat"><b>${fmtMult(run.bestMult)}</b><span>Máx.</span></div>
+      </div>
+    </div>
+    ${extra?`<p class="dnote">${extra}</p>`:""}
+    <div class="lvcard">
+      <div class="row" style="justify-content:space-between;font-size:15px;gap:8px"><b>${lv.name}</b><span>${lv.nxt?"faltan "+(lv.nxt.xp-S.xp)+" XP para "+lv.nxt.name:"nivel máximo"}</span></div>
+      <div class="bar"><i style="width:${lv.pct}%"></i></div>
+    </div>
+    <div class="dfoot">
+      ${missN?`<button class="bigbtn white" id="retry">Repetir ${missN===1?"el fallo":"los "+missN+" fallos"}</button>
+        <div class="duo" style="gap:8px"><button class="softbtn" id="again">Repetir la ronda</button><button class="softbtn" id="home">Ir al inicio</button></div>`
+      :`<button class="bigbtn white" id="home">Ir al inicio</button><button class="softbtn" id="again">Repetir la ronda</button>`}
     </div>
   </div>`;
   document.getElementById("home").onclick=()=>go({name:"home"});
-  document.getElementById("stats").onclick=()=>go({name:"stats"});
   document.getElementById("again").onclick=()=>startRun(run.items,Object.assign({},run.meta,{fresh:true}));
   const rt=document.getElementById("retry");
   if(rt) rt.onclick=()=>startRun(run.misses.map(x=>x.it),Object.assign({},run.meta,{title:"Repaso de fallos",key:null}));
@@ -3366,124 +3703,98 @@ function renderStats(){
   const mine=myItems();
   const mastered=mine.filter(i=>S.ex[i.id]==="ok").length;
   const selfN=st.selfmarks.length;
-  const unitRows=myUnits().map(u=>{const s=unitStats(u);return {u,...s};});
-  const maxPct=100;
+  const dark=isDark();
   app.innerHTML=`
-  <button class="back" id="back">← Volver</button>
-  <section class="hero" style="padding:12px 0 4px">
-    <div class="eyebrow">Panel del alumno</div>
-    <h1 style="font-size:clamp(26px,4.4vw,38px)">Estadísticas</h1>
-    <p class="lede">Todo lo que llevas acumulado: nivel, experiencia, precisión por unidad y las frases que se han dado por buenas a mano.</p>
-  </section>
-
-  <div class="tiles">
-    <div class="tile hi"><span class="k">XP total</span><span class="v">${S.xp}</span><span class="s">${lv.nxt?"faltan "+(lv.nxt.xp-S.xp)+" para "+lv.nxt.name:"nivel máximo"}</span></div>
-    <div class="tile"><span class="k">Nivel</span><span class="v" style="font-size:19px">${lv.name}</span><span class="s">${lv.i+1} de ${LEVELS.length}</span></div>
-    <div class="tile"><span class="k">Tokens</span><span class="v">${S.tokens} 🎟️</span><span class="s">${st.saves} racha${st.saves===1?"":"s"} salvada${st.saves===1?"":"s"}</span></div>
-    <div class="tile"><span class="k">Mejor racha</span><span class="v">${st.bestStreak} 🔥</span><span class="s">multiplicador máx. ${fmtMult(st.bestMult||1)}</span></div>
-    <div class="tile"><span class="k">Precisión</span><span class="v">${acc}%</span><span class="s">${st.correct} de ${st.answers} respuestas</span></div>
-    <div class="tile"><span class="k">Dominadas</span><span class="v">${mastered}</span><span class="s">de ${mine.length} preguntas</span></div>
-  </div>
-
-  <div class="levelbar" style="margin:14px 0 0">
-    <span class="chip"><span class="lab">Progreso de nivel</span><b>${lv.pct}%</b></span>
-    <div class="track"><i style="width:${lv.pct}%"></i></div>
-  </div>
-
-  <div class="panel">
-    <h3>Niveles y experiencia</h3>
-    <p class="sub">Los XP que hacen falta para llegar a cada nivel. Cada vez que subes, ganas <b>2 🎟️</b> para salvar tu racha.</p>
-    <div class="ladder">
-      ${LEVELS.map((L,i)=>{
-        const nxt=LEVELS[i+1], prev=LEVELS[i-1];
-        const state=i<lv.i?"done":(i===lv.i?"now":"todo");
-        const span=nxt?nxt.xp-L.xp:0;
-        const into=Math.max(0,Math.min(span,S.xp-L.xp));
-        const need=i===0?"nivel de partida":"+"+(L.xp-prev.xp)+" XP desde "+prev.name;
-        return `<div class="rung ${state}">
-          <span class="rung-dot">${state==="done"?"✓":(state==="now"?"●":i+1)}</span>
-          <span class="rung-body">
-            <span class="rung-name">${esc(L.name)}${state==="now"?'<span class="rung-tag">tu nivel</span>':""}</span>
-            <span class="rung-need">${need}</span>
-            ${state==="now"&&nxt?`<span class="rung-bar"><i style="width:${Math.round(into/span*100)}%"></i></span>
-              <span class="rung-left">${into} / ${span} XP · faltan <b>${nxt.xp-S.xp}</b> para ${esc(nxt.name)}</span>`
-              :state==="now"?`<span class="rung-left">¡Has llegado al último nivel!</span>`:""}
-          </span>
-          <span class="rung-xp"><b>${L.xp}</b><small>XP en total</small></span>
-        </div>`;
-      }).join("")}
+  <header class="band">
+    <div class="row" style="justify-content:space-between;align-items:baseline">
+      <span class="hname" style="font-size:28px">${lv.name}</span>
+      <span class="xpbig">${S.xp} XP</span>
     </div>
-  </div>
-
-  <div class="panel">
-    <h3>Racha y multiplicador de XP</h3>
-    <p class="sub">Cada acierto encadenado sube el multiplicador <b>0,1</b>, desde <b>×1.0</b> hasta el tope de <b>×2.0</b> a los 11 aciertos seguidos. Un fallo lo devuelve a ×1.0, salvo que gastes un token 🎟️ para salvar la racha. Marcado en verde, hasta dónde has llegado.</p>
-    <div class="scale">
-      ${Array.from({length:11},(_,k)=>{
-        const r=k+1, m=multOf(r===1?1:r), on=st.bestStreak>=r;
-        return `<div class="step ${on?(r===11?"top":"on"):""}"><div class="m">${fmtMult(m)}</div><div class="r">racha ${r}${r===11?"+":""}</div></div>`;
-      }).join("")}
+    <div class="lvsegs" style="grid-template-columns:repeat(${LEVELS.length},1fr)" aria-hidden="true">
+      ${LEVELS.map((L,i)=>`<i style="${i<lv.i?"background:#F5C542":i===lv.i?`background:linear-gradient(90deg,#F5C542 ${lv.pct}%,rgba(255,255,255,.25) 0)`:""}" title="${esc(L.name)} · ${L.xp} XP"></i>`).join("")}
     </div>
-  </div>
+    <div class="f15">Nivel ${lv.i+1} de ${LEVELS.length}${lv.nxt?" · faltan "+(lv.nxt.xp-S.xp)+" XP para "+lv.nxt.name:" · ¡nivel máximo!"}</div>
+  </header>
 
-  <div class="panel">
-    <h3>Preguntas dominadas por unidad</h3>
-    <p class="sub">Porcentaje de preguntas acertadas al menos una vez. Pasa el ratón por encima para ver el detalle.</p>
-    <div class="bars">
-      ${unitRows.map(r=>`<div class="barrow" title="${esc(r.u.title)}: ${r.ok} de ${r.items.length}">
-        <span class="nm">${r.u.short} · ${esc(r.u.title)}</span>
-        <span class="bartrack"><span class="barfill" style="width:${Math.max(1,r.pct/maxPct*100)}%"></span></span>
-        <span class="vv">${r.pct}%</span>
-      </div>`).join("")}
+  <div class="sec">
+    <div class="duo">
+      <div class="tile2"><span class="k">Precisión</span><span class="v">${acc}%</span><span class="s">${st.correct} de ${st.answers}</span></div>
+      <div class="tile2" style="animation-delay:30ms"><span class="k">Mejor racha</span><span class="v">${st.bestStreak} 🔥</span><span class="s">máx. ${fmtMult(st.bestMult||1)}</span></div>
+      <div class="tile2" style="animation-delay:60ms"><span class="k">Dominadas</span><span class="v">${mastered}</span><span class="s">de ${mine.length}</span></div>
+      <div class="tile2" style="animation-delay:90ms"><span class="k">Tokens</span><span class="v">${S.tokens} 🎟️</span><span class="s">${st.saves} racha${st.saves===1?"":"s"} salvada${st.saves===1?"":"s"}</span></div>
     </div>
-  </div>
 
-  <div class="panel">
-    <h3>Evolución de las últimas rondas</h3>
-    <p class="sub">Porcentaje de aciertos de cada ronda terminada, de la más antigua a la más reciente.</p>
-    ${sparkline(st.sessions)}
-    ${st.sessions.length?`<div class="tablewrap" style="margin-top:14px"><table class="rep">
-      <thead><tr><th>Fecha</th><th>Ronda</th><th>Resultado</th><th>XP</th></tr></thead>
-      <tbody>${st.sessions.slice(-8).reverse().map(s=>`<tr>
-        <td class="mono">${fecha(s.ts)}</td><td>${esc(s.title)}</td>
-        <td class="mono">${s.correct}/${s.total} · ${s.pct}%</td><td class="mono">+${s.xp}</td></tr>`).join("")}</tbody></table></div>`:""}
-  </div>
+    ${myUnits().map(u=>{
+      const lvls=[...new Set(u.exercises.map(e=>e.lvl||1))].sort((a,b)=>a-b);
+      return `<div class="card" style="gap:12px">
+        <div class="ctitle">${u.icon} ${esc(u.title)}</div>
+        ${lvls.map(L=>{
+          const it=u.exercises.filter(e=>(e.lvl||1)===L).flatMap(e=>e.items);
+          const pc=Math.round(it.filter(i=>S.ex[i.id]==="ok").length/it.length*100);
+          return `<div class="lvrow"><span>Nivel ${L}</span><div class="bar paper"><i style="width:${pc}%"></i></div><span class="vv">${pc}%</span></div>`;
+        }).join("")}
+      </div>`;
+    }).join("")}
 
-  <div class="panel">
-    <h3>Informe de autocorrecciones</h3>
-    <p class="sub">Frases que el alumno dio por válidas con el botón «Mi frase también vale». Máximo ${SELFMARK_MAX} por ronda. Conviene revisarlas una a una.</p>
-    ${selfN?`
-      <div class="tablewrap"><table class="rep">
-        <thead><tr><th>Fecha</th><th>Unidad</th><th>Enunciado</th><th>Respuesta del alumno / modelo</th></tr></thead>
-        <tbody>${st.selfmarks.slice().reverse().map(r=>`<tr>
-          <td class="mono">${fecha(r.ts)}</td>
-          <td class="mono">${r.unit} · Ej. ${r.exN}</td>
-          <td>${esc(r.q).slice(0,120)}</td>
-          <td><span class="yours">${esc(r.given)}</span><br><span class="right">${esc(r.model)}</span></td>
-        </tr>`).join("")}</tbody>
-      </table></div>
-      <div style="display:flex;gap:9px;flex-wrap:wrap;margin-top:16px">
-        <button class="btn" id="dlbtn">⬇ Descargar informe (CSV)</button>
-        <button class="btn ghost" id="copybtn">Copiar al portapapeles</button>
-        <button class="btn ghost" id="clearself">Vaciar informe</button>
+    <div class="card" style="gap:12px">
+      <div class="ctitle">Ajustes</div>
+      <div class="setrow">
+        <button class="ghostbtn ${SFX.isOn()?"on":""}" id="st-snd" aria-pressed="${SFX.isOn()}">${SFX.isOn()?"🔊 Sonido":"🔇 Sin sonido"}</button>
+        <button class="ghostbtn" id="st-theme" aria-label="Cambiar entre tema claro y oscuro">${dark?"☀️ Claro":"🌙 Oscuro"}</button>
+        <button class="ghostbtn" id="st-out">⇄ Salir</button>
       </div>
-      <p class="fb-note" id="dlnote" hidden style="margin-top:10px;display:block;line-height:1.5">Con el enlace compartido en público, el navegador no deja que la página guarde archivos. Pulsa <b>Copiar al portapapeles</b> y pega el contenido en Excel o Google Sheets: se abre en columnas.</p>`
-    :`<p class="empty">Todavía no se ha usado ninguna autocorrección. Aquí aparecerán con fecha, enunciado, la respuesta del alumno y la respuesta modelo.</p>`}
+      <div class="cloudline" id="cloudline"></div>
+    </div>
+
+    <details class="more">
+      <summary>Más detalles</summary>
+      <div class="inner">
+        <h4>Cómo funciona el multiplicador</h4>
+        <p class="sub">Cada acierto encadenado sube el multiplicador <b>0,1</b>, desde <b>×1.0</b> hasta el tope de <b>×2.0</b>. Un fallo lo devuelve a ×1.0, salvo que gastes un token 🎟️ para mantenerlo. Cada vez que subes de nivel ganas <b>2 🎟️</b>.</p>
+        <h4>Evolución de las últimas rondas</h4>
+        ${sparkline(st.sessions)}
+        ${st.sessions.length?`<div class="tablewrap"><table class="rep">
+          <thead><tr><th>Fecha</th><th>Ronda</th><th>Resultado</th><th>XP</th></tr></thead>
+          <tbody>${st.sessions.slice(-8).reverse().map(s=>`<tr>
+            <td class="mono">${fecha(s.ts)}</td><td>${esc(s.title)}</td>
+            <td class="mono">${s.correct}/${s.total} · ${s.pct}%</td><td class="mono">+${s.xp}</td></tr>`).join("")}</tbody></table></div>`:""}
+        <h4>Informe de autocorrecciones</h4>
+        <p class="sub">Frases dadas por válidas con «Mi frase también vale». Máximo ${SELFMARK_MAX} por ronda.</p>
+        ${selfN?`
+          <div class="tablewrap"><table class="rep">
+            <thead><tr><th>Fecha</th><th>Unidad</th><th>Enunciado</th><th>Respuesta del alumno / modelo</th></tr></thead>
+            <tbody>${st.selfmarks.slice().reverse().map(r=>`<tr>
+              <td class="mono">${fecha(r.ts)}</td>
+              <td class="mono">${r.unit} · Ej. ${r.exN}</td>
+              <td>${esc(r.q).slice(0,120)}</td>
+              <td><span class="yours">${esc(r.given)}</span><br><span class="right">${esc(r.model)}</span></td>
+            </tr>`).join("")}</tbody>
+          </table></div>
+          <div style="display:flex;gap:9px;flex-wrap:wrap">
+            <button class="btn" id="dlbtn">⬇ Descargar (CSV)</button>
+            <button class="btn ghost" id="copybtn">Copiar</button>
+            <button class="btn ghost" id="clearself">Vaciar informe</button>
+          </div>
+          <p class="fb-note" id="dlnote" hidden style="display:block;line-height:1.5">Con el enlace compartido en público, el navegador no deja que la página guarde archivos. Pulsa <b>Copiar</b> y pega el contenido en Excel o Google Sheets: se abre en columnas.</p>`
+        :`<p class="empty2">Todavía no se ha usado ninguna autocorrección.</p>`}
+      </div>
+    </details>
+
+    <button class="ghostbtn wide red" id="reset">Reiniciar mi progreso</button>
   </div>
+  ${navHTML("stats")}`;
 
-  <div class="panel">
-    <h3>Empezar de cero</h3>
-    <p class="sub">Borra progreso, XP, tokens y estadísticas de este navegador. No se puede deshacer.</p>
-    <button class="btn ghost" id="reset">Reiniciar todo el progreso</button>
-  </div>`;
-
-  document.getElementById("back").onclick=()=>go({name:"home"});
+  bindNav();
+  setCloud(cloudState);
+  document.getElementById("st-snd").onclick=()=>{ SFX.toggle(); toast(SFX.isOn()?"Sonido activado":"Sonido silenciado"); renderStats(); };
+  document.getElementById("st-theme").onclick=()=>{ toggleTheme(); renderStats(); };
+  document.getElementById("st-out").onclick=()=>leave();
   const dl=document.getElementById("dlbtn");
   if(dl){
     initDownloads();
     dl.onclick=async()=>{
       await initDownloads();
-      if(!DL){ toast("La descarga no está disponible aquí: usa «Copiar al portapapeles»."); return; }
+      if(!DL){ toast("La descarga no está disponible aquí: usa «Copiar»."); return; }
       try{
         await DL.save({filename:"informe-autocorrecciones.csv",data:csvReport()});
         toast("Informe guardado.");
@@ -3500,7 +3811,7 @@ function renderStats(){
   const cs=document.getElementById("clearself");
   if(cs) cs.onclick=()=>{ if(confirm("¿Vaciar el informe de autocorrecciones?")){ S.stats.selfmarks=[]; save(); renderStats(); } };
   document.getElementById("reset").onclick=()=>{
-    if(confirm("¿Seguro? Se borrará todo el progreso guardado en este navegador.")){
+    if(confirm("¿Seguro? Se borrará todo tu progreso: XP, tokens y estadísticas. No se puede deshacer.")){
       S=blank(); save(); go({name:"home"});
     }
   };
@@ -3509,30 +3820,17 @@ function renderStats(){
 /* =====================================================================
    ARRANQUE
    ===================================================================== */
-document.getElementById("statsbtn").onclick=()=>{ if(PROFILE) go({name:"stats"}); };
-(function(){
-  const b=document.getElementById("sndbtn");
-  const paint=()=>{
-    const on=SFX.isOn();
-    b.textContent=on?"🔊":"🔇";
-    b.title=on?"Sonido activado: pulsa para silenciar":"Sonido silenciado: pulsa para activar";
-    b.setAttribute("aria-pressed",String(on));
-    b.style.opacity=on?"1":".6";
-  };
-  b.onclick=()=>{ SFX.toggle(); paint(); toast(SFX.isOn()?"Sonido activado":"Sonido silenciado"); };
-  paint();
-})();
-document.getElementById("whobtn").onclick=()=>leave();
-paintWho();
-const tb=document.getElementById("themebtn");
-try{const t0=localStorage.getItem(TKEY); if(t0) document.documentElement.setAttribute("data-theme",t0);}catch(e){}
-tb.onclick=()=>{
+function isDark(){
   const cur=document.documentElement.getAttribute("data-theme");
-  const isDark=cur?cur==="dark":matchMedia("(prefers-color-scheme: dark)").matches;
-  const nxt=isDark?"light":"dark";
+  return cur?cur==="dark":matchMedia("(prefers-color-scheme: dark)").matches;
+}
+function toggleTheme(){
+  const nxt=isDark()?"light":"dark";
   document.documentElement.setAttribute("data-theme",nxt);
   try{localStorage.setItem(TKEY,nxt);}catch(e){}
-};
+}
+try{const t0=localStorage.getItem(TKEY); if(t0) document.documentElement.setAttribute("data-theme",t0);}catch(e){}
+paintWho();
 render();
 initDownloads();
 </script>
