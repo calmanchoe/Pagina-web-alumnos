@@ -2194,7 +2194,9 @@ function addXP(base, mult){
    Cada pregunta contestada suma al día de hoy (fecha local). La racha son
    los días seguidos con la meta cumplida; hoy cuenta en cuanto se cumple.
    ===================================================================== */
-const DAY_GOAL=10;
+const DAY_GOAL=20;
+/* la práctica rápida es corta (5 a 10 preguntas) aunque falten más para la meta */
+function quickSize(){ return Math.min(10,Math.max(5,DAY_GOAL-todayCount())); }
 function dayKey(d){ d=d||new Date(); return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10); }
 function dayShift(n){ const d=new Date(); d.setDate(d.getDate()+n); return d; }
 function todayCount(st){ return ((st||S).days||{})[dayKey()]||0; }
@@ -2234,7 +2236,7 @@ function weekDots(st){
 }
 function goalCard(){
   const n=todayCount(), ds=dayStreak(), done=n>=DAY_GOAL, left=DAY_GOAL-n;
-  const q=Math.max(5,left);
+  const q=quickSize();
   const msg=done?`¡Meta cumplida! Vuelve mañana para llegar a ${ds+1} días seguidos.`
     :ds>0?`Te ${left===1?"falta 1 pregunta":"faltan "+left+" preguntas"} para no perder tu racha de ${ds} día${ds===1?"":"s"}.`
     :`Haz ${left} pregunta${left===1?"":"s"} hoy y empieza una racha 🔥`;
@@ -2818,7 +2820,7 @@ function renderHome(){
 
   bindNav(); bindUnitRows();
   const rs=app.querySelector('[data-act="resume"]'); if(rs&&pend) rs.onclick=()=>resumeRun(pend.key);
-  app.querySelector('[data-act="quick"]').onclick=()=>startQuick(Math.max(5,DAY_GOAL-todayCount()));
+  app.querySelector('[data-act="quick"]').onclick=()=>startQuick(quickSize());
   app.querySelector('[data-act="exam"]').onclick=startExam;
   app.querySelector('[data-act="wrong"]').onclick=()=>{ if(wrongN) startWrong(); else toast("No tienes fallos pendientes. ¡Bien hecho!"); };
 }
