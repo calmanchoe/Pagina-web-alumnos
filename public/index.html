@@ -1207,6 +1207,42 @@ button.card:active,.resume:active,.xt:active,.pk:active{transform:scale(.98)}
 .sw.g-legend{--gc:var(--g-legend)}
 .sw.g-legend i{width:46px;height:46px;font-size:24px}
 @media (min-width:900px){ .season{grid-template-columns:repeat(12,1fr)} }
+.pills{display:flex;flex-wrap:wrap;gap:6px}
+.pill{font-size:14px;font-weight:700;padding:5px 10px;border-radius:99px}
+.pill.boost{background:#F5C542;color:#2a2000}
+.pill.shield{background:var(--pensoft);color:var(--pen)}
+.pill.noshield{background:var(--card2);color:var(--soft)}
+.wd.shield i{background:var(--pensoft);box-shadow:inset 0 0 0 2px var(--pen)}
+.qfoot2 .qlinks{grid-column:1 / -1;display:flex;justify-content:center;align-items:center;gap:6px;color:var(--soft);margin-top:-4px}
+.qwrap .opt.gone{opacity:.25!important;animation:none;text-decoration:line-through}
+.gp-list{list-style:none;margin:2px 0 8px;padding:0;display:grid;gap:6px;width:100%}
+.gp-list li{background:rgba(255,255,255,.2);border-radius:12px;padding:8px 12px;font-size:16px;font-weight:600}
+.prizebox{border-radius:14px;padding:12px 14px;background:linear-gradient(135deg,#FFE27A,#E9A800);color:#2a1a00;font-weight:700}
+.album{display:grid;grid-template-columns:repeat(auto-fill,minmax(44px,1fr));gap:6px;padding:8px;border-radius:14px;background:color-mix(in srgb,var(--gc) 12%,transparent)}
+.album.g-common{--gc:var(--g-common)}
+.album.g-rare{--gc:var(--g-rare)}
+.album.g-epic{--gc:var(--g-epic)}
+.album.g-legend{--gc:var(--g-legend)}
+.stk{position:relative;aspect-ratio:1;border-radius:12px;background:var(--card);display:grid;place-items:center;font-size:24px;box-shadow:inset 0 0 0 2px var(--gc)}
+.stk.empty{font-size:16px;font-weight:800;color:var(--soft);background:transparent;box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--gc) 40%,transparent);border:none}
+.stk small{position:absolute;right:2px;bottom:0;font-size:10px;font-weight:800;color:var(--soft)}
+.achs{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.ach{display:grid;grid-template-columns:36px 1fr;grid-template-rows:auto auto;column-gap:8px;align-items:center;padding:10px;border-radius:14px;background:var(--card2);opacity:.6}
+.ach i{grid-row:1 / 3;font-style:normal;font-size:26px;filter:grayscale(1)}
+.ach b{font-size:14px;line-height:1.2}
+.ach small{font-size:12px;color:var(--soft);line-height:1.25}
+.ach.on{opacity:1;background:var(--greensoft)}
+.ach.on i{filter:none}
+.ach.on small{color:var(--green);font-weight:700}
+.accents{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.acc{display:grid;justify-items:center;gap:4px;font-size:13px;color:var(--soft)}
+.acc i{width:40px;height:40px;border-radius:50%;background:var(--ac);display:grid;place-items:center;font-style:normal;font-size:16px}
+.acc[disabled] i{filter:grayscale(.85);opacity:.45}
+.acc.on i{outline:3px solid var(--ink);outline-offset:2px}
+.acc.on b{color:var(--ink)}
+.tprize{display:flex;align-items:center;gap:10px;justify-content:space-between;background:linear-gradient(135deg,#FFE27A,#E9A800);color:#2a1a00;border-radius:14px;padding:8px 8px 8px 12px;font-size:15px;font-weight:700}
+.tprize span{flex:1;min-width:0}
+.tprize .pillbtn{flex:none;background:#2a1a00;color:#FFE27A;min-height:44px;padding:0 12px;font-size:15px}
 .giftnote{font-size:15px;font-weight:600;color:var(--markdeep);text-align:center}
 .goal.done .wd i{background:var(--card)}
 .goal.done .wd.on i{background:var(--mark)}
@@ -2133,7 +2169,8 @@ const LASTKEY="cuaderno-arcade-last";
 function skey(){ return "cuaderno-arcade-v3-"+PROFILE; }
 function blank(){
   return {xp:0, tokens:3, lvl:0, ex:{}, wrong:[], resume:{}, answers:{}, days:{}, bestDays:0, gifts:{},
-    stats:{answers:0, correct:0, bestStreak:0, bestMult:1, saves:0, tokensSpent:0,
+    shields:{}, stickers:{}, themes:[], accent:"", titles:[], prizes:[], ach:{}, flags:{}, boostDay:"",
+    stats:{answers:0, correct:0, bestStreak:0, bestMult:1, saves:0, tokensSpent:0, fixed:0, shieldsUsed:0,
            byUnit:{}, sessions:[], selfmarks:[]}};
 }
 let S=blank();
@@ -2255,38 +2292,74 @@ function quickSize(){ return Math.min(10,Math.max(5,DAY_GOAL-todayCount())); }
 function dayKey(d){ d=d||new Date(); return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10); }
 function dayShift(n){ const d=new Date(); d.setDate(d.getDate()+n); return d; }
 function todayCount(st){ return ((st||S).days||{})[dayKey()]||0; }
-function dayStreak(st){
-  const days=(st||S).days||{};
+/* La racha se cuenta hacia atrás desde hoy (o desde ayer si hoy aún no se ha
+   cumplido la meta). Un día protegido con escudo no corta la racha, pero
+   tampoco suma. Devuelve los días cumplidos y cuántos días ocupa. */
+function chainInfo(st){
+  st=st||S; const days=st.days||{}, sh=st.shields||{};
   let k=(days[dayKey()]||0)>=DAY_GOAL?0:-1, n=0;
-  while((days[dayKey(dayShift(k))]||0)>=DAY_GOAL){ n++; k--; }
-  return n;
+  const keys=[];
+  for(;;){
+    const key=dayKey(dayShift(k));
+    if((days[key]||0)>=DAY_GOAL){ n++; keys.push(key); }
+    else if(!sh[key]) break;
+    k--; if(k<-4000) break;
+  }
+  return {n, span:-k, keys};
 }
+function dayStreak(st){ return chainInfo(st).n; }
 function countDay(){
   S.days=S.days||{};
+  applyShields();
   const k=dayKey(), before=S.days[k]||0;
   S.days[k]=before+1;
   /* se guardan los últimos 60 días y, si la racha es más larga, toda la racha
      (si no, nunca se podría llegar a los 84 días del regalo legendario) */
-  const cut=dayKey(dayShift(-Math.max(60,dayStreak()+1)));
+  const cut=dayKey(dayShift(-Math.max(60,chainInfo().span+1)));
   Object.keys(S.days).forEach(d=>{ if(d<cut) delete S.days[d]; });
+  Object.keys(S.shields||{}).forEach(d=>{ if(d<cut) delete S.shields[d]; });
   if(before<DAY_GOAL && before+1>=DAY_GOAL) goalReached();
 }
-/* regalos de racha: cada 7 días uno normal, cada 14 raro (azul), cada 28
-   épico (morado) y cada 84, tres meses, legendario (dorado). Si coinciden,
-   gana el de más categoría. */
-const GIFTS={
-  common:{name:"Regalo",      label:"Regalo semanal", tok:1, xp:0},
-  rare:  {name:"Regalo raro", label:"Raro",           tok:2, xp:50},
-  epic:  {name:"Regalo épico",label:"Épico",          tok:3, xp:100},
-  legend:{name:"Regalo legendario",label:"Legendario",tok:5, xp:300}
-};
-/* temporada de 12 semanas: un regalo por semana de racha, sin que coincidan
+
+/* ---------- escudo de racha ----------
+   Si ayer (o como mucho los dos últimos días) no se llegó a la meta y había
+   racha, se gastan solos 3 🎟️ por día y la racha sigue viva. */
+const SHIELD_COST=3, SHIELD_MAX=2;
+function applyShields(){
+  if(!PROFILE) return;
+  S.shields=S.shields||{}; S.days=S.days||{};
+  const real=k=>(S.days[k]||0)>=DAY_GOAL, ok=k=>real(k)||S.shields[k];
+  const gap=[];
+  for(let k=-1;k>=-(SHIELD_MAX+1);k--){ const key=dayKey(dayShift(k)); if(ok(key)) break; gap.push(key); }
+  if(!gap.length||gap.length>SHIELD_MAX) return;
+  /* antes del hueco tiene que haber racha; y nunca más de 2 días protegidos seguidos */
+  let k=-gap.length-1, prev=0;
+  while(S.shields[dayKey(dayShift(k))]){ prev++; k--; }
+  if(!real(dayKey(dayShift(k))) || prev+gap.length>SHIELD_MAX) return;
+  const cost=SHIELD_COST*gap.length;
+  if(S.tokens<cost) return;
+  gap.forEach(d=>S.shields[d]=1);
+  S.tokens-=cost;
+  S.stats.shieldsUsed=(S.stats.shieldsUsed||0)+gap.length;
+  save();
+  const n=dayStreak();
+  setTimeout(()=>{ SFX.play("token"); toast(`🛡️ Escudo de racha: ${gap.length===1?"ayer":"estos "+gap.length+" días"} no llegaste a la meta, pero tu racha de ${n} día${n===1?"":"s"} sigue viva (−${cost} 🎟️)`); },500);
+}
+function shieldReady(){ return S.tokens>=SHIELD_COST; }
+
+/* ---------- regalos de racha ----------
+   Temporada de 12 semanas: un regalo por semana de racha, sin que coincidan
    nunca dos el mismo día. Al acabar la semana 12 empieza otra temporada. */
+const GIFTS={
+  common:{name:"Regalo",           label:"Regalo semanal", tok:2,  short:"+2 🎟️ y pegatina"},
+  rare:  {name:"Regalo raro",      label:"Raro",           tok:3,  short:"+3 🎟️ y XP doble"},
+  epic:  {name:"Regalo épico",     label:"Épico",          tok:5,  short:"+5 🎟️ y color nuevo"},
+  legend:{name:"Regalo legendario",label:"Legendario",     tok:10, short:"+10 🎟️ y premio real"}
+};
 const SEASON=["common","rare","common","epic","common","rare","common","epic","common","rare","common","legend"];
 function giftTier(n){ if(n<=0||n%7) return null; return SEASON[(n/7-1)%12]; }
 /* primer día de racha, después de «after», en que toca un regalo de ese tipo */
 function nextTierDay(after,tier){ let w=Math.floor(after/7)+1; while(giftTier(w*7)!==tier) w++; return w*7; }
-/* dónde va la racha dentro de su temporada */
 function seasonPos(ds){
   const season=ds>0?Math.floor((ds-1)/84):0, into=ds-season*84;
   return {season:season+1, weeks:Math.floor(into/7), day:into%7};
@@ -2296,27 +2369,81 @@ function seasonMap(){
   const cur=p.weeks<12?p.weeks+1:0;
   return `<div class="season" role="img" aria-label="Temporada ${p.season}: ${p.weeks} de 12 semanas completadas">${SEASON.map((t,k)=>{
     const w=k+1, done=w<=p.weeks, now=w===cur;
-    return `<span class="sw g-${t} ${done?"done":""} ${now?"now":""}" title="Semana ${w}: ${GIFTS[t].name.toLowerCase()}${done?" (conseguido)":now?" (en curso)":""}"><i aria-hidden="true">🎁</i><b>S${w}</b></span>`;
+    return `<span class="sw g-${t} ${done?"done":""} ${now?"now":""}" title="Semana ${w}: ${GIFTS[t].name.toLowerCase()} (${GIFTS[t].short})${done?" · conseguido":now?" · en curso":""}"><i aria-hidden="true">🎁</i><b>S${w}</b></span>`;
   }).join("")}</div>
   <div class="f15" style="color:var(--soft)">${cur?`Temporada ${p.season} · semana ${cur} de 12 · día ${p.day} de 7 esta semana.`:`¡Temporada ${p.season} completada! Mañana empieza la siguiente.`}</div>`;
+}
+
+/* pegatinas: cada regalo da una de su categoría (primero las que faltan) */
+const STICKERS={
+  common:["🐶","🐱","🐰","🦊","🐼","🐨","🐸","🐵","🐧","🐢"],
+  rare:  ["🏰","🚌","☕","🎡","☂️","🫖","⛵","💂"],
+  epic:  ["🦁","🐉","🦄","🦅","🐳","🚀"],
+  legend:["👑","🏆","💎","🌟"]
+};
+const STICKER_TOTAL=Object.values(STICKERS).reduce((a,l)=>a+l.length,0);
+function drawSticker(t){
+  const own=S.stickers=S.stickers||{}, pool=STICKERS[t];
+  const fresh=pool.filter(e=>!own[e]), from=fresh.length?fresh:pool;
+  const e=from[Math.floor(Math.random()*from.length)];
+  own[e]=(own[e]||0)+1;
+  return {e, isNew:fresh.length>0};
+}
+/* colores de la app: los épicos desbloquean uno nuevo y el legendario, el dorado */
+const ACCENTS=[
+  {id:"azul",  name:"Azul",   band:"#2547B8"},
+  {id:"verde", name:"Verde",  band:"#17834A"},
+  {id:"morado",name:"Morado", band:"#6A35C2"},
+  {id:"coral", name:"Coral",  band:"#B9402B"},
+  {id:"dorado",name:"Dorado", band:"#8F6600"}
+];
+function unlockedAccents(st){ st=st||S; return ACCENTS.filter(a=>a.id==="azul"||(st.themes||[]).includes(a.id)); }
+function applyAccent(){
+  const a=PROFILE&&S.accent?ACCENTS.find(x=>x.id===S.accent):null;
+  if(a&&a.id!=="azul") document.documentElement.style.setProperty("--band",a.band);
+  else document.documentElement.style.removeProperty("--band");
+}
+const TITLES=["Leyenda de la gramática","Maestro del inglés","Sabio de los verbos","Gran campeón"];
+function boostToday(){ return S.boostDay===dayKey(); }
+
+/* lo que trae cada regalo; devuelve las líneas para la celebración */
+function openGift(t,n){
+  const g=GIFTS[t], lines=[];
+  S.gifts=S.gifts||{}; S.gifts[t]=(S.gifts[t]||0)+1;
+  S.tokens+=g.tok; lines.push(`+${g.tok} 🎟️`);
+  const st=drawSticker(t); lines.push(`Pegatina ${st.e}${st.isNew?" (¡nueva!)":""}`);
+  if(t==="rare"){ S.boostDay=dayKey(dayShift(1)); lines.push("⚡ XP doble todo el día de mañana"); }
+  if(t==="epic"){
+    S.themes=S.themes||[];
+    const c=ACCENTS.find(a=>!["azul","dorado"].includes(a.id)&&!S.themes.includes(a.id));
+    if(c){ S.themes.push(c.id); S.accent=c.id; lines.push(`🎨 Color nuevo: ${c.name} (cámbialo en Progreso)`); }
+  }
+  if(t==="legend"){
+    S.themes=S.themes||[];
+    if(!S.themes.includes("dorado")){ S.themes.push("dorado"); S.accent="dorado"; lines.push("✨ Tema dorado"); }
+    S.titles=S.titles||[];
+    const ti=TITLES[S.titles.length]; if(ti){ S.titles.push(ti); lines.push(`🏷️ Título: «${ti}»`); }
+    S.prizes=S.prizes||[]; S.prizes.push({ts:Date.now(),n});
+    lines.push("🏆 Un premio real: pídeselo a tu profe");
+  }
+  return lines;
 }
 function goalReached(){
   const n=dayStreak();
   S.bestDays=Math.max(S.bestDays||0,n);
   const t=giftTier(n);
-  let tok=n===3?1:0;                         /* un token a los 3 días */
-  if(t){ tok+=GIFTS[t].tok; S.gifts=S.gifts||{}; S.gifts[t]=(S.gifts[t]||0)+1; }
-  S.tokens+=tok;
+  if(n===3) S.tokens+=1;                     /* un token a los 3 días */
   addXP(20,1);
-  if(t&&GIFTS[t].xp) addXP(GIFTS[t].xp,1);
+  const lines=t?openGift(t,n):null;
   if(run) run.goalHit=true;
+  applyAccent();
   setTimeout(()=>{
     SFX.play("levelup");
     toast("🎯 ¡Meta de hoy cumplida! +20 XP"+(n===3?" · +1 🎟️":"")+" · 🔥 "+n+" día"+(n===1?"":"s")+" seguido"+(n===1?"":"s"));
   },700);
-  if(t) setTimeout(()=>showGift(t,n),1300);
+  if(t) setTimeout(()=>showGift(t,n,lines),1300);
 }
-function showGift(t,n){
+function showGift(t,n,lines){
   const g=GIFTS[t], old=document.getElementById("giftpop"); if(old) old.remove();
   const el=document.createElement("div");
   el.id="giftpop"; el.className="giftpop";
@@ -2325,15 +2452,18 @@ function showGift(t,n){
     <div class="gp-tier">${g.label}</div>
     <h2 id="gp-t">¡${g.name}!</h2>
     <p>${n} días seguidos cumpliendo la meta.</p>
-    <div class="gp-prize">+${g.tok} 🎟️${g.xp?" · +"+g.xp+" XP":""}</div>
+    <ul class="gp-list">${(lines||[]).map(l=>`<li>${esc(l)}</li>`).join("")}</ul>
     <button class="bigbtn white" id="gp-ok">¡Genial!</button>
   </div>`;
   document.body.appendChild(el);
   SFX.play(t==="common"?"levelup":"win");
-  const close=()=>{ el.remove(); const nx=document.getElementById("next"); if(nx) nx.focus({preventScroll:true}); };
+  const close=()=>{ el.remove(); render0(); const nx=document.getElementById("next"); if(nx) nx.focus({preventScroll:true}); };
   const ok=el.querySelector("#gp-ok"); ok.onclick=close; ok.focus({preventScroll:true});
   el.addEventListener("keydown",e=>{ if(e.key==="Escape") close(); });
 }
+/* repinta la pantalla al cerrar la celebración, salvo en mitad de una pregunta */
+function render0(){ if(view.name!=="play") render(); }
+
 /* vitrina: los regalos conseguidos y los siguientes de cada tipo */
 function giftShelf(st){
   st=st||S; const g=st.gifts||{}, ds=dayStreak(st);
@@ -2341,35 +2471,74 @@ function giftShelf(st){
     `<span class="gchip g-${t} ${g[t]?"":"none"}" title="${GIFTS[t].name}: ${g[t]||0}"><i aria-hidden="true">🎁</i><b>${g[t]||0}</b><small>${GIFTS[t].label}</small></span>`).join("")}</div>`
     +(st===S?`<div class="f15" style="color:var(--soft)">Próximos: raro el día ${nextTierDay(ds,"rare")}, épico el ${nextTierDay(ds,"epic")} y legendario el ${nextTierDay(ds,"legend")} de racha.</div>`:"");
 }
+function stickerAlbum(st){
+  st=st||S; const own=st.stickers||{};
+  const got=Object.keys(own).length;
+  return `<div class="f15" style="color:var(--soft)">${got} de ${STICKER_TOTAL} pegatinas. Cada regalo trae una de su color.</div>
+  ${["common","rare","epic","legend"].map(t=>`<div class="album g-${t}">${STICKERS[t].map(e=>
+    own[e]?`<span class="stk" title="${GIFTS[t].label}${own[e]>1?" · repetida ×"+own[e]:""}">${e}${own[e]>1?`<small>×${own[e]}</small>`:""}</span>`
+          :`<span class="stk empty" title="${GIFTS[t].label}: por conseguir">?</span>`).join("")}</div>`).join("")}`;
+}
+
+/* ---------- logros: premios que no dependen de la racha ---------- */
+const ACH=[
+  {id:"first", ic:"🌱", name:"Primera ronda",      desc:"Termina una ronda",                       tok:1, test:()=>S.stats.sessions.length>=1},
+  {id:"q100",  ic:"💯", name:"100 preguntas",      desc:"Contesta 100 preguntas",                  tok:2, test:()=>S.stats.answers>=100},
+  {id:"q500",  ic:"📚", name:"500 preguntas",      desc:"Contesta 500 preguntas",                  tok:3, test:()=>S.stats.answers>=500},
+  {id:"s10",   ic:"⚡", name:"10 seguidas",        desc:"10 aciertos seguidos en una ronda",       tok:2, test:()=>S.stats.bestStreak>=10},
+  {id:"s20",   ic:"🌪️", name:"20 seguidas",        desc:"20 aciertos seguidos en una ronda",       tok:3, test:()=>S.stats.bestStreak>=20},
+  {id:"unit",  ic:"🏅", name:"Unidad al 100 %",    desc:"Domina todas las preguntas de una unidad",tok:3, test:()=>myUnits().some(u=>unitStats(u).pct===100)},
+  {id:"exam10",ic:"🎓", name:"Examen de 10",       desc:"Saca un 10 en el examen mixto",           tok:3, test:()=>!!(S.flags&&S.flags.exam10)},
+  {id:"fix50", ic:"🩹", name:"50 fallos arreglados",desc:"Acierta 50 preguntas que tenías falladas",tok:3, test:()=>(S.stats.fixed||0)>=50},
+  {id:"d7",    ic:"🔥", name:"Una semana",         desc:"7 días seguidos cumpliendo la meta",      tok:2, test:()=>(S.bestDays||0)>=7},
+  {id:"d30",   ic:"🌋", name:"Un mes",             desc:"30 días seguidos cumpliendo la meta",     tok:5, test:()=>(S.bestDays||0)>=30}
+];
+function checkAch(){
+  if(!PROFILE) return;
+  S.ach=S.ach||{};
+  const fresh=ACH.filter(a=>!S.ach[a.id]&&a.test());
+  if(!fresh.length) return;
+  fresh.forEach(a=>{ S.ach[a.id]=Date.now(); S.tokens+=a.tok; });
+  save();
+  const tok=fresh.reduce((x,a)=>x+a.tok,0);
+  setTimeout(()=>{ SFX.play("win"); toast(`🏅 ${fresh.length===1?"Logro: "+fresh[0].ic+" "+fresh[0].name:fresh.length+" logros nuevos"} · +${tok} 🎟️`); },1800);
+}
+function achGrid(st){
+  st=st||S; const got=st.ach||{};
+  return `<div class="achs">${ACH.map(a=>`<div class="ach ${got[a.id]?"on":""}" title="${a.desc} · +${a.tok} 🎟️"><i aria-hidden="true">${a.ic}</i><b>${a.name}</b><small>${got[a.id]?"Conseguido":a.desc}</small></div>`).join("")}</div>`;
+}
+
 const WD=["D","L","M","X","J","V","S"];
 function weekDots(st){
-  const days=(st||S).days||{};
+  const days=(st||S).days||{}, sh=(st||S).shields||{};
   return `<div class="week" role="img" aria-label="Últimos 7 días">${[-6,-5,-4,-3,-2,-1,0].map(k=>{
-    const d=dayShift(k), n=days[dayKey(d)]||0;
-    return `<span class="wd ${n>=DAY_GOAL?"on":n>0?"some":""} ${k===0?"today":""}" title="${d.toLocaleDateString("es-ES",{weekday:"long",day:"numeric"})}: ${n} pregunta${n===1?"":"s"}"><i>${n>=DAY_GOAL?"🔥":n>0?n:""}</i><b>${WD[d.getDay()]}</b></span>`;
+    const d=dayShift(k), key=dayKey(d), n=days[key]||0;
+    return `<span class="wd ${n>=DAY_GOAL?"on":sh[key]?"shield":n>0?"some":""} ${k===0?"today":""}" title="${d.toLocaleDateString("es-ES",{weekday:"long",day:"numeric"})}: ${n} pregunta${n===1?"":"s"}${sh[key]?" · escudo":""}"><i>${n>=DAY_GOAL?"🔥":sh[key]?"🛡️":n>0?n:""}</i><b>${WD[d.getDay()]}</b></span>`;
   }).join("")}</div>`;
 }
 /* camino hacia el regalo: los 7 días de la tanda de racha en curso, con su
-   letra de día; el 7.º es el regalo (🎟️). Los días que faltan salen vacíos. */
+   letra de día; el 7.º es el regalo. Los días que faltan salen vacíos. */
 function streakPath(st){
   st=st||S;
   const days=st.days||{}, doneToday=(days[dayKey()]||0)>=DAY_GOAL;
-  const ds=dayStreak(st), pos=ds%7;
+  const ci=chainInfo(st), ds=ci.n, pos=ds%7;
   const idx=doneToday?(pos===0?7:pos):pos+1;      /* posición de hoy en la tanda, de 1 a 7 */
   const got=doneToday?idx:idx-1;                   /* días ya cumplidos de la tanda */
-  const tier=giftTier(ds-got+7), gname=GIFTS[tier].name.toLowerCase();
+  const tier=giftTier(ds-got+7), G=GIFTS[tier], gname=G.name.toLowerCase();
   const slots=[1,2,3,4,5,6,7].map(k=>{
-    const off=k-idx, d=dayShift(off), n=days[dayKey(d)]||0;
+    const off=k-idx;
+    /* los días pasados son los de la racha (saltando los del escudo) */
+    const d=off<0?new Date(ci.keys[(doneToday?0:-1)+idx-k]+"T12:00:00"):dayShift(off);
+    const n=days[dayKey(d)]||0;
     const done=off<0||(off===0&&doneToday);
     const gift=k===7;
     const inner=gift?"🎁":done?"🔥":off===0&&n>0?n:"";
-    const tip=gift?`Día ${ds-got+7} de racha: ${gname} (+${GIFTS[tier].tok} 🎟️${GIFTS[tier].xp?" · +"+GIFTS[tier].xp+" XP":""})`:`${d.toLocaleDateString("es-ES",{weekday:"long",day:"numeric"})}${off===0?" (hoy)":""}: ${off>0?"por llegar":n+" pregunta"+(n===1?"":"s")}`;
+    const tip=gift?`Día ${ds-got+7} de racha: ${gname} (${G.short})`:`${d.toLocaleDateString("es-ES",{weekday:"long",day:"numeric"})}${off===0?" (hoy)":""}: ${off>0?"por llegar":n+" pregunta"+(n===1?"":"s")}`;
     return `<span class="wd ${done?"on":""} ${off===0&&!done&&n>0?"some":""} ${off===0?"today":""} ${gift?"gift g-"+tier:""}" title="${tip}"><i>${inner}</i><b>${WD[d.getDay()]}</b></span>`;
   }).join("");
-  const G=GIFTS[tier], prize=`+${G.tok} 🎟️${G.xp?" · +"+G.xp+" XP":""}`;
-  const left=7-got, plus=`<span style="white-space:nowrap">(${prize})</span>`;
+  const left=7-got, plus=`<span style="white-space:nowrap">(${G.short})</span>`;
   const tname=tier==="common"?"el regalo":`el <b class="tn g-${tier}">${gname}</b>`;
-  const note=got===7?`🎁 ¡${G.name} conseguido! ${prize}`:`🎁 Faltan ${left} días para ${tname} ${plus}`;
+  const note=got===7?`🎁 ¡${G.name} conseguido!`:`🎁 Faltan ${left} días para ${tname} ${plus}`;
   return `<div class="week" role="img" aria-label="Racha: ${got} de 7 días hacia el regalo">${slots}</div><div class="giftnote">${got===7||left>1?note:(doneToday?`🎁 Mañana toca ${tname} si cumples la meta ${plus}`:`🎁 ¡Hoy toca ${tname} si cumples la meta! ${plus}`)}</div>`;
 }
 function goalCard(){
@@ -2378,10 +2547,15 @@ function goalCard(){
   const msg=done?`¡Meta cumplida! Vuelve mañana para llegar a ${ds+1} días seguidos.`
     :ds>0?`Te ${left===1?"falta 1 pregunta":"faltan "+left+" preguntas"} para no perder tu racha de ${ds} día${ds===1?"":"s"}.`
     :`Haz ${left} pregunta${left===1?"":"s"} hoy y empieza una racha 🔥`;
+  const extras=[
+    boostToday()?`<span class="pill boost">⚡ Hoy, XP doble</span>`:"",
+    ds>0&&!done?(shieldReady()?`<span class="pill shield" title="Si hoy no llegas a la meta, se gastan ${SHIELD_COST} 🎟️ solos y la racha sigue">🛡️ Escudo listo</span>`:`<span class="pill noshield" title="Necesitas ${SHIELD_COST} 🎟️ para el escudo">🛡️ Sin escudo (${SHIELD_COST} 🎟️)</span>`):""
+  ].join("");
   return `<div class="card goal ${done?"done":ds>0?"risk":""}">
     <div class="row" style="align-items:baseline"><span class="eyeb">META DE HOY</span><span class="gt">${done?"✓ ":""}${Math.min(n,DAY_GOAL)} / ${DAY_GOAL}</span></div>
     <div class="bar paper"><i style="width:${Math.min(100,n/DAY_GOAL*100)}%"></i></div>
     <div class="gmsg">${msg}</div>
+    ${extras?`<div class="pills">${extras}</div>`:""}
     ${streakPath()}
     <button class="bigbtn ${done?"soft2":""}" data-act="quick">▶ Práctica rápida · ${q} preguntas</button>
   </div>`;
@@ -2460,6 +2634,7 @@ function bindNav(){
 function go(v){ view=v; glossEl.hidden=true; render(); window.scrollTo({top:0,behavior:"instant"}); }
 function render(){
   const vn=view.name;
+  applyAccent();
   document.body.classList.toggle("has-nav", !!PROFILE && /^(home|units|unit|stats)$/.test(vn));
   document.body.classList.toggle("bandbg", vn==="done" && !!PROFILE);
   app.classList.toggle("classic", /^(tstudent|treview)$/.test(vn));
@@ -2594,6 +2769,12 @@ function teacherHead(){
     <button class="pillbtn" id="t-out">Salir</button>
   </div>`;
 }
+/* Los premios reales entregados se apuntan en el navegador del profe, sin
+   tocar el progreso del alumno en la nube. */
+const DELIVKEY="cuaderno-arcade-entregados";
+function delivered(){ try{ return JSON.parse(localStorage.getItem(DELIVKEY)||"[]"); }catch(e){ return []; } }
+function markDelivered(k){ const l=delivered(); if(!l.includes(k)) l.push(k); try{ localStorage.setItem(DELIVKEY,JSON.stringify(l)); }catch(e){} }
+function pendingPrizes(id,d){ const l=delivered(); return (d.prizes||[]).filter(z=>!l.includes(id+":"+z.ts)); }
 function bindTeacherHead(){
   document.getElementById("t-out").onclick=()=>leave();
   const tb=document.getElementById("t-theme");
@@ -2623,6 +2804,7 @@ async function renderTeacher(){
         <div class="stat"><b>${s.ok}</b><span>Dominadas</span></div>
         <div class="stat"><b>${s.wrong.length}</b><span>Fallos</span></div>
       </div>
+      ${d?pendingPrizes(p.id,d).map(z=>`<div class="tprize"><span>🏆 Premio real pendiente · legendario del ${new Date(z.ts).toLocaleDateString("es-ES")}</span><button class="pillbtn" data-deliver="${p.id}:${z.ts}">Entregado</button></div>`).join(""):""}
       <button class="bigbtn white" data-tv="${p.id}">🔎 Ver sus ejercicios</button>
     </div>
     ${d?`<details class="more">
@@ -2630,6 +2812,7 @@ async function renderTeacher(){
       <div class="inner">
         ${weekDots(d)}
         ${giftShelf(d)}
+        <div class="f15" style="color:var(--soft)">Pegatinas: ${Object.keys(d.stickers||{}).length} de ${STICKER_TOTAL} · Logros: ${Object.keys(d.ach||{}).length} de ${ACH.length} · Escudos usados: ${d.stats.shieldsUsed||0}</div>
         <div class="f15" style="color:var(--soft)">${levelOf(d.xp).name} · mejor racha ${d.stats.bestStreak} 🔥 · ${d.stats.sessions.length} ronda${d.stats.sessions.length===1?"":"s"} · ${d.stats.correct} de ${d.stats.answers} respuestas bien</div>
         ${Object.keys(s.levels).sort().map(L=>{
           const g=s.levels[L], pc=Math.round(g.ok/g.tot*100);
@@ -2661,6 +2844,7 @@ async function renderTeacher(){
 
   bindTeacherHead();
   app.querySelectorAll("[data-tv]").forEach(b=>b.onclick=()=>go({name:"tstudent",id:b.dataset.tv}));
+  app.querySelectorAll("[data-deliver]").forEach(b=>b.onclick=()=>{ markDelivered(b.dataset.deliver); toast("Premio marcado como entregado."); renderTeacher(); });
   app.querySelectorAll("[data-rev]").forEach(el=>el.onclick=()=>{
     const it=INDEX[el.dataset.rev]; if(!it) return;
     go({name:"treview",sid:el.dataset.sid,ex:it.ex,i:it.ex.items.indexOf(it)});
@@ -2910,7 +3094,9 @@ function bindUnitRows(){
   app.querySelectorAll("[data-unit]").forEach(b=>b.onclick=()=>go({name:"unit",unit:UNITS.find(u=>u.id===b.dataset.unit)}));
 }
 function renderHome(){
+  applyShields(); checkAch();
   const p=me(), lv=levelOf(S.xp);
+  const title=(S.titles||[]).slice(-1)[0];
   const wrongN=S.wrong.length;
   const mine=myItems();
   const list=myUnits();
@@ -2921,7 +3107,7 @@ function renderHome(){
   <header class="band hband">
     <div class="row">
       <span class="av2" aria-hidden="true">${p.initial}</span>
-      <div class="grow"><span class="f15">${p.name}</span><span class="hname">${lv.name}</span></div>
+      <div class="grow"><span class="f15">${p.name}${title?` · <b class="gold">${esc(title)}</b>`:""}</span><span class="hname">${lv.name}</span></div>
       <span class="xpbig" data-fly>${S.xp} XP</span>
     </div>
     <div class="lvl" style="display:grid;gap:6px">
@@ -3189,7 +3375,7 @@ function playHeadInner(){
     :`<div class="multrow"><b class="gold">${fmtMult(m)}</b><span class="bar thin" title="Hacia el tope de ×2.0"><i style="width:${Math.round((m-1)*100)}%"></i></span><span>${
       m>=2?"¡Multiplicador al máximo!"
       :nx>m?`Acierta y sube a <b>${fmtMult(nx)}</b>`
-      :`Encadena aciertos para <b>×1.1</b>`}</span></div>`;
+      :`Encadena aciertos para <b>×1.1</b>`}${boostToday()?' · <b class="gold">⚡ XP ×2</b>':""}</span></div>`;
   let prog;
   if(n<=30){
     const miss=new Set(run.misses.map(x=>x.it.id));
@@ -3663,7 +3849,10 @@ function paintQuestion(it){
     <div class="qfoot2 ${hasTheory?"":"solo"}" id="qfoot">
       ${hasTheory?'<button class="sqbtn" id="cheat" aria-label="Ver la chuleta">📖</button>':""}
       <button class="bigbtn" id="check">Comprobar</button>
-      <button class="textbtn" id="skip">Ver la respuesta</button>
+      <div class="qlinks">
+        ${it.t==="choice"&&it.opts.length>=3?'<button class="textbtn" id="fifty" title="Quita la mitad de las opciones incorrectas">🎟️ 50/50</button><span aria-hidden="true">·</span>':""}
+        <button class="textbtn" id="skip">Ver la respuesta</button>
+      </div>
     </div>`;
 
   bindGloss(card);
@@ -3697,6 +3886,20 @@ function paintQuestion(it){
   }
   if(it.t==="match"){ setupMatch(it,card); checkBtn.disabled=true; }
   document.getElementById("skip").onclick=()=>reveal(it);
+  const ff=document.getElementById("fifty"); if(ff) ff.onclick=()=>useFifty(it,ff);
+}
+/* comodín 50/50: por 1 🎟️ quita la mitad de las opciones incorrectas */
+function useFifty(it,btn){
+  if(run.answered||btn.disabled) return;
+  if(S.tokens<1){ toast("Necesitas 1 🎟️ para el 50/50."); return; }
+  const wrong=[...document.querySelectorAll(".opt")].filter(b=>!b.disabled&&!it.a.includes(+b.dataset.i));
+  const out=shuffle(wrong).slice(0,Math.max(1,Math.floor(wrong.length/2)));
+  if(!out.length) return;
+  out.forEach(b=>{ b.disabled=true; b.classList.remove("sel"); b.classList.add("gone"); b.setAttribute("aria-pressed","false");
+    if(run.picked===+b.dataset.i){ run.picked=null; const c=document.getElementById("check"); if(c) c.disabled=true; } });
+  S.tokens--; S.stats.tokensSpent++; save();
+  btn.disabled=true; btn.textContent="50/50 usado";
+  SFX.play("token"); flyXP("−1 🎟️","tok");
 }
 /* En las preguntas de elegir: A, B, C… o 1, 2, 3… seleccionan la opción que
    aparece en esa posición; Enter comprueba. */
@@ -3886,6 +4089,7 @@ function finish(it,ok,model,given,near,selfmarkable,revealed,ans){
   S.stats.byUnit[uid]=S.stats.byUnit[uid]||{ok:0,ko:0};
 
   const second=!!run.tried;
+  const xb=boostToday()?2:1;                 /* XP doble el día después de un regalo raro */
   /* relacionar con fallos: se pierde la parte proporcional de los 10 XP
      (las parejas que costaron algún intento) y la racha no se corta */
   const pairs=it.t==="match"?it.pairs.length:0;
@@ -3896,7 +4100,7 @@ function finish(it,ok,model,given,near,selfmarkable,revealed,ans){
     run.correct++;
     mult=multOf(run.streak);
     S.stats.byUnit[uid].ko++;
-    gained=base?addXP(base,mult):0; run.xp=(run.xp||0)+gained;
+    gained=base?addXP(base,mult*xb):0; run.xp=(run.xp||0)+gained;
     if(S.ex[it.id]!=="ok") S.ex[it.id]="ko";
     if(!S.wrong.includes(it.id)) S.wrong.push(it.id);
   } else if(ok && second){
@@ -3905,7 +4109,7 @@ function finish(it,ok,model,given,near,selfmarkable,revealed,ans){
     run.correct++;
     mult=multOf(run.streak);
     S.stats.byUnit[uid].ko++;
-    gained=addXP(5,mult); run.xp=(run.xp||0)+gained;
+    gained=addXP(5,mult*xb); run.xp=(run.xp||0)+gained;
     S.ex[it.id]="ok";
     if(!S.wrong.includes(it.id)) S.wrong.push(it.id);
   } else if(ok){
@@ -3915,8 +4119,9 @@ function finish(it,ok,model,given,near,selfmarkable,revealed,ans){
     S.stats.bestStreak=Math.max(S.stats.bestStreak,run.streak);
     S.stats.bestMult=Math.max(S.stats.bestMult,mult);
     S.stats.correct++; S.stats.byUnit[uid].ok++;
-    gained=addXP(10,mult); run.xp=(run.xp||0)+gained;
+    gained=addXP(10,mult*xb); run.xp=(run.xp||0)+gained;
     S.ex[it.id]="ok";
+    if(S.wrong.includes(it.id)) S.stats.fixed=(S.stats.fixed||0)+1;
     S.wrong=S.wrong.filter(x=>x!==it.id);
   } else {
     run.streak=0;
@@ -3931,7 +4136,7 @@ function finish(it,ok,model,given,near,selfmarkable,revealed,ans){
   run.drop=!ok&&!partial&&multOf(prevStreak)>1?multOf(prevStreak):0;
   recordAnswer(it, ok?"ok":revealed?"rev":near?"near":"ko", ans);
   saveResume();
-  save(); syncTop();
+  save(); syncTop(); checkAch();
   reactCard(ok||partial);
   /* el acierto suena más rico cuanto más larga es la racha */
   SFX.play(partial?"near":ok?(run.streak>=6?"good3":run.streak>=3?"good2":"good"):near?"near":revealed?"reveal":"bad");
@@ -3947,7 +4152,7 @@ function finish(it,ok,model,given,near,selfmarkable,revealed,ans){
     :it.t==="match"?"Emparejadas, con "+esc(given)
     :short?"Casi. Era «"+esc(model)+"»":"No es esa";
   const showSol=!ok && it.t!=="match" && (near||revealed||!short);
-  const xpPill=gained?`<span class="xpp">${mult>1?base+" × "+mult.toFixed(1)+" = ":""}+${gained} XP</span>`:partial?`<span class="xpp soft">+0 XP</span>`:"";
+  const xpPill=gained?`<span class="xpp">${mult>1||xb>1?base+(mult>1?" × "+mult.toFixed(1):"")+(xb>1?" × 2 ⚡":"")+" = ":""}+${gained} XP</span>`:partial?`<span class="xpp soft">+0 XP</span>`:"";
 
   const canSave = !ok && !partial && !revealed && prevStreak>=2 && S.tokens>0;
   const selfOK  = selfmarkable && !revealed && canSelfMark(given,model) && run.selfUsed<SELFMARK_MAX;
@@ -4026,6 +4231,8 @@ function renderDone(){
     xp:run.xp||0,pct,best:run.best,self:run.selfUsed,saves:run.saves});
   if(S.stats.sessions.length>60) S.stats.sessions=S.stats.sessions.slice(-60);
   clearResume(roundKey(m));
+  if(m.exam&&pct===100){ S.flags=S.flags||{}; S.flags.exam10=1; }
+  setTimeout(checkAch,0);
   save();
   setTimeout(()=>SFX.play(pct>=80?"win":pct>=60?"ok":"meh"),450);  /* tras el sonido de la última respuesta */
   const msg=pct===100?"Pleno. Esto ya lo tienes dominado."
@@ -4147,8 +4354,18 @@ function renderStats(){
       <div class="f15" style="color:var(--soft)">Meta: ${DAY_GOAL} preguntas al día. Al cumplirla ganas 20 XP; a los 3 días, un 🎟️; y cada semana de racha, un 🎁.</div>
       <div class="ctitle" style="font-size:16px;margin-top:4px">Temporada de 12 semanas</div>
       ${seasonMap()}
+      <div class="f15" style="color:var(--soft)">🛡️ <b>Escudo de racha:</b> si un día no llegas a la meta, se gastan ${SHIELD_COST} 🎟️ solos y la racha sigue (hasta ${SHIELD_MAX} días seguidos). ${shieldReady()?"Ahora mismo lo tienes listo.":"Ahora no te llega: necesitas "+SHIELD_COST+" 🎟️."}</div>
       <div class="ctitle" style="font-size:16px;margin-top:4px">Tus regalos</div>
       ${giftShelf()}
+      ${(S.prizes||[]).length?`<div class="prizebox">🏆 Tienes ${S.prizes.length===1?"un premio real":S.prizes.length+" premios reales"} por regalo legendario. ¡Pídeselo a tu profe!</div>`:""}
+    </div>
+    <div class="card" style="gap:10px">
+      <div class="ctitle">📒 Álbum de pegatinas</div>
+      ${stickerAlbum()}
+    </div>
+    <div class="card" style="gap:10px">
+      <div class="ctitle">🏅 Logros · ${Object.keys(S.ach||{}).length} de ${ACH.length}</div>
+      ${achGrid()}
     </div>
     ${myUnits().map(u=>{
       const lvls=[...new Set(u.exercises.map(e=>e.lvl||1))].sort((a,b)=>a-b);
@@ -4169,6 +4386,11 @@ function renderStats(){
         <button class="ghostbtn" id="st-theme" aria-label="Cambiar entre tema claro y oscuro">${dark?"☀️ Claro":"🌙 Oscuro"}</button>
         <button class="ghostbtn" id="st-out">⇄ Salir</button>
       </div>
+      <div class="f15" style="color:var(--soft)">Color de tu app${unlockedAccents().length<ACCENTS.length?" (los regalos épicos y legendarios desbloquean más)":""}:</div>
+      <div class="accents">${ACCENTS.map(a=>{
+        const open=unlockedAccents().some(x=>x.id===a.id), on=(S.accent||"azul")===a.id;
+        return `<button class="acc ${on?"on":""}" data-acc="${a.id}" ${open?"":"disabled"} style="--ac:${a.band}" aria-pressed="${on}" title="${open?a.name:a.name+": por desbloquear"}"><i>${open?"":"🔒"}</i><b>${a.name}</b></button>`;
+      }).join("")}</div>
       <div class="cloudline" id="cloudline"></div>
     </div>
 
@@ -4215,6 +4437,7 @@ function renderStats(){
   document.getElementById("st-snd").onclick=()=>{ SFX.toggle(); toast(SFX.isOn()?"Sonido activado":"Sonido silenciado"); renderStats(); };
   document.getElementById("st-theme").onclick=()=>{ toggleTheme(); renderStats(); };
   document.getElementById("st-out").onclick=()=>leave();
+  app.querySelectorAll("[data-acc]").forEach(b=>b.onclick=()=>{ S.accent=b.dataset.acc; save(); applyAccent(); renderStats(); });
   const dl=document.getElementById("dlbtn");
   if(dl){
     initDownloads();
