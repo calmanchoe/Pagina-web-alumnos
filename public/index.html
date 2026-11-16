@@ -1154,6 +1154,11 @@ button.card:active,.resume:active,.xt:active,.pk:active{transform:scale(.98)}
 .wd.on i{background:var(--mark);font-size:17px}
 .wd.today b{color:var(--ink);font-weight:800}
 .wd.today i{outline:2px solid var(--pen);outline-offset:2px}
+.wd.gift i{background:var(--marksoft);box-shadow:inset 0 0 0 2px var(--mark);font-size:19px}
+.wd.gift.on i{background:var(--mark);box-shadow:0 0 14px -2px var(--mark);animation:popIn .5s cubic-bezier(.2,.9,.3,1.3) both}
+.wd.gift:not(.on) i{animation:giftWiggle 2.6s ease-in-out infinite}
+@keyframes giftWiggle{0%,80%,100%{transform:none}85%{transform:rotate(-12deg) scale(1.08)}90%{transform:rotate(10deg) scale(1.08)}95%{transform:rotate(-5deg)}}
+.giftnote{font-size:15px;font-weight:600;color:var(--markdeep);text-align:center}
 .goal.done .wd i{background:var(--card)}
 .goal.done .wd.on i{background:var(--mark)}
 .tcard .wd i{background:rgba(255,255,255,.2)}
@@ -2234,6 +2239,26 @@ function weekDots(st){
     return `<span class="wd ${n>=DAY_GOAL?"on":n>0?"some":""} ${k===0?"today":""}" title="${d.toLocaleDateString("es-ES",{weekday:"long",day:"numeric"})}: ${n} pregunta${n===1?"":"s"}"><i>${n>=DAY_GOAL?"🔥":n>0?n:""}</i><b>${WD[d.getDay()]}</b></span>`;
   }).join("")}</div>`;
 }
+/* camino hacia el regalo: los 7 días de la tanda de racha en curso, con su
+   letra de día; el 7.º es el regalo (🎟️). Los días que faltan salen vacíos. */
+function streakPath(st){
+  st=st||S;
+  const days=st.days||{}, doneToday=(days[dayKey()]||0)>=DAY_GOAL;
+  const pos=dayStreak(st)%7;
+  const idx=doneToday?(pos===0?7:pos):pos+1;      /* posición de hoy en la tanda, de 1 a 7 */
+  const got=doneToday?idx:idx-1;                   /* días ya cumplidos de la tanda */
+  const slots=[1,2,3,4,5,6,7].map(k=>{
+    const off=k-idx, d=dayShift(off), n=days[dayKey(d)]||0;
+    const done=off<0||(off===0&&doneToday);
+    const gift=k===7;
+    const inner=gift?"🎁":done?"🔥":off===0&&n>0?n:"";
+    const tip=gift?`Día 7 de racha: regalo de 1 🎟️`:`${d.toLocaleDateString("es-ES",{weekday:"long",day:"numeric"})}${off===0?" (hoy)":""}: ${off>0?"por llegar":n+" pregunta"+(n===1?"":"s")}`;
+    return `<span class="wd ${done?"on":""} ${off===0&&!done&&n>0?"some":""} ${off===0?"today":""} ${gift?"gift":""}" title="${tip}"><i>${inner}</i><b>${WD[d.getDay()]}</b></span>`;
+  }).join("");
+  const left=7-got, plus='<span style="white-space:nowrap">(+1 🎟️)</span>';
+  const note=got===7?"🎁 ¡Regalo conseguido! +1 🎟️":`🎁 ${left===1?"Mañana":"Faltan "+left+" días para"} el regalo${left===1?" si cumples la meta":""} ${plus}`;
+  return `<div class="week" role="img" aria-label="Racha: ${got} de 7 días hacia el regalo">${slots}</div><div class="giftnote">${got===7||left>1?note:(doneToday?"🎁 Mañana toca regalo si cumples la meta "+plus:"🎁 ¡Hoy toca regalo si cumples la meta! "+plus)}</div>`;
+}
 function goalCard(){
   const n=todayCount(), ds=dayStreak(), done=n>=DAY_GOAL, left=DAY_GOAL-n;
   const q=quickSize();
@@ -2244,7 +2269,7 @@ function goalCard(){
     <div class="row" style="align-items:baseline"><span class="eyeb">META DE HOY</span><span class="gt">${done?"✓ ":""}${Math.min(n,DAY_GOAL)} / ${DAY_GOAL}</span></div>
     <div class="bar paper"><i style="width:${Math.min(100,n/DAY_GOAL*100)}%"></i></div>
     <div class="gmsg">${msg}</div>
-    ${weekDots()}
+    ${streakPath()}
     <button class="bigbtn ${done?"soft2":""}" data-act="quick">▶ Práctica rápida · ${q} preguntas</button>
   </div>`;
 }
@@ -4004,8 +4029,8 @@ function renderStats(){
 
     <div class="card" style="gap:12px">
       <div class="row" style="justify-content:space-between;align-items:baseline"><span class="ctitle">🔥 ${dayStreak()} día${dayStreak()===1?"":"s"} seguido${dayStreak()===1?"":"s"}</span><span class="f15" style="color:var(--soft)">mejor: ${Math.max(S.bestDays||0,dayStreak())}</span></div>
-      ${weekDots()}
-      <div class="f15" style="color:var(--soft)">Meta: ${DAY_GOAL} preguntas al día. Al cumplirla ganas 20 XP, y a los 3 días seguidos y cada 7 días, un 🎟️.</div>
+      ${streakPath()}
+      <div class="f15" style="color:var(--soft)">Meta: ${DAY_GOAL} preguntas al día. Al cumplirla ganas 20 XP, y a los 3 días seguidos y cada 7 días (el 🎁), un 🎟️.</div>
     </div>
     ${myUnits().map(u=>{
       const lvls=[...new Set(u.exercises.map(e=>e.lvl||1))].sort((a,b)=>a-b);
