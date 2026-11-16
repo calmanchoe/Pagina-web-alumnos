@@ -1251,6 +1251,8 @@ body.has-nav .testfab{bottom:calc(env(safe-area-inset-bottom,0px) + 96px)}
 .tgroup h4{font-family:var(--f-display);font-size:15px;font-weight:800;margin:0}
 .tbtns{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
 .tbtns .ghostbtn{min-height:48px;padding:0 10px;font-size:15px;color:var(--ink);background:var(--card)}
+.qsheet .readit{font-size:16px;line-height:1.4;background:var(--marksoft);color:var(--ink);border-radius:12px;padding:10px 12px}
+.qsheet .readit b{color:var(--markdeep)}
 .giftnote{font-size:15px;font-weight:600;color:var(--markdeep);text-align:center}
 .goal.done .wd i{background:var(--card)}
 .goal.done .wd.on i{background:var(--mark)}
@@ -4123,6 +4125,7 @@ function tryAgain(it,near,ans){
   foot.setAttribute("role","status");
   foot.innerHTML=`
     <div class="sh-top"><h3>${near?"¡Casi! Revisa la ortografía":"No es esa. ¡Prueba otra vez!"}</h3><span class="xpp soft">2.º intento · ½ XP</span></div>
+    <div class="readit">👀 <b>Léetelo bien antes de contestar:</b> la frase entera y la instrucción, sin prisa.</div>
     <div class="why">💡 ${hint}</div>
     <div class="acts"><button class="bigbtn" id="check">Comprobar otra vez</button></div>
     <div class="row" style="justify-content:center;gap:6px">
