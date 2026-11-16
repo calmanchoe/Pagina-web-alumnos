@@ -1138,6 +1138,28 @@ button.card:active,.resume:active,.xt:active,.pk:active{transform:scale(.98)}
 .wrap.classic .back{font-size:15px;min-height:44px}
 .wrap.classic .btn{min-height:48px}
 .navbrand{display:none}
+.goal{gap:10px}
+.goal .row{justify-content:space-between}
+.goal .gt{font-family:var(--f-mono);font-size:19px;font-weight:600}
+.goal .gmsg{font-size:15px;color:var(--soft)}
+.goal.risk .gmsg{color:var(--markdeep);font-weight:600}
+.goal.done{background:var(--greensoft)}
+.goal.done .gt{color:var(--green)}
+.goal .bigbtn{margin-top:4px}
+.bigbtn.soft2{background:var(--card);color:var(--pen);border:2px solid var(--pen)}
+.week{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.wd{display:grid;justify-items:center;gap:3px;font-size:13px;color:var(--soft)}
+.wd i{width:36px;height:36px;border-radius:50%;background:var(--card2);display:grid;place-items:center;font-style:normal;font-family:var(--f-mono);font-size:15px;font-weight:600;color:var(--markdeep)}
+.wd.some i{background:var(--marksoft);box-shadow:inset 0 0 0 2px var(--mark)}
+.wd.on i{background:var(--mark);font-size:17px}
+.wd.today b{color:var(--ink);font-weight:800}
+.wd.today i{outline:2px solid var(--pen);outline-offset:2px}
+.goal.done .wd i{background:var(--card)}
+.goal.done .wd.on i{background:var(--mark)}
+.tcard .wd i{background:rgba(255,255,255,.2)}
+.xpp.soft{background:var(--marksoft);color:var(--markdeep)}
+.goalrow.hit{background:#F5C542;color:#2a2000}
+.qwrap .opt.no[disabled]{opacity:.75}
 .tcol{display:grid;gap:12px;align-content:start}
 
 /* =====================================================================
@@ -1182,7 +1204,7 @@ button.card:active,.resume:active,.xt:active,.pk:active{transform:scale(.98)}
   .hband .stat{align-content:center;padding:16px 8px}
   .hband .stat b{font-size:28px}
   .sec.home{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .sec.home > .duo:first-child,.sec.home > .urow,.sec.home > .empty2{grid-column:1 / -1}
+  .sec.home > .duo:first-child,.sec.home > .goal + .duo,.sec.home > .urow,.sec.home > .empty2,.sec.home > .goal{grid-column:1 / -1}
   .sec.home > .resume{min-height:128px}
   .mcard{min-height:128px}
 
@@ -2055,7 +2077,7 @@ const TKEY="cuaderno-arcade-theme";
 const LASTKEY="cuaderno-arcade-last";
 function skey(){ return "cuaderno-arcade-v3-"+PROFILE; }
 function blank(){
-  return {xp:0, tokens:3, lvl:0, ex:{}, wrong:[], resume:{}, answers:{},
+  return {xp:0, tokens:3, lvl:0, ex:{}, wrong:[], resume:{}, answers:{}, days:{}, bestDays:0,
     stats:{answers:0, correct:0, bestStreak:0, bestMult:1, saves:0, tokensSpent:0,
            byUnit:{}, sessions:[], selfmarks:[]}};
 }
@@ -2165,6 +2187,73 @@ function addXP(base, mult){
     if(up) setTimeout(()=>flyXP("+"+up+" 🎟️","tok"),240);
   },0);
   return g;
+}
+
+/* =====================================================================
+   META DIARIA Y RACHA DE DÍAS
+   Cada pregunta contestada suma al día de hoy (fecha local). La racha son
+   los días seguidos con la meta cumplida; hoy cuenta en cuanto se cumple.
+   ===================================================================== */
+const DAY_GOAL=10;
+function dayKey(d){ d=d||new Date(); return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10); }
+function dayShift(n){ const d=new Date(); d.setDate(d.getDate()+n); return d; }
+function todayCount(st){ return ((st||S).days||{})[dayKey()]||0; }
+function dayStreak(st){
+  const days=(st||S).days||{};
+  let k=(days[dayKey()]||0)>=DAY_GOAL?0:-1, n=0;
+  while((days[dayKey(dayShift(k))]||0)>=DAY_GOAL){ n++; k--; }
+  return n;
+}
+function countDay(){
+  S.days=S.days||{};
+  const k=dayKey(), before=S.days[k]||0;
+  S.days[k]=before+1;
+  const keys=Object.keys(S.days).sort();      /* solo los últimos 60 días */
+  while(keys.length>60) delete S.days[keys.shift()];
+  if(before<DAY_GOAL && before+1>=DAY_GOAL) goalReached();
+}
+function goalReached(){
+  const n=dayStreak();
+  S.bestDays=Math.max(S.bestDays||0,n);
+  const tok=(n===3||n%7===0)?1:0;          /* premio a los 3 días y cada semana */
+  S.tokens+=tok;
+  addXP(20,1);
+  if(run) run.goalHit=true;
+  setTimeout(()=>{
+    SFX.play("levelup");
+    toast("🎯 ¡Meta de hoy cumplida! +20 XP"+(tok?" · +1 🎟️":"")+" · 🔥 "+n+" día"+(n===1?"":"s")+" seguido"+(n===1?"":"s"));
+  },700);
+}
+const WD=["D","L","M","X","J","V","S"];
+function weekDots(st){
+  const days=(st||S).days||{};
+  return `<div class="week" role="img" aria-label="Últimos 7 días">${[-6,-5,-4,-3,-2,-1,0].map(k=>{
+    const d=dayShift(k), n=days[dayKey(d)]||0;
+    return `<span class="wd ${n>=DAY_GOAL?"on":n>0?"some":""} ${k===0?"today":""}" title="${d.toLocaleDateString("es-ES",{weekday:"long",day:"numeric"})}: ${n} pregunta${n===1?"":"s"}"><i>${n>=DAY_GOAL?"🔥":n>0?n:""}</i><b>${WD[d.getDay()]}</b></span>`;
+  }).join("")}</div>`;
+}
+function goalCard(){
+  const n=todayCount(), ds=dayStreak(), done=n>=DAY_GOAL, left=DAY_GOAL-n;
+  const q=Math.max(5,left);
+  const msg=done?`¡Meta cumplida! Vuelve mañana para llegar a ${ds+1} días seguidos.`
+    :ds>0?`Te ${left===1?"falta 1 pregunta":"faltan "+left+" preguntas"} para no perder tu racha de ${ds} día${ds===1?"":"s"}.`
+    :`Haz ${left} pregunta${left===1?"":"s"} hoy y empieza una racha 🔥`;
+  return `<div class="card goal ${done?"done":ds>0?"risk":""}">
+    <div class="row" style="align-items:baseline"><span class="eyeb">META DE HOY</span><span class="gt">${done?"✓ ":""}${Math.min(n,DAY_GOAL)} / ${DAY_GOAL}</span></div>
+    <div class="bar paper"><i style="width:${Math.min(100,n/DAY_GOAL*100)}%"></i></div>
+    <div class="gmsg">${msg}</div>
+    ${weekDots()}
+    <button class="bigbtn ${done?"soft2":""}" data-act="quick">▶ Práctica rápida · ${q} preguntas</button>
+  </div>`;
+}
+/* práctica rápida: primero fallos pendientes, luego lo que aún no domina */
+function startQuick(q){
+  const mine=myItems();
+  if(!mine.length){ toast("Aún no hay preguntas para "+me().name+"."); return; }
+  const wrong=shuffle(S.wrong.map(id=>INDEX[id]).filter(it=>it&&it.ex.unit.owner===PROFILE)).slice(0,Math.ceil(q/2));
+  const fresh=shuffle(mine.filter(it=>S.ex[it.id]!=="ok"&&!wrong.includes(it)));
+  const rest=shuffle(mine.filter(it=>!wrong.includes(it)&&!fresh.includes(it)));
+  startRun(shuffle([...wrong,...fresh,...rest].slice(0,q)),{title:"Práctica rápida",key:null});
 }
 
 /* =====================================================================
@@ -2386,7 +2475,7 @@ async function renderTeacher(){
     <div class="tcard" style="background:${p.bg}">
       <div class="row">
         <span class="av2">${p.initial}</span>
-        <div class="grow"><span class="nm">${p.name}</span><span class="f15">${d&&d.updatedAt?"Última vez: "+fecha(d.updatedAt):"Sin actividad todavía"}</span></div>
+        <div class="grow"><span class="nm">${p.name}</span><span class="f15">${d&&d.updatedAt?"Última vez: "+fecha(d.updatedAt):"Sin actividad todavía"}</span>${d?`<span class="f15">🔥 ${dayStreak(d)} día${dayStreak(d)===1?"":"s"} seguido${dayStreak(d)===1?"":"s"} · hoy ${todayCount(d)}/${DAY_GOAL}</span>`:""}</div>
         <span class="xpbig" style="font-size:17px">${d?d.xp:0} XP</span>
       </div>
       <div class="trio">
@@ -2399,6 +2488,7 @@ async function renderTeacher(){
     ${d?`<details class="more">
       <summary>Detalle de ${p.name}</summary>
       <div class="inner">
+        ${weekDots(d)}
         <div class="f15" style="color:var(--soft)">${levelOf(d.xp).name} · mejor racha ${d.stats.bestStreak} 🔥 · ${d.stats.sessions.length} ronda${d.stats.sessions.length===1?"":"s"} · ${d.stats.correct} de ${d.stats.answers} respuestas bien</div>
         ${Object.keys(s.levels).sort().map(L=>{
           const g=s.levels[L], pc=Math.round(g.ok/g.tot*100);
@@ -2698,13 +2788,14 @@ function renderHome(){
       <div class="f15">${lv.nxt?"Faltan "+(lv.nxt.xp-S.xp)+" XP para "+lv.nxt.name:"¡Has llegado al nivel máximo!"}</div>
     </div>
     <div class="trio">
-      <div class="stat"><b>🔥 ${pend?streak:S.stats.bestStreak}</b><span>${pend?"Racha":"Mejor racha"}</span></div>
+      <div class="stat" title="Días seguidos cumpliendo la meta de ${DAY_GOAL} preguntas"><b>🔥 ${dayStreak()}</b><span>${dayStreak()===1?"Día seguido":"Días seguidos"}</span></div>
       <div class="stat gold" title="Multiplicador de XP: sube 0,1 por cada acierto seguido, hasta ×2.0"><b>${fmtMult(multOf(streak))}</b><span>Bonus XP</span></div>
       <div class="stat" title="Tokens para salvar la racha"><b>🎟️ ${S.tokens}</b><span>Tokens</span></div>
     </div>
   </header>
 
   <div class="sec home">
+    ${goalCard()}
     ${pend?`<button class="resume" data-act="resume">
       <span class="txt">
         <span class="eb">SIGUE JUGANDO</span>
@@ -2727,6 +2818,7 @@ function renderHome(){
 
   bindNav(); bindUnitRows();
   const rs=app.querySelector('[data-act="resume"]'); if(rs&&pend) rs.onclick=()=>resumeRun(pend.key);
+  app.querySelector('[data-act="quick"]').onclick=()=>startQuick(Math.max(5,DAY_GOAL-todayCount()));
   app.querySelector('[data-act="exam"]').onclick=startExam;
   app.querySelector('[data-act="wrong"]').onclick=()=>{ if(wrongN) startWrong(); else toast("No tienes fallos pendientes. ¡Bien hecho!"); };
 }
@@ -3434,22 +3526,23 @@ function paintQuestion(it){
     </div>`;
 
   bindGloss(card);
+  run.tried=false;
   const cheat=document.getElementById("cheat"); if(cheat) cheat.onclick=e=>{e.stopPropagation();openTheory(ex.unit,ex);};
   const checkBtn=document.getElementById("check");
   run.answered=false;
 
   if(it.t==="choice"){
     /* tocar una opción solo la selecciona; se corrige al pulsar «Comprobar» */
-    let picked=null;
+    run.picked=null;
     card.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{
-      if(run.answered) return;
-      picked=+b.dataset.i;
+      if(run.answered||b.disabled) return;
+      run.picked=+b.dataset.i;
       card.querySelectorAll(".opt").forEach(x=>{ const on=x===b; x.classList.toggle("sel",on); x.setAttribute("aria-pressed",String(on)); });
-      checkBtn.disabled=false;
+      const c=document.getElementById("check"); if(c) c.disabled=false;
       SFX.play("pick");
     });
     checkBtn.disabled=true;
-    checkBtn.onclick=()=>{ if(picked!==null) resolveChoice(it,picked); };
+    checkBtn.onclick=()=>{ if(run.picked!=null) resolveChoice(it,run.picked); };
   }
   if(it.t==="fill"){
     const first=card.querySelector(".blank"); if(first) first.focus();
@@ -3498,6 +3591,12 @@ document.addEventListener("keydown",e=>{
 function optBtn(i){ return document.querySelector('.opt[data-i="'+i+'"]'); }
 function resolveChoice(it,pick){
   const ok=it.a.includes(pick);
+  if(!ok && !run.tried){
+    const b=optBtn(pick);
+    b.classList.remove("sel"); b.classList.add("no"); b.disabled=true; b.setAttribute("aria-pressed","false");
+    run.picked=null;
+    return tryAgain(it,false,{p:pick,o:run.lastOrder});
+  }
   document.querySelectorAll(".opt").forEach(b=>{ b.disabled=true; b.classList.remove("sel"); });
   optBtn(pick).classList.add(ok?"ok":"no");
   if(!ok) optBtn(it.a[0]).classList.add("ok");
@@ -3505,6 +3604,18 @@ function resolveChoice(it,pick){
 }
 function resolveFill(it){
   const inputs=[...document.querySelectorAll(".blank")];
+  if(!run.tried){
+    const res=inputs.map((inp,k)=>judge(inp.value,it.a[k]));
+    if(res.some(r=>r!=="ok")){
+      /* las que están bien se quedan fijas; las demás se pueden corregir */
+      inputs.forEach((inp,k)=>{
+        if(res[k]==="ok"){ inp.classList.add("ok"); inp.disabled=true; }
+        else { inp.classList.add("no"); inp.addEventListener("input",()=>inp.classList.remove("no"),{once:true}); }
+      });
+      const wrong=inputs.find((inp,k)=>res[k]!=="ok"); if(wrong){ wrong.focus(); wrong.select(); }
+      return tryAgain(it,res.every(r=>r!=="ko"),{v:inputs.map(i=>i.value)});
+    }
+  }
   let allOk=true, near=false;
   inputs.forEach((inp,k)=>{
     const r=judge(inp.value,it.a[k]);
@@ -3519,6 +3630,11 @@ function resolveWrite(it){
   const inp=document.getElementById("wr");
   const r=judge(inp.value,it.a,it.lead);
   const ok=r==="ok";
+  if(!ok && !run.tried){
+    inp.classList.add("no"); inp.addEventListener("input",()=>inp.classList.remove("no"),{once:true});
+    inp.focus();
+    return tryAgain(it,r==="near",{v:inp.value});
+  }
   inp.classList.add(ok?"ok":"no"); inp.disabled=true;
   const model=(it.lead?it.lead+" ":"")+expand(it.a[0])[0];
   finish(it,ok,model,inp.value,r==="near",!ok,false,{v:inp.value});
@@ -3566,6 +3682,38 @@ function reveal(it){
   finish(it,false,model,"",false,false,true,typed!==undefined?{v:typed}:(it.t==="choice"?{o:run.lastOrder}:{}));
 }
 
+/* ---------- segunda oportunidad ----------
+   Al primer fallo no se enseña la solución: sale una pista (la regla de la
+   explicación) y se puede volver a intentar por la mitad de XP. El primer
+   intento queda guardado para que el profe lo vea. */
+function tryAgain(it,near,ans){
+  run.tried=true;
+  recordAnswer(it, near?"near":"ko", ans);
+  save();
+  SFX.play(near?"near":"bad");
+  reactCard(false);
+  const foot=document.getElementById("qfoot");
+  const hasTheory=theoryFor(it.ex.unit,it.ex).length>0;
+  const hint=near?"Está casi: revisa cómo lo has escrito, letra a letra."
+    :(it.why||"Vuelve a leer la frase con calma. Si te atascas, abre la chuleta.");
+  foot.className="qsheet near";
+  foot.setAttribute("role","status");
+  foot.innerHTML=`
+    <div class="sh-top"><h3>${near?"¡Casi! Revisa la ortografía":"No es esa. ¡Prueba otra vez!"}</h3><span class="xpp soft">2.º intento · ½ XP</span></div>
+    <div class="why">💡 ${hint}</div>
+    <div class="acts"><button class="bigbtn" id="check">Comprobar otra vez</button></div>
+    <div class="row" style="justify-content:center;gap:6px">
+      ${hasTheory?'<button class="textbtn" id="cheat2">📖 Chuleta</button><span aria-hidden="true" style="color:var(--soft)">·</span>':""}
+      <button class="textbtn" id="skip">Ver la respuesta</button>
+    </div>`;
+  const c=document.getElementById("check");
+  if(it.t==="choice"){ c.disabled=true; c.onclick=()=>{ if(run.picked!=null) resolveChoice(it,run.picked); }; }
+  else if(it.t==="fill") c.onclick=()=>resolveFill(it);
+  else c.onclick=()=>resolveWrite(it);
+  document.getElementById("skip").onclick=()=>reveal(it);
+  const ch=document.getElementById("cheat2"); if(ch) ch.onclick=e=>{e.stopPropagation();openTheory(it.ex.unit,it.ex);};
+}
+
 /* ---------- ¿puede autocorregirse? ---------- */
 function canSelfMark(given,model){
   const g=norm(given).split(" ").filter(Boolean);
@@ -3596,7 +3744,17 @@ function finish(it,ok,model,given,near,selfmarkable,revealed,ans){
   const uid=it.ex.unit.id;
   S.stats.byUnit[uid]=S.stats.byUnit[uid]||{ok:0,ko:0};
 
-  if(ok){
+  const second=!!run.tried;
+  if(ok && second){
+    /* a la segunda: cuenta para la ronda y no corta la racha, pero no la sube;
+       la mitad de XP y se queda en «Repasar» para afianzarla */
+    run.correct++;
+    mult=multOf(run.streak);
+    S.stats.byUnit[uid].ko++;
+    gained=addXP(5,mult); run.xp=(run.xp||0)+gained;
+    S.ex[it.id]="ok";
+    if(!S.wrong.includes(it.id)) S.wrong.push(it.id);
+  } else if(ok){
     run.correct++; run.streak++; run.best=Math.max(run.best,run.streak);
     mult=multOf(run.streak);
     run.bestMult=Math.max(run.bestMult,mult);
@@ -3613,6 +3771,7 @@ function finish(it,ok,model,given,near,selfmarkable,revealed,ans){
     if(S.ex[it.id]!=="ok") S.ex[it.id]="ko";
     if(!S.wrong.includes(it.id)) S.wrong.push(it.id);
   }
+  if(!revealed) countDay();
   /* la banda enseña cómo cae el multiplicador: ×1.2 tachado → ×1.0 */
   run.lastOk=ok;
   run.drop=!ok&&multOf(prevStreak)>1?multOf(prevStreak):0;
@@ -3622,17 +3781,18 @@ function finish(it,ok,model,given,near,selfmarkable,revealed,ans){
   reactCard(ok);
   /* el acierto suena más rico cuanto más larga es la racha */
   SFX.play(ok?(run.streak>=6?"good3":run.streak>=3?"good2":"good"):near?"near":revealed?"reveal":"bad");
-  if(ok&&run.streak>=2) bumpChip("[data-fly]");
+  if(ok&&!second&&run.streak>=2) bumpChip("[data-fly]");
 
   const cls=ok?"good":(near?"near":"bad");
   const short=!!model && model.length<=28 && it.t!=="match";
-  const title=ok?(run.streak>=2?"¡Correcto! Racha de "+run.streak:"¡Correcto!")
+  const title=ok&&second?"¡Bien! A la segunda"
+    :ok?(run.streak>=2?"¡Correcto! Racha de "+run.streak:"¡Correcto!")
     :near?"¡Casi! Revisa la ortografía"
     :revealed?"Respuesta modelo"
     :it.t==="match"?"Emparejadas, con "+esc(given)
     :short?"Casi. Era «"+esc(model)+"»":"No es esa";
   const showSol=!ok && it.t!=="match" && (near||revealed||!short);
-  const xpPill=gained?`<span class="xpp">${mult>1?"10 × "+mult.toFixed(1)+" = ":""}+${gained} XP</span>`:"";
+  const xpPill=gained?`<span class="xpp">${mult>1?(second?5:10)+" × "+mult.toFixed(1)+" = ":""}+${gained} XP</span>`:"";
 
   const canSave = !ok && !revealed && prevStreak>=2 && S.tokens>0;
   const selfOK  = selfmarkable && !revealed && canSelfMark(given,model) && run.selfUsed<SELFMARK_MAX;
@@ -3740,6 +3900,13 @@ function renderDone(){
       </div>
     </div>
     ${extra?`<p class="dnote">${extra}</p>`:""}
+    <div class="lvcard goalrow ${todayCount()>=DAY_GOAL?"hit":""}">
+      <div class="row" style="justify-content:space-between;font-size:15px;gap:8px">
+        <b>${run.goalHit?"🎯 ¡Meta de hoy cumplida!":"🎯 Meta de hoy"}</b>
+        <span>${Math.min(todayCount(),DAY_GOAL)} / ${DAY_GOAL} · 🔥 ${dayStreak()} día${dayStreak()===1?"":"s"}</span>
+      </div>
+      ${todayCount()>=DAY_GOAL?"":`<div class="bar"><i style="width:${todayCount()/DAY_GOAL*100}%"></i></div>`}
+    </div>
     <div class="lvcard">
       <div class="row" style="justify-content:space-between;font-size:15px;gap:8px"><b>${lv.name}</b><span>${lv.nxt?"faltan "+(lv.nxt.xp-S.xp)+" XP para "+lv.nxt.name:"nivel máximo"}</span></div>
       <div class="bar"><i style="width:${lv.pct}%"></i></div>
@@ -3819,6 +3986,11 @@ function renderStats(){
       <div class="tile2" style="animation-delay:90ms"><span class="k">Tokens</span><span class="v">${S.tokens} 🎟️</span><span class="s">${st.saves} racha${st.saves===1?"":"s"} salvada${st.saves===1?"":"s"}</span></div>
     </div>
 
+    <div class="card" style="gap:12px">
+      <div class="row" style="justify-content:space-between;align-items:baseline"><span class="ctitle">🔥 ${dayStreak()} día${dayStreak()===1?"":"s"} seguido${dayStreak()===1?"":"s"}</span><span class="f15" style="color:var(--soft)">mejor: ${Math.max(S.bestDays||0,dayStreak())}</span></div>
+      ${weekDots()}
+      <div class="f15" style="color:var(--soft)">Meta: ${DAY_GOAL} preguntas al día. Al cumplirla ganas 20 XP, y a los 3 días seguidos y cada 7 días, un 🎟️.</div>
+    </div>
     ${myUnits().map(u=>{
       const lvls=[...new Set(u.exercises.map(e=>e.lvl||1))].sort((a,b)=>a-b);
       return `<div class="card" style="gap:12px">
