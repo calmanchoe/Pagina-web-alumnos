@@ -1243,6 +1243,14 @@ button.card:active,.resume:active,.xt:active,.pk:active{transform:scale(.98)}
 .tprize{display:flex;align-items:center;gap:10px;justify-content:space-between;background:linear-gradient(135deg,#FFE27A,#E9A800);color:#2a1a00;border-radius:14px;padding:8px 8px 8px 12px;font-size:15px;font-weight:700}
 .tprize span{flex:1;min-width:0}
 .tprize .pillbtn{flex:none;background:#2a1a00;color:#FFE27A;min-height:44px;padding:0 12px;font-size:15px}
+.testfab{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(env(safe-area-inset-bottom,0px) + 150px);z-index:40;
+  width:56px;height:56px;border-radius:50%;background:#3E4C63;color:#fff;font-size:26px;box-shadow:0 10px 26px -10px rgba(0,0,0,.6);border:3px solid #F5C542}
+body.has-nav .testfab{bottom:calc(env(safe-area-inset-bottom,0px) + 96px)}
+@media (min-width:900px){ .testfab,body.has-nav .testfab{bottom:24px;right:24px} }
+.tgroup{display:grid;gap:8px}
+.tgroup h4{font-family:var(--f-display);font-size:15px;font-weight:800;margin:0}
+.tbtns{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.tbtns .ghostbtn{min-height:48px;padding:0 10px;font-size:15px;color:var(--ink);background:var(--card)}
 .giftnote{font-size:15px;font-weight:600;color:var(--markdeep);text-align:center}
 .goal.done .wd i{background:var(--card)}
 .goal.done .wd.on i{background:var(--mark)}
@@ -1521,6 +1529,10 @@ const PROFILES=[
    buzón real, solo un identificador). El profesor entra con su correo real. */
 const AUTH_DOMAIN="@cuaderno.local";
 const TEACHER={id:"profe", name:"Profesor", level:"Panel del profe", initial:"P", hue:"var(--green)"};
+/* Perfil de prueba: se entra desde el panel del profe, ve las unidades de
+   todos y su progreso se guarda solo en este navegador (nunca en la nube). */
+const TEST={id:"prueba", name:"Prueba", level:"Perfil de prueba", initial:"🧪", hue:"var(--soft)", bg:"#3E4C63"};
+function isTest(){ return PROFILE===TEST.id; }
 function studentFromEmail(email){
   const m=String(email||"").toLowerCase().match(/^([a-z0-9]+)@cuaderno\.local$/);
   return m && PROFILES.some(p=>p.id===m[1]) ? m[1] : null;
@@ -2156,10 +2168,10 @@ const ALL_ITEMS=Object.values(INDEX);
 const SELFMARK_MAX=2;
 
 let PROFILE=null;
-function profileOf(id){ return (id==="profe"?TEACHER:null)||PROFILES.find(p=>p.id===id)||null; }
+function profileOf(id){ return (id==="profe"?TEACHER:null)||(id===TEST.id?TEST:null)||PROFILES.find(p=>p.id===id)||null; }
 function me(){ return profileOf(PROFILE); }
-function myUnits(){ return UNITS.filter(u=>u.owner===PROFILE); }
-function myItems(){ return ALL_ITEMS.filter(i=>i.ex.unit.owner===PROFILE); }
+function myUnits(){ return UNITS.filter(u=>isTest()||u.owner===PROFILE); }
+function myItems(){ return ALL_ITEMS.filter(i=>isTest()||i.ex.unit.owner===PROFILE); }
 
 /* =====================================================================
    ESTADO — uno independiente por alumno
@@ -2185,7 +2197,7 @@ function useProfile(id){
     const raw=localStorage.getItem(skey());
     if(raw) S=hydrate(JSON.parse(raw));
   }catch(e){}
-  try{ localStorage.setItem(LASTKEY, id); }catch(e){}
+  if(id!==TEST.id){ try{ localStorage.setItem(LASTKEY, id); }catch(e){} }
   paintWho();
   syncDown(id);
 }
@@ -2211,7 +2223,7 @@ function setCloud(st){
   c.textContent=ico+" "+title; c.style.color=col;
 }
 async function syncDown(id){
-  if(!window.CLOUD) return setCloud("none");
+  if(!window.CLOUD || id===TEST.id) return setCloud("none");
   setCloud("wait");
   try{
     const remote=await CLOUD.load(id);
@@ -2226,13 +2238,13 @@ async function syncDown(id){
   }catch(e){ setCloud(e&&e.code==="permission-denied"?"deny":"off"); }
 }
 function schedulePush(){
-  if(!window.CLOUD) return setCloud("none");
+  if(!window.CLOUD || isTest()) return setCloud("none");
   setCloud("wait");
   clearTimeout(pushT);
   pushT=setTimeout(pushUp, 1500);
 }
 async function pushUp(){
-  if(!window.CLOUD || !PROFILE) return;
+  if(!window.CLOUD || !PROFILE || isTest()) return;
   clearTimeout(pushT);
   try{ await CLOUD.save(PROFILE, JSON.parse(JSON.stringify(S))); setCloud("ok"); }
   catch(e){ setCloud(e&&e.code==="permission-denied"?"deny":"off"); }
@@ -2279,6 +2291,65 @@ function addXP(base, mult){
     if(up) setTimeout(()=>flyXP("+"+up+" 🎟️","tok"),240);
   },0);
   return g;
+}
+
+/* =====================================================================
+   PERFIL DE PRUEBA: herramientas para probar premios y funciones
+   ===================================================================== */
+function enterTest(){
+  useProfile(TEST.id);
+  go({name:"home"});
+  toast("🧪 Perfil de prueba: su progreso solo se guarda en este navegador.");
+}
+function paintTestFab(){
+  let b=document.getElementById("testfab");
+  if(!isTest()){ if(b) b.remove(); return; }
+  if(!b){
+    b=document.createElement("button");
+    b.id="testfab"; b.className="testfab"; b.textContent="🧪";
+    b.setAttribute("aria-label","Herramientas de prueba");
+    b.onclick=openTestTools;
+    document.body.appendChild(b);
+  }
+}
+const TEST_ACTS=[
+  ["Recursos",[["xp","+100 XP"],["tok","+10 🎟️"],["boost","⚡ XP doble hoy"],["wrong","+10 fallos para repasar"]]],
+  ["Abrir un regalo ya",[["g-common","🟢 Semanal"],["g-rare","🔵 Raro"],["g-epic","🟣 Épico"],["g-legend","🟡 Legendario"]]],
+  ["Racha lista para regalo (hoy 19/20: la próxima pregunta lo da)",[["st-6","6 días → semanal"],["st-13","13 días → raro"],["st-27","27 días → épico"],["st-83","83 días → legendario"]]],
+  ["Meta diaria y escudo",[["goal19","Hoy 19/20"],["shield","Ayer sin meta (escudo)"],["st-0","Sin racha"]]],
+  ["Desbloquear",[["colors","Todos los colores"],["stickers","Todas las pegatinas"],["ach","Todos los logros"]]],
+  ["",[["reset","🗑️ Empezar de cero"],["out","⇄ Volver al panel del profe"]]]
+];
+function openTestTools(){
+  document.getElementById("dr-eyebrow").textContent="Perfil de prueba";
+  document.getElementById("dr-title").textContent="🧪 Herramientas";
+  document.getElementById("dr-body").innerHTML=`<p class="f15" style="color:var(--soft);margin:0">Cambian solo el progreso de «Prueba», guardado en este navegador. Álvaro y Marcos no se tocan.</p>
+    <p class="f15" style="margin:0">Ahora: ${S.xp} XP · ${S.tokens} 🎟️ · 🔥 ${dayStreak()} días · hoy ${todayCount()}/${DAY_GOAL}</p>
+    ${TEST_ACTS.map(([h,acts])=>`<div class="tgroup">${h?`<h4>${h}</h4>`:""}<div class="tbtns">${acts.map(([k,l])=>`<button class="ghostbtn" data-ta="${k}">${l}</button>`).join("")}</div></div>`).join("")}`;
+  document.querySelectorAll("[data-ta]").forEach(b=>b.onclick=()=>testAct(b.dataset.ta));
+  drawer.hidden=false;
+}
+function testAct(k){
+  if(!isTest()) return;
+  drawer.hidden=true;
+  const setStreak=n=>{ S.days={}; S.shields={}; for(let i=1;i<=n;i++) S.days[dayKey(dayShift(-i))]=DAY_GOAL; };
+  let msg="";
+  if(k==="xp"){ addXP(100,1); msg="+100 XP"; }
+  else if(k==="tok"){ S.tokens+=10; msg="+10 🎟️"; }
+  else if(k==="boost"){ S.boostDay=dayKey(); msg="⚡ XP doble activado para hoy"; }
+  else if(k==="wrong"){ const add=myItems().filter(i=>!S.wrong.includes(i.id)).slice(0,10).map(i=>i.id); S.wrong.push(...add); msg="+"+add.length+" fallos para repasar"; }
+  else if(k.startsWith("g-")){ const t=k.slice(2), n=dayStreak()||7; const lines=openGift(t,n); save(); applyAccent(); render(); showGift(t,n,lines); return; }
+  else if(k.startsWith("st-")){ const n=+k.slice(3); setStreak(n); S.days[dayKey()]=n?DAY_GOAL-1:0; msg=n?`Racha de ${n} días y hoy ${DAY_GOAL-1}/${DAY_GOAL}: contesta una pregunta para cumplir la meta`:"Racha borrada"; }
+  else if(k==="goal19"){ S.days=S.days||{}; S.days[dayKey()]=DAY_GOAL-1; msg=`Hoy ${DAY_GOAL-1}/${DAY_GOAL}: una pregunta más cumple la meta`; }
+  else if(k==="shield"){ S.days={}; S.shields={}; for(let i=2;i<=6;i++) S.days[dayKey(dayShift(-i))]=DAY_GOAL; S.tokens=Math.max(S.tokens,SHIELD_COST); save(); go({name:"home"}); return; }
+  else if(k==="colors"){ S.themes=ACCENTS.map(a=>a.id).filter(id=>id!=="azul"); msg="Todos los colores desbloqueados (elígelos en Progreso)"; }
+  else if(k==="stickers"){ S.stickers={}; Object.values(STICKERS).flat().forEach(e=>S.stickers[e]=1); msg="Álbum completo"; }
+  else if(k==="ach"){ S.ach={}; ACH.forEach(a=>S.ach[a.id]=Date.now()); msg="Todos los logros"; }
+  else if(k==="reset"){ S=blank(); msg="Perfil de prueba a cero"; }
+  else if(k==="out"){ leave(); return; }
+  save(); applyAccent();
+  if(view.name==="play") syncTop(); else render();
+  if(msg) toast("🧪 "+msg);
 }
 
 /* =====================================================================
@@ -2564,7 +2635,7 @@ function goalCard(){
 function startQuick(q){
   const mine=myItems();
   if(!mine.length){ toast("Aún no hay preguntas para "+me().name+"."); return; }
-  const wrong=shuffle(S.wrong.map(id=>INDEX[id]).filter(it=>it&&it.ex.unit.owner===PROFILE)).slice(0,Math.ceil(q/2));
+  const wrong=shuffle(S.wrong.map(id=>INDEX[id]).filter(it=>it&&(isTest()||it.ex.unit.owner===PROFILE))).slice(0,Math.ceil(q/2));
   const fresh=shuffle(mine.filter(it=>S.ex[it.id]!=="ok"&&!wrong.includes(it)));
   const rest=shuffle(mine.filter(it=>!wrong.includes(it)&&!fresh.includes(it)));
   startRun(shuffle([...wrong,...fresh,...rest].slice(0,q)),{title:"Práctica rápida",key:null});
@@ -2635,6 +2706,7 @@ function go(v){ view=v; glossEl.hidden=true; render(); window.scrollTo({top:0,be
 function render(){
   const vn=view.name;
   applyAccent();
+  paintTestFab();
   document.body.classList.toggle("has-nav", !!PROFILE && /^(home|units|unit|stats)$/.test(vn));
   document.body.classList.toggle("bandbg", vn==="done" && !!PROFILE);
   app.classList.toggle("classic", /^(tstudent|treview)$/.test(vn));
@@ -2732,6 +2804,8 @@ function bindLock(id){
 
 /* Cerrar sesión: antes de soltarla, sube lo último que se haya hecho. */
 async function leave(){
+  /* salir del perfil de prueba vuelve al panel del profe, sin cerrar su sesión */
+  if(isTest()){ PROFILE=null; S=blank(); go({name:"teacher"}); return; }
   SFX.play("bye");
   try{ await pushUp(); }catch(e){}
   try{ if(window.CLOUD) await CLOUD.logout(); }catch(e){}
@@ -2744,12 +2818,12 @@ async function leave(){
    ===================================================================== */
 async function loadStudent(id){
   let d=null;
-  if(window.CLOUD){ try{ d=await CLOUD.load(id); }catch(e){} }
+  if(window.CLOUD && id!==TEST.id){ try{ d=await CLOUD.load(id); }catch(e){} }
   if(!d){ try{ const raw=localStorage.getItem("cuaderno-arcade-v3-"+id); if(raw) d=JSON.parse(raw); }catch(e){} }
   return d?hydrate(d):null;
 }
 function statsFor(p, d){
-  const units=UNITS.filter(u=>u.owner===p.id);
+  const units=UNITS.filter(u=>p.id===TEST.id||u.owner===p.id);
   const items=units.flatMap(u=>u.exercises.flatMap(e=>e.items));
   const ok=d?items.filter(i=>d.ex[i.id]==="ok").length:0;
   const levels={};
@@ -2766,6 +2840,7 @@ function teacherHead(){
   return `<div class="thead2">
     <div class="grow"><span class="eyebrow2">Panel del profe</span><span class="h28">Cómo van</span></div>
     <button class="pillbtn" id="t-theme" aria-label="Cambiar entre tema claro y oscuro">${isDark()?"☀️":"🌙"}</button>
+    <button class="pillbtn" id="t-test" title="Entrar al perfil de prueba" aria-label="Entrar al perfil de prueba">🧪</button>
     <button class="pillbtn" id="t-out">Salir</button>
   </div>`;
 }
@@ -2777,6 +2852,8 @@ function markDelivered(k){ const l=delivered(); if(!l.includes(k)) l.push(k); tr
 function pendingPrizes(id,d){ const l=delivered(); return (d.prizes||[]).filter(z=>!l.includes(id+":"+z.ts)); }
 function bindTeacherHead(){
   document.getElementById("t-out").onclick=()=>leave();
+  document.getElementById("t-test").onclick=enterTest;
+  app.querySelectorAll("[data-test]").forEach(b=>b.onclick=enterTest);
   const tb=document.getElementById("t-theme");
   tb.onclick=()=>{ toggleTheme(); tb.textContent=isDark()?"☀️":"🌙"; };
 }
@@ -2785,7 +2862,7 @@ async function renderTeacher(){
   bindTeacherHead();
 
   const data=[];
-  for(const p of PROFILES){ const d0=await loadStudent(p.id); TDATA[p.id]=d0; data.push({p, s:statsFor(p, d0)}); }
+  for(const p of [...PROFILES,TEST]){ const d0=await loadStudent(p.id); TDATA[p.id]=d0; data.push({p, s:statsFor(p, d0)}); }
   if(view.name!=="teacher") return;
 
   app.innerHTML=`<div class="screen">${teacherHead()}
@@ -2805,7 +2882,9 @@ async function renderTeacher(){
         <div class="stat"><b>${s.wrong.length}</b><span>Fallos</span></div>
       </div>
       ${d?pendingPrizes(p.id,d).map(z=>`<div class="tprize"><span>🏆 Premio real pendiente · legendario del ${new Date(z.ts).toLocaleDateString("es-ES")}</span><button class="pillbtn" data-deliver="${p.id}:${z.ts}">Entregado</button></div>`).join(""):""}
-      <button class="bigbtn white" data-tv="${p.id}">🔎 Ver sus ejercicios</button>
+      ${p.id===TEST.id?`<button class="bigbtn white" data-test="1">🧪 Entrar como Prueba</button>
+      <p class="f15" style="margin:0;opacity:.9">Ve las unidades de todos. Su progreso solo se guarda en este navegador y tiene un botón 🧪 para desbloquear cosas.</p>`:""}
+      <button class="${p.id===TEST.id?"softbtn":"bigbtn white"}" data-tv="${p.id}">🔎 Ver sus ejercicios</button>
     </div>
     ${d?`<details class="more">
       <summary>Detalle de ${p.name}</summary>
@@ -2904,7 +2983,7 @@ async function renderTStudent(){
   if(view.name!=="tstudent"||view.id!==id) return;
   const d=tdata(id);
   const saved=Object.keys(d.answers||{}).length;
-  const units=UNITS.filter(u=>u.owner===id);
+  const units=UNITS.filter(u=>id===TEST.id||u.owner===id);
   app.innerHTML=`
   <button class="back" id="tb2">← Volver al panel</button>
   <section class="hero" style="padding:8px 0 4px">
