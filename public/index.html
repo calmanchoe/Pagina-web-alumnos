@@ -3745,7 +3745,20 @@ function finish(it,ok,model,given,near,selfmarkable,revealed,ans){
   S.stats.byUnit[uid]=S.stats.byUnit[uid]||{ok:0,ko:0};
 
   const second=!!run.tried;
-  if(ok && second){
+  /* relacionar con fallos: se pierde la parte proporcional de los 10 XP
+     (las parejas que costaron algún intento) y la racha no se corta */
+  const pairs=it.t==="match"?it.pairs.length:0;
+  const badPairs=it.t==="match"&&ans?Math.min(pairs,new Set((ans.w||[]).map(w=>w[0])).size||(ans.e?1:0)):0;
+  const partial=!ok && !revealed && it.t==="match" && badPairs<pairs;
+  const base=partial?Math.round(10*(pairs-badPairs)/pairs):second?5:10;
+  if(partial){
+    run.correct++;
+    mult=multOf(run.streak);
+    S.stats.byUnit[uid].ko++;
+    gained=base?addXP(base,mult):0; run.xp=(run.xp||0)+gained;
+    if(S.ex[it.id]!=="ok") S.ex[it.id]="ko";
+    if(!S.wrong.includes(it.id)) S.wrong.push(it.id);
+  } else if(ok && second){
     /* a la segunda: cuenta para la ronda y no corta la racha, pero no la sube;
        la mitad de XP y se queda en «Repasar» para afianzarla */
     run.correct++;
@@ -3773,28 +3786,29 @@ function finish(it,ok,model,given,near,selfmarkable,revealed,ans){
   }
   if(!revealed) countDay();
   /* la banda enseña cómo cae el multiplicador: ×1.2 tachado → ×1.0 */
-  run.lastOk=ok;
-  run.drop=!ok&&multOf(prevStreak)>1?multOf(prevStreak):0;
+  run.lastOk=ok||partial;
+  run.drop=!ok&&!partial&&multOf(prevStreak)>1?multOf(prevStreak):0;
   recordAnswer(it, ok?"ok":revealed?"rev":near?"near":"ko", ans);
   saveResume();
   save(); syncTop();
-  reactCard(ok);
+  reactCard(ok||partial);
   /* el acierto suena más rico cuanto más larga es la racha */
-  SFX.play(ok?(run.streak>=6?"good3":run.streak>=3?"good2":"good"):near?"near":revealed?"reveal":"bad");
+  SFX.play(partial?"near":ok?(run.streak>=6?"good3":run.streak>=3?"good2":"good"):near?"near":revealed?"reveal":"bad");
   if(ok&&!second&&run.streak>=2) bumpChip("[data-fly]");
 
-  const cls=ok?"good":(near?"near":"bad");
+  const cls=ok?"good":(near||partial?"near":"bad");
   const short=!!model && model.length<=28 && it.t!=="match";
   const title=ok&&second?"¡Bien! A la segunda"
     :ok?(run.streak>=2?"¡Correcto! Racha de "+run.streak:"¡Correcto!")
     :near?"¡Casi! Revisa la ortografía"
     :revealed?"Respuesta modelo"
+    :partial?(pairs-badPairs)+" de "+pairs+" parejas a la primera"
     :it.t==="match"?"Emparejadas, con "+esc(given)
     :short?"Casi. Era «"+esc(model)+"»":"No es esa";
   const showSol=!ok && it.t!=="match" && (near||revealed||!short);
-  const xpPill=gained?`<span class="xpp">${mult>1?(second?5:10)+" × "+mult.toFixed(1)+" = ":""}+${gained} XP</span>`:"";
+  const xpPill=gained?`<span class="xpp">${mult>1?base+" × "+mult.toFixed(1)+" = ":""}+${gained} XP</span>`:partial?`<span class="xpp soft">+0 XP</span>`:"";
 
-  const canSave = !ok && !revealed && prevStreak>=2 && S.tokens>0;
+  const canSave = !ok && !partial && !revealed && prevStreak>=2 && S.tokens>0;
   const selfOK  = selfmarkable && !revealed && canSelfMark(given,model) && run.selfUsed<SELFMARK_MAX;
   let selfNote="";
   if(selfmarkable && !revealed && !selfOK){
