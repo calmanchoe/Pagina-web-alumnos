@@ -1334,6 +1334,27 @@ button.stk:active{transform:scale(.94)}
 .sv-acts{display:grid;grid-template-columns:1fr auto;gap:10px;width:min(80vw,320px)}
 .sv-acts .softbtn{padding:0 18px}
 @media (prefers-reduced-motion:reduce){ .sv-card{animation:none} }
+/* ---------- información legal ---------- */
+.legal-link{font-size:14px;text-decoration:underline;text-underline-offset:3px}
+.sel-foot{gap:6px}
+.setrow.two{grid-template-columns:1fr 1fr}
+.lg-nav{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 4px}
+.lg-nav a{font-size:14px;font-weight:600;color:var(--pen);background:var(--pensoft);padding:8px 12px;border-radius:99px;text-decoration:none}
+.lg-sec{background:var(--card);border-radius:20px;padding:18px 20px;margin-top:14px;scroll-margin-top:16px;max-width:760px}
+.lg-sec h2{font-size:22px;margin-bottom:8px}
+.lg-sec h3{font-size:16px;margin:14px 0 4px}
+.lg-sec p,.lg-sec li,.lg-sec dd{font-family:var(--f-read);font-size:16px;line-height:1.55;color:var(--ink)}
+.lg-sec p+p{margin-top:8px}
+.lg-sec ul{margin:6px 0 0;padding-left:20px;display:grid;gap:6px}
+.lg-sec a{color:var(--pen)}
+.lg-dl{display:grid;grid-template-columns:max-content 1fr;gap:4px 14px;margin:10px 0}
+.lg-dl dt{font-weight:700;font-size:15px}
+.lg-dl dd{margin:0}
+.lg-tab{width:100%;border-collapse:collapse;font-size:14px;margin:10px 0;display:block;overflow-x:auto}
+.lg-tab th,.lg-tab td{text-align:left;padding:8px 10px 8px 0;border-bottom:1px solid var(--line);vertical-align:top}
+.lg-tab code{font-family:var(--f-mono);font-size:13px}
+mark.ph{background:var(--marksoft);color:var(--markdeep);border-radius:4px;padding:0 4px;font-weight:600}
+.lg-upd{font-size:14px;color:var(--soft);margin:14px 0 28px}
 .giftnote{font-size:15px;font-weight:600;color:var(--markdeep);text-align:center}
 .goal.done .wd i{background:var(--card)}
 .goal.done .wd.on i{background:var(--mark)}
@@ -2719,6 +2740,139 @@ function testAct(k){
 }
 
 /* =====================================================================
+   INFORMACIÓN LEGAL
+   Datos del responsable: rellenar aquí. Mientras falte alguno, la página
+   lo marca como «pendiente».
+   ===================================================================== */
+const LEGAL={
+  titular:"",          /* nombre y apellidos de quien da las clases y gestiona la web */
+  nif:"",              /* solo si es una actividad profesional (clases cobradas) */
+  email:"",            /* correo de contacto para familias y para ejercer derechos */
+  localidad:"",        /* ciudad y provincia */
+  web:"",              /* dirección de la web */
+  actualizado:"17 de noviembre de 2026"
+};
+function ph(v,label){ return v?esc(v):`<mark class="ph">[pendiente: ${label}]</mark>`; }
+const LEGAL_TABS=[["aviso","Aviso legal"],["privacidad","Privacidad"],["menores","Menores"],["cookies","Almacenamiento"],["uso","Condiciones de uso"],["creditos","Créditos"]];
+function legalHTML(){
+  const T=ph(LEGAL.titular,"nombre del responsable"), M=ph(LEGAL.email,"correo de contacto");
+  return `
+  <section id="lg-aviso" class="lg-sec">
+    <h2>Aviso legal</h2>
+    <p>En cumplimiento de la Ley 34/2002, de servicios de la sociedad de la información (LSSI), se informa de que esta web («Cuaderno Arcade»${LEGAL.web?", "+esc(LEGAL.web):""}) es una plataforma privada de ejercicios de inglés para los alumnos de clases particulares de su titular.</p>
+    <dl class="lg-dl">
+      <dt>Titular</dt><dd>${T}</dd>
+      ${LEGAL.nif?`<dt>NIF</dt><dd>${esc(LEGAL.nif)}</dd>`:""}
+      <dt>Contacto</dt><dd>${M}</dd>
+      <dt>Localidad</dt><dd>${ph(LEGAL.localidad,"ciudad y provincia")}</dd>
+    </dl>
+    <p>El acceso es solo para los alumnos invitados y sus familias. No se vende nada ni hay publicidad.</p>
+    <p>El titular procura que los contenidos sean correctos, pero no garantiza que la web esté siempre disponible ni libre de errores, y no responde del mal uso que se haga de ella. Se aplica la legislación española.</p>
+  </section>
+
+  <section id="lg-privacidad" class="lg-sec">
+    <h2>Política de privacidad</h2>
+    <p>Cumple el Reglamento General de Protección de Datos (RGPD, UE 2016/679) y la Ley Orgánica 3/2018 (LOPDGDD).</p>
+    <h3>Quién trata los datos</h3>
+    <p>${T}, contacto ${M}.</p>
+    <h3>Qué datos</h3>
+    <ul>
+      <li><b>Del alumno:</b> nombre de pila y curso; una cuenta interna con un identificador (no es un correo real) y su contraseña; y su actividad en la web: respuestas, aciertos y fallos, XP, rachas, días de práctica, premios, pegatinas, logros y fechas de uso. Se guardan las frases que escribe en los ejercicios para que el profesor pueda corregirlas.</li>
+      <li><b>Del profesor:</b> su correo y su contraseña para entrar en el panel.</li>
+      <li>Las contraseñas las guarda Google Firebase cifradas: el titular no puede verlas.</li>
+      <li>No se piden fotos, dirección, teléfono, ubicación ni datos de salud. No hay analítica, publicidad ni seguimiento.</li>
+    </ul>
+    <h3>Para qué</h3>
+    <p>Para que el alumno practique, guardar su progreso en cualquier dispositivo y que su profesor siga su aprendizaje y corrija sus respuestas. La corrección automática solo sirve para practicar: no tiene efectos académicos ni legales y el profesor puede revisarla.</p>
+    <h3>Con qué base legal</h3>
+    <p>El consentimiento de los padres o tutores legales del alumno (art. 6.1.a y 8 RGPD y art. 7 LOPDGDD), dado al empezar a usar la web, y la relación de clases particulares entre la familia y el titular (art. 6.1.b RGPD). El consentimiento se puede retirar cuando se quiera, sin que afecte a lo hecho antes.</p>
+    <h3>Quién más accede (encargados del tratamiento)</h3>
+    <ul>
+      <li><b>Google Ireland Ltd. (Firebase Authentication y Cloud Firestore):</b> guarda las cuentas y el progreso. La base de datos se creó en una ubicación de la Unión Europea.</li>
+      <li><b>Cloudflare, Inc.:</b> aloja la web y, como cualquier servidor, recibe la dirección IP de quien la visita.</li>
+      <li><b>Google Fonts:</b> sirve los tipos de letra de la web, por lo que recibe la dirección IP del visitante.</li>
+    </ul>
+    <p>Google y Cloudflare son empresas con sede o matriz en Estados Unidos y están adheridas al Marco de Privacidad de Datos UE-EE. UU. (Data Privacy Framework), que la Comisión Europea considera una garantía adecuada para posibles transferencias internacionales. No se ceden datos a nadie más, salvo obligación legal.</p>
+    <h3>Cuánto tiempo</h3>
+    <p>Mientras el alumno siga usando la web. Cuando deje las clases o la familia lo pida, se borran su cuenta y su progreso.</p>
+    <h3>Tus derechos</h3>
+    <p>Los padres o tutores (y el propio alumno a partir de 14 años) pueden pedir acceso, rectificación, supresión, oposición, limitación del tratamiento y portabilidad de los datos escribiendo a ${M}. En <b>Progreso → Ajustes → «Descargar mis datos»</b> el alumno puede bajarse en cualquier momento una copia de todo su progreso. Si no estás conforme con la respuesta, puedes reclamar ante la Agencia Española de Protección de Datos (<a href="https://www.aepd.es" target="_blank" rel="noopener">www.aepd.es</a>).</p>
+    <h3>Seguridad</h3>
+    <p>Cada alumno entra con su contraseña. Las reglas de la base de datos solo dejan a cada alumno leer y guardar su propio progreso, y al profesor, leerlo. La conexión va siempre cifrada (HTTPS).</p>
+  </section>
+
+  <section id="lg-menores" class="lg-sec">
+    <h2>Menores de edad</h2>
+    <p>Los usuarios son menores. En España, para tratar datos de menores de 14 años hace falta el consentimiento de sus padres o tutores (art. 7 LOPDGDD). Por eso las cuentas de los alumnos las crea el titular solo cuando la familia está de acuerdo, y la familia puede consultar o pedir borrar los datos cuando quiera.</p>
+    <p>La web no tiene chat, ni perfiles públicos, ni forma de que los alumnos contacten entre sí o con desconocidos. No se publica nada de lo que hacen.</p>
+  </section>
+
+  <section id="lg-cookies" class="lg-sec">
+    <h2>Cookies y almacenamiento en el dispositivo</h2>
+    <p>Esta web <b>no usa cookies de publicidad, de analítica ni de terceros</b>. Sí guarda en el navegador lo imprescindible para funcionar, que no necesita consentimiento (art. 22.2 LSSI) porque sin ello la web no podría prestar el servicio que se le pide:</p>
+    <table class="lg-tab">
+      <thead><tr><th>Qué</th><th>Para qué</th><th>Dónde</th></tr></thead>
+      <tbody>
+        <tr><td>Sesión de Firebase</td><td>Recordar quién ha entrado para no pedir la contraseña cada vez</td><td>IndexedDB del navegador</td></tr>
+        <tr><td><code>cuaderno-arcade-v3-…</code></td><td>Copia del progreso del alumno, para usarla sin conexión</td><td>localStorage</td></tr>
+        <tr><td><code>cuaderno-arcade-last</code>, <code>-theme</code>, <code>-sound</code></td><td>Último alumno, tema claro u oscuro y sonido</td><td>localStorage</td></tr>
+        <tr><td><code>cuaderno-arcade-entregados</code></td><td>En el navegador del profesor, qué premios reales ha entregado</td><td>localStorage</td></tr>
+        <tr><td>Caché de la aplicación</td><td>Que la web cargue rápido y funcione sin conexión</td><td>Service worker</td></tr>
+      </tbody>
+    </table>
+    <p>Puedes borrarlo todo desde los ajustes de tu navegador («Borrar datos de sitios»). Si lo haces, el progreso no se pierde: está guardado en la nube y vuelve al entrar.</p>
+  </section>
+
+  <section id="lg-uso" class="lg-sec">
+    <h2>Condiciones de uso</h2>
+    <ul>
+      <li>Cada cuenta es personal: no compartas tu contraseña. Si crees que alguien la conoce, avisa a tu profesor para cambiarla.</li>
+      <li>La web es para practicar inglés. No intentes acceder a cuentas ajenas ni alterar el funcionamiento de la web.</li>
+      <li>Los XP, tokens, regalos, pegatinas y logros son virtuales y no tienen valor económico: no se compran ni se venden. Los «premios reales» de los regalos legendarios los decide y entrega el profesor, si lo considera oportuno.</li>
+      <li>Las respuestas que el alumno da por buenas con «Mi frase también vale» quedan anotadas para que las revise el profesor.</li>
+      <li>El titular puede cambiar los ejercicios, las recompensas o estas condiciones; los cambios importantes se comunicarán a las familias.</li>
+    </ul>
+  </section>
+
+  <section id="lg-creditos" class="lg-sec">
+    <h2>Créditos y propiedad intelectual</h2>
+    <ul>
+      <li><b>Ejercicios:</b> redactados para esta web siguiendo el temario del libro de texto del alumno. No reproducen sus textos ni sus actividades; el libro y sus contenidos pertenecen a su editorial.</li>
+      <li><b>Ilustraciones del álbum:</b> creadas con Google Gemini (inteligencia artificial) para uso educativo en esta web. Cualquier parecido con marcas o productos comerciales es casual; las marcas pertenecen a sus titulares.</li>
+      <li><b>Tipos de letra:</b> Bricolage Grotesque, IBM Plex Mono y Source Serif 4, con licencia libre SIL Open Font License.</li>
+      <li>El diseño y el código de la web pertenecen a su titular.</li>
+    </ul>
+  </section>
+  <p class="lg-upd">Última actualización: ${esc(LEGAL.actualizado)}.</p>`;
+}
+function renderLegal(){
+  const back=view.back||{name:"profiles"};
+  app.innerHTML=`
+  <button class="back" id="lg-back">← Volver</button>
+  <section class="hero" style="padding:8px 0 4px">
+    <div class="eyebrow">Cuaderno Arcade</div>
+    <h1 style="font-size:clamp(26px,4.4vw,36px)">Información legal y privacidad</h1>
+    <p class="lede">Qué datos guarda esta web, para qué, quién los trata y cómo pedir que se consulten o se borren.</p>
+  </section>
+  <nav class="lg-nav" aria-label="Apartados">${LEGAL_TABS.map(([k,l])=>`<a href="#lg-${k}" data-lg="${k}">${l}</a>`).join("")}</nav>
+  ${legalHTML()}`;
+  document.getElementById("lg-back").onclick=()=>go(back);
+  app.querySelectorAll("[data-lg]").forEach(a=>a.onclick=e=>{ e.preventDefault(); const t=document.getElementById("lg-"+a.dataset.lg); if(t) t.scrollIntoView({behavior:"smooth",block:"start"}); });
+}
+function openLegal(){ go({name:"legal", back:Object.assign({},view)}); }
+/* copia del progreso del alumno (derecho de acceso y portabilidad) */
+function downloadMyData(){
+  const p=me(); if(!p) return;
+  const data=JSON.stringify({alumno:p.name, exportado:new Date().toISOString(), progreso:S},null,2);
+  try{
+    const url=URL.createObjectURL(new Blob([data],{type:"application/json"}));
+    const a=document.createElement("a"); a.href=url; a.download="mis-datos-"+p.id+"-"+dayKey()+".json";
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(url),2000);
+    toast("Descargando tus datos…");
+  }catch(e){ toast("Tu navegador no deja descargar el archivo."); }
+}
+
+/* =====================================================================
    META DIARIA Y RACHA DE DÍAS
    Cada pregunta contestada suma al día de hoy (fecha local). La racha son
    los días seguidos con la meta cumplida; hoy cuenta en cuanto se cumple.
@@ -3198,7 +3352,8 @@ function render(){
   paintTestFab();
   document.body.classList.toggle("has-nav", !!PROFILE && /^(home|units|unit|stats)$/.test(vn));
   document.body.classList.toggle("bandbg", vn==="done" && !!PROFILE);
-  app.classList.toggle("classic", /^(tstudent|treview)$/.test(vn));
+  app.classList.toggle("classic", /^(tstudent|treview|legal)$/.test(vn));
+  if(vn==="legal") return renderLegal();
   if(vn==="units" && PROFILE) return renderUnits();
   if(view.name==="teacher") return renderTeacher();
   if(view.name==="tstudent") return renderTStudent();
@@ -3238,11 +3393,13 @@ function renderProfiles(){
       }).join("")}
     </div>
     ${sel?lockHTML(sel):`<p class="selhint">Toca tu tarjeta para entrar.</p>`}
-    <div class="sel-foot"><button class="ghostbtn ${sel===TEACHER.id?"on":""}" id="teacherlink">Soy el profe</button></div>
+    <div class="sel-foot"><button class="ghostbtn ${sel===TEACHER.id?"on":""}" id="teacherlink">Soy el profe</button>
+      <button class="textbtn legal-link" id="legallink">Aviso legal y privacidad</button></div>
   </div>`;
 
   /* tocar la tarjeta elegida otra vez la suelta */
   app.querySelectorAll("[data-p]").forEach(b=>b.onclick=()=>go({name:"profiles",ask:sel===b.dataset.p?null:b.dataset.p}));
+  document.getElementById("legallink").onclick=openLegal;
   document.getElementById("teacherlink").onclick=()=>go({name:"profiles",ask:sel===TEACHER.id?null:TEACHER.id});
   if(sel) bindLock(sel);
 }
@@ -3434,11 +3591,12 @@ async function renderTeacher(){
       </div>
     </details>`:`<p class="empty2">${p.name} todavía no ha practicado nada.</p>`}</div>`;
   }).join("")}
-  <p class="footnote">${window.CLOUD?"Sesión del profe: "+esc((CLOUD.email&&CLOUD.email())||"sin iniciar")+". Pulsa 🔄 para volver a leer la nube.":"Sin conexión con la nube: viendo solo lo guardado en este dispositivo."}</p>
+  <p class="footnote"><button class="textbtn legal-link" id="t-legal">⚖️ Aviso legal y privacidad</button><br>${window.CLOUD?"Sesión del profe: "+esc((CLOUD.email&&CLOUD.email())||"sin iniciar")+". Pulsa 🔄 para volver a leer la nube.":"Sin conexión con la nube: viendo solo lo guardado en este dispositivo."}</p>
   </div></div>`;
 
   bindTeacherHead();
   app.querySelectorAll("[data-tv]").forEach(b=>b.onclick=()=>go({name:"tstudent",id:b.dataset.tv}));
+  const tl=document.getElementById("t-legal"); if(tl) tl.onclick=openLegal;
   app.querySelectorAll("[data-deliver]").forEach(b=>b.onclick=()=>{ markDelivered(b.dataset.deliver); toast("Premio marcado como entregado."); renderTeacher(); });
   app.querySelectorAll("[data-rev]").forEach(el=>el.onclick=()=>{
     const it=INDEX[el.dataset.rev]; if(!it) return;
@@ -4983,6 +5141,10 @@ function renderStats(){
         <button class="ghostbtn" id="st-theme" aria-label="Cambiar entre tema claro y oscuro">${dark?"☀️ Claro":"🌙 Oscuro"}</button>
         <button class="ghostbtn" id="st-out">⇄ Salir</button>
       </div>
+      <div class="setrow two">
+        <button class="ghostbtn" id="st-data">📄 Descargar mis datos</button>
+        <button class="ghostbtn" id="st-legal">⚖️ Legal y privacidad</button>
+      </div>
       <div class="f15" style="color:var(--soft)">Color de tu app${unlockedAccents().length<ACCENTS.length?" (los regalos épicos y legendarios desbloquean más)":""}:</div>
       <div class="accents">${ACCENTS.map(a=>{
         const open=unlockedAccents().some(x=>x.id===a.id), on=(S.accent||"azul")===a.id;
@@ -5034,6 +5196,8 @@ function renderStats(){
   document.getElementById("st-snd").onclick=()=>{ SFX.toggle(); toast(SFX.isOn()?"Sonido activado":"Sonido silenciado"); renderStats(); };
   document.getElementById("st-theme").onclick=()=>{ toggleTheme(); renderStats(); };
   document.getElementById("st-out").onclick=()=>leave();
+  document.getElementById("st-data").onclick=downloadMyData;
+  document.getElementById("st-legal").onclick=openLegal;
   app.querySelectorAll("[data-stk]").forEach(b=>b.onclick=()=>openSticker(b.dataset.stk));
   app.querySelectorAll("[data-acc]").forEach(b=>b.onclick=()=>{ S.accent=b.dataset.acc; save(); applyAccent(); renderStats(); });
   const dl=document.getElementById("dlbtn");
