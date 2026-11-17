@@ -2745,10 +2745,10 @@ function testAct(k){
    lo marca como «pendiente».
    ===================================================================== */
 const LEGAL={
-  titular:"",          /* nombre y apellidos de quien da las clases y gestiona la web */
+  titular:"Gonzalo Mínguez Simón",          /* nombre y apellidos de quien da las clases y gestiona la web */
   nif:"",              /* solo si es una actividad profesional (clases cobradas) */
-  email:"",            /* correo de contacto para familias y para ejercer derechos */
-  localidad:"",        /* ciudad y provincia */
+  email:"msimongonzalo@gmail.com",            /* correo de contacto para familias y para ejercer derechos */
+  localidad:"Madrid (Madrid)",        /* ciudad y provincia */
   web:"",              /* dirección de la web */
   actualizado:"17 de noviembre de 2026"
 };
@@ -2763,7 +2763,7 @@ function legalHTML(){
     <dl class="lg-dl">
       <dt>Titular</dt><dd>${T}</dd>
       ${LEGAL.nif?`<dt>NIF</dt><dd>${esc(LEGAL.nif)}</dd>`:""}
-      <dt>Contacto</dt><dd>${M}</dd>
+      <dt>Contacto</dt><dd>${LEGAL.email?`<a href="mailto:${esc(LEGAL.email)}">${esc(LEGAL.email)}</a>`:M}</dd>
       <dt>Localidad</dt><dd>${ph(LEGAL.localidad,"ciudad y provincia")}</dd>
     </dl>
     <p>El acceso es solo para los alumnos invitados y sus familias. No se vende nada ni hay publicidad.</p>
@@ -2785,7 +2785,7 @@ function legalHTML(){
     <h3>Para qué</h3>
     <p>Para que el alumno practique, guardar su progreso en cualquier dispositivo y que su profesor siga su aprendizaje y corrija sus respuestas. La corrección automática solo sirve para practicar: no tiene efectos académicos ni legales y el profesor puede revisarla.</p>
     <h3>Con qué base legal</h3>
-    <p>El consentimiento de los padres o tutores legales del alumno (art. 6.1.a y 8 RGPD y art. 7 LOPDGDD), dado al empezar a usar la web, y la relación de clases particulares entre la familia y el titular (art. 6.1.b RGPD). El consentimiento se puede retirar cuando se quiera, sin que afecte a lo hecho antes.</p>
+    <p>El consentimiento de los padres o tutores legales del alumno (art. 6.1.a y 8 RGPD y art. 7 LOPDGDD), que el titular ha recogido antes de crear la cuenta de cada alumno, y la relación de clases particulares entre la familia y el titular (art. 6.1.b RGPD). El consentimiento se puede retirar cuando se quiera, sin que afecte a lo hecho antes.</p>
     <h3>Quién más accede (encargados del tratamiento)</h3>
     <ul>
       <li><b>Google Ireland Ltd. (Firebase Authentication y Cloud Firestore):</b> guarda las cuentas y el progreso. La base de datos se creó en una ubicación de la Unión Europea.</li>
