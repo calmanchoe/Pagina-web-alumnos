@@ -1185,6 +1185,7 @@ button.card:active,.resume:active,.xt:active,.pk:active{transform:scale(.98)}
 .gp-card.g-common{background:linear-gradient(160deg,#3CC274,#17834A)}
 .gp-card.g-rare{background:linear-gradient(160deg,#4C97FF,#1F5FC7)}
 .gp-card.g-epic{background:linear-gradient(160deg,#A65BFF,#6A23B8)}
+.gp-card.g-shield{background:linear-gradient(160deg,#3D6BE0,#1B3A9E)}
 .gp-card.g-legend{background:linear-gradient(160deg,#FFE27A,#E9A800 55%,#A86F00);color:#2a1a00}
 .gp-box{font-size:76px;line-height:1;animation:giftWiggle 1.6s ease-in-out infinite;filter:drop-shadow(0 10px 18px rgba(0,0,0,.35))}
 .gp-tier{font-family:var(--f-mono);font-size:13px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;opacity:.9}
@@ -2397,7 +2398,6 @@ function chainInfo(st){
 function dayStreak(st){ return chainInfo(st).n; }
 function countDay(){
   S.days=S.days||{};
-  applyShields();
   const k=dayKey(), before=S.days[k]||0;
   S.days[k]=before+1;
   /* se guardan los últimos 60 días y, si la racha es más larga, toda la racha
@@ -2410,27 +2410,58 @@ function countDay(){
 
 /* ---------- escudo de racha ----------
    Si ayer (o como mucho los dos últimos días) no se llegó a la meta y había
-   racha, se gastan solos 3 🎟️ por día y la racha sigue viva. */
+   racha, al entrar se le pregunta al alumno si quiere gastar 3 🎟️ por día
+   para salvarla. Nunca se gasta solo. */
 const SHIELD_COST=3, SHIELD_MAX=2;
-function applyShields(){
-  if(!PROFILE) return;
-  S.shields=S.shields||{}; S.days=S.days||{};
+/* el hueco que se podría proteger ahora mismo, o null */
+function shieldOffer(){
+  if(!PROFILE) return null;
+  S.shields=S.shields||{}; S.days=S.days||{}; S.noShield=S.noShield||{};
   const real=k=>(S.days[k]||0)>=DAY_GOAL, ok=k=>real(k)||S.shields[k];
   const gap=[];
   for(let k=-1;k>=-(SHIELD_MAX+1);k--){ const key=dayKey(dayShift(k)); if(ok(key)) break; gap.push(key); }
-  if(!gap.length||gap.length>SHIELD_MAX) return;
+  if(!gap.length||gap.length>SHIELD_MAX) return null;
+  if(gap.some(d=>S.noShield[d])) return null;          /* ya dijo que no */
   /* antes del hueco tiene que haber racha; y nunca más de 2 días protegidos seguidos */
   let k=-gap.length-1, prev=0;
   while(S.shields[dayKey(dayShift(k))]){ prev++; k--; }
-  if(!real(dayKey(dayShift(k))) || prev+gap.length>SHIELD_MAX) return;
-  const cost=SHIELD_COST*gap.length;
-  if(S.tokens<cost) return;
-  gap.forEach(d=>S.shields[d]=1);
-  S.tokens-=cost;
-  S.stats.shieldsUsed=(S.stats.shieldsUsed||0)+gap.length;
-  save();
-  const n=dayStreak();
-  setTimeout(()=>{ SFX.play("token"); toast(`🛡️ Escudo de racha: ${gap.length===1?"ayer":"estos "+gap.length+" días"} no llegaste a la meta, pero tu racha de ${n} día${n===1?"":"s"} sigue viva (−${cost} 🎟️)`); },500);
+  if(!real(dayKey(dayShift(k))) || prev+gap.length>SHIELD_MAX) return null;
+  const sh=Object.assign({},S.shields); gap.forEach(d=>sh[d]=1);
+  const saved=dayStreak({days:S.days, shields:sh});
+  return {gap, cost:SHIELD_COST*gap.length, saved};
+}
+function useShield(o){
+  if(S.tokens<o.cost) return;
+  o.gap.forEach(d=>S.shields[d]=1);
+  S.tokens-=o.cost;
+  S.stats.shieldsUsed=(S.stats.shieldsUsed||0)+o.gap.length;
+  save(); SFX.play("token");
+  toast(`🛡️ ¡Racha salvada! Sigues con ${o.saved} día${o.saved===1?"":"s"} seguidos (−${o.cost} 🎟️)`);
+}
+function declineShield(o){ S.noShield=S.noShield||{}; o.gap.forEach(d=>S.noShield[d]=1); save(); }
+/* la pregunta, al entrar en Inicio */
+function askShield(){
+  const o=shieldOffer();
+  if(!o||document.getElementById("shieldpop")) return;
+  const can=S.tokens>=o.cost;
+  const el=document.createElement("div");
+  el.id="shieldpop"; el.className="giftpop";
+  el.innerHTML=`<div class="gp-card g-shield" role="dialog" aria-modal="true" aria-labelledby="sp-t">
+    <div class="gp-box" aria-hidden="true" style="animation:none">🛡️</div>
+    <div class="gp-tier">Escudo de racha</div>
+    <h2 id="sp-t">¡Tu racha está en peligro!</h2>
+    <p>${o.gap.length===1?"Ayer no llegaste":"Estos "+o.gap.length+" días no llegaste"} a la meta. ¿Quieres usar el escudo para salvar tu racha de <b>${o.saved} día${o.saved===1?"":"s"}</b>?</p>
+    <div class="gp-prize">Cuesta ${o.cost} 🎟️ · tienes ${S.tokens}</div>
+    ${can?`<button class="bigbtn white" id="sp-yes">🛡️ Usar escudo (−${o.cost} 🎟️)</button>`
+         :`<p style="font-weight:700">No te llegan los tokens: te faltan ${o.cost-S.tokens} 🎟️.</p>`}
+    <button class="softbtn" id="sp-no" style="width:100%">${can?"Dejar que se pierda":"Vale"}</button>
+  </div>`;
+  document.body.appendChild(el);
+  const close=()=>{ el.remove(); render(); };
+  const yes=el.querySelector("#sp-yes");
+  if(yes){ yes.onclick=()=>{ useShield(o); close(); }; yes.focus({preventScroll:true}); }
+  el.querySelector("#sp-no").onclick=()=>{ declineShield(o); close(); toast("Racha nueva: ¡a por ella! 🔥"); };
+  if(!yes) el.querySelector("#sp-no").focus({preventScroll:true});
 }
 function shieldReady(){ return S.tokens>=SHIELD_COST; }
 
@@ -2636,7 +2667,7 @@ function goalCard(){
     :`Haz ${left} pregunta${left===1?"":"s"} hoy y empieza una racha 🔥`;
   const extras=[
     boostToday()?`<span class="pill boost">⚡ Hoy, XP doble</span>`:"",
-    ds>0&&!done?(shieldReady()?`<span class="pill shield" title="Si hoy no llegas a la meta, se gastan ${SHIELD_COST} 🎟️ solos y la racha sigue">🛡️ Escudo listo</span>`:`<span class="pill noshield" title="Necesitas ${SHIELD_COST} 🎟️ para el escudo">🛡️ Sin escudo (${SHIELD_COST} 🎟️)</span>`):""
+    ds>0&&!done?(shieldReady()?`<span class="pill shield" title="Si hoy no llegas a la meta, mañana podrás usar el escudo (${SHIELD_COST} 🎟️) para salvar la racha">🛡️ Escudo disponible</span>`:`<span class="pill noshield" title="Necesitas ${SHIELD_COST} 🎟️ para el escudo">🛡️ Sin escudo (${SHIELD_COST} 🎟️)</span>`):""
   ].join("");
   return `<div class="card goal ${done?"done":ds>0?"risk":""}">
     <div class="row" style="align-items:baseline"><span class="eyeb">META DE HOY</span><span class="gt">${done?"✓ ":""}${Math.min(n,DAY_GOAL)} / ${DAY_GOAL}</span></div>
@@ -3216,7 +3247,7 @@ function bindUnitRows(){
   app.querySelectorAll("[data-unit]").forEach(b=>b.onclick=()=>go({name:"unit",unit:UNITS.find(u=>u.id===b.dataset.unit)}));
 }
 function renderHome(){
-  applyShields(); checkAch();
+  checkAch(); setTimeout(askShield,350);
   const p=me(), lv=levelOf(S.xp);
   const title=(S.titles||[]).slice(-1)[0];
   const wrongN=S.wrong.length;
@@ -4478,7 +4509,7 @@ function renderStats(){
       <div class="f15" style="color:var(--soft)">Meta: ${DAY_GOAL} preguntas al día. Al cumplirla ganas 20 XP; a los 3 días, un 🎟️; y cada semana de racha, un 🎁.</div>
       <div class="ctitle" style="font-size:16px;margin-top:4px">Temporada de 12 semanas</div>
       ${seasonMap()}
-      <div class="f15" style="color:var(--soft)">🛡️ <b>Escudo de racha:</b> si un día no llegas a la meta, se gastan ${SHIELD_COST} 🎟️ solos y la racha sigue (hasta ${SHIELD_MAX} días seguidos). ${shieldReady()?"Ahora mismo lo tienes listo.":"Ahora no te llega: necesitas "+SHIELD_COST+" 🎟️."}</div>
+      <div class="f15" style="color:var(--soft)">🛡️ <b>Escudo de racha:</b> si un día no llegas a la meta, al volver te preguntamos si quieres gastar ${SHIELD_COST} 🎟️ para salvar la racha (hasta ${SHIELD_MAX} días seguidos). Tú decides. ${shieldReady()?"Ahora mismo te llega.":"Ahora no te llega: necesitas "+SHIELD_COST+" 🎟️."}</div>
       <div class="ctitle" style="font-size:16px;margin-top:4px">Tus regalos</div>
       ${giftShelf()}
       ${(S.prizes||[]).length?`<div class="prizebox">🏆 Tienes ${S.prizes.length===1?"un premio real":S.prizes.length+" premios reales"} por regalo legendario. ¡Pídeselo a tu profe!</div>`:""}
