@@ -1259,6 +1259,81 @@ body.has-nav .testfab{bottom:calc(env(safe-area-inset-bottom,0px) + 96px)}
 .srcwarn b{word-break:break-all}
 .syncwarn{border-radius:16px;padding:12px 14px;background:#FFF3C4;color:#3a2a00;font-weight:600;font-size:15px;line-height:1.4}
 .sec.home > .syncwarn{grid-column:1 / -1}
+/* ---------- álbum de pegatinas ---------- */
+.album-h{font-size:14px;font-weight:800;margin-top:4px;color:var(--gc)}
+.album-h.g-common{--gc:var(--g-common)} .album-h.g-rare{--gc:var(--g-rare)} .album-h.g-epic{--gc:var(--g-epic)} .album-h.g-legend{--gc:var(--g-legend)}
+.album{grid-template-columns:repeat(auto-fill,minmax(64px,1fr))}
+.stk{overflow:hidden;padding:0;cursor:pointer;transition:transform .15s ease}
+button.stk:active{transform:scale(.94)}
+.stk img{width:100%;height:100%;object-fit:contain;padding:4px;display:block}
+.stk small{z-index:2;background:var(--card);border-radius:6px;padding:0 3px;right:3px;bottom:3px}
+.stk.empty{cursor:default}
+/* brillo que recorre la pegatina, recortado a su forma */
+.foil{position:absolute;inset:4px;pointer-events:none;-webkit-mask-size:contain;mask-size:contain;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center;opacity:0}
+.stk.tier-rare .foil,.stk.tier-epic .foil,.stk.tier-legend .foil{opacity:.55;animation:foilMove 3.2s linear infinite}
+.tier-rare .foil{background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.85) 45%,rgba(160,200,255,.6) 50%,transparent 62%);background-size:250% 250%;mix-blend-mode:overlay}
+.tier-epic .foil{background:linear-gradient(115deg,#ff4fd8,#7c4dff,#00e5ff,#69ff8c,#ffe14f,#ff4fd8);background-size:300% 300%;mix-blend-mode:soft-light}
+.tier-legend .foil{background:radial-gradient(circle,rgba(255,255,255,.9) 0 1px,transparent 2px) 0 0/14px 14px,linear-gradient(115deg,transparent 25%,rgba(255,240,180,.95) 45%,rgba(255,200,60,.7) 52%,transparent 65%);background-size:14px 14px,250% 250%;mix-blend-mode:overlay}
+@keyframes foilMove{from{background-position:0 0,150% 50%}to{background-position:14px 14px,-50% 50%}}
+.tier-epic .foil{animation-name:holoMove}
+@keyframes holoMove{from{background-position:0% 50%}to{background-position:300% 50%}}
+.gp-stk{position:relative;width:150px;height:150px;margin:2px auto 6px;animation:stkPop .7s .25s cubic-bezier(.2,.9,.3,1.4) both;filter:drop-shadow(0 12px 18px rgba(0,0,0,.35))}
+.gp-stk img{width:100%;height:100%;object-fit:contain}
+.gp-stk .foil{inset:0;opacity:.6;animation:foilMove 2.6s linear infinite}
+.gp-stk.tier-epic .foil{animation-name:holoMove}
+@keyframes stkPop{0%{opacity:0;transform:scale(.3) rotate(-25deg)}100%{opacity:1;transform:none}}
+
+/* ---------- la pegatina en grande, en 3D ---------- */
+.stkview{position:fixed;inset:0;z-index:95;display:grid;place-items:center;align-content:center;gap:22px;padding:20px;background:rgba(6,10,20,.82);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);animation:popIn .25s ease both}
+.sv-scene{perspective:1000px;touch-action:none;cursor:pointer;padding:10px}
+.sv-card{--rx:0deg;--ry:0deg;--mx:50%;--my:50%;--flip:0deg;position:relative;width:min(72vw,300px);aspect-ratio:5/7;transform-style:preserve-3d;
+  transform:rotateX(var(--rx)) rotateY(calc(var(--ry) + var(--flip)));transition:transform .6s cubic-bezier(.2,.8,.2,1);animation:svIn .7s cubic-bezier(.2,.9,.3,1.2) both}
+.sv-card.live{transition:transform .08s linear}
+.sv-card.flipped{--flip:180deg}
+.sv-card.flipped.live{transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+@keyframes svIn{from{transform:rotateY(-200deg) scale(.5)}}
+/* la cara que no toca se oculta a mitad del giro (funciona en todos los navegadores) */
+.sv-back{visibility:hidden;transition:visibility 0s .22s}
+.sv-card.flipped .sv-back{visibility:visible}
+.sv-card.flipped .sv-front{visibility:hidden;transition:visibility 0s .22s}
+.sv-face{position:absolute;inset:0;border-radius:20px;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden;
+  padding:12px;display:grid;box-shadow:0 30px 60px -20px rgba(0,0,0,.8),inset 0 0 0 2px rgba(255,255,255,.25)}
+.sv-card.tier-common .sv-face{background:linear-gradient(150deg,#3CC274,#127041)}
+.sv-card.tier-rare .sv-face{background:linear-gradient(150deg,#8fb8ff,#2f6fe0 45%,#c9d6e8 60%,#1d4fae)}
+.sv-card.tier-epic .sv-face{background:linear-gradient(150deg,#b76bff,#5b1fb0 50%,#2a0d5c)}
+.sv-card.tier-legend .sv-face{background:linear-gradient(150deg,#fff1a8,#e9a800 35%,#a86f00 60%,#ffd75a 85%,#8a5a00)}
+.sv-front{grid-template-rows:1fr auto;gap:8px}
+.sv-art{position:relative;z-index:1;isolation:isolate;border-radius:14px;background:radial-gradient(circle at 50% 40%,#25324a,#0b1220);display:grid;place-items:center;overflow:hidden}
+.sv-art img{width:88%;height:88%;object-fit:contain;transform:translateZ(0);filter:drop-shadow(0 10px 14px rgba(0,0,0,.5))}
+.sv-art .foil{inset:6%;opacity:.7;animation:none;background-position:var(--mx) var(--my)}
+.sv-card.tier-common .sv-art .foil{opacity:0}
+.sv-card.tier-rare .sv-art .foil{background:repeating-linear-gradient(110deg,rgba(255,255,255,0) 0 8px,rgba(255,255,255,.35) 10px,rgba(170,205,255,.25) 13px,rgba(255,255,255,0) 18px);background-size:200% 200%;mix-blend-mode:overlay;opacity:.9}
+.sv-card.tier-epic .sv-art .foil{background-size:300% 300%;opacity:.75}
+.sv-card.tier-legend .sv-art .foil{background-size:14px 14px,250% 250%;background-position:var(--mx) var(--my),var(--mx) var(--my)}
+.sv-name{position:relative;z-index:1;text-align:center;font-weight:800;font-size:18px;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.4)}
+.sv-card.tier-legend .sv-name{color:#2a1a00;text-shadow:none}
+/* reflejo de luz que sigue al dedo; en los raros y mejores, efecto foil por toda la carta */
+.sv-glare{position:absolute;inset:0;z-index:2;pointer-events:none;border-radius:20px;mix-blend-mode:overlay;
+  background:radial-gradient(circle at var(--mx) var(--my),rgba(255,255,255,.65),rgba(255,255,255,0) 55%)}
+.sv-card.tier-epic .sv-front::after{content:"";position:absolute;inset:0;border-radius:20px;pointer-events:none;mix-blend-mode:color-dodge;opacity:.35;
+  background:linear-gradient(115deg,#ff4fd8,#7c4dff,#00e5ff,#69ff8c,#ffe14f,#ff4fd8);background-size:300% 300%;background-position:var(--mx) var(--my)}
+.sv-card.tier-legend .sv-front::after{content:"";position:absolute;inset:0;border-radius:20px;pointer-events:none;mix-blend-mode:overlay;opacity:.8;
+  background:radial-gradient(circle,rgba(255,255,255,.9) 0 1px,transparent 2px) 0 0/12px 12px,linear-gradient(125deg,transparent 30%,rgba(255,255,255,.7) 48%,transparent 62%);background-size:12px 12px,250% 250%;background-position:0 0,var(--mx) var(--my)}
+.sv-card.tier-rare .sv-front::after{content:"";position:absolute;inset:0;border-radius:20px;pointer-events:none;mix-blend-mode:overlay;opacity:.7;
+  background:repeating-linear-gradient(110deg,rgba(255,255,255,0) 0 14px,rgba(255,255,255,.28) 16px,rgba(255,255,255,0) 22px);background-size:200% 200%;background-position:var(--mx) var(--my)}
+.sv-back{transform:rotateY(180deg);align-content:center;justify-items:center;text-align:center;gap:10px;color:#fff}
+.sv-back::before{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(45deg,rgba(255,255,255,.08) 0 10px,transparent 10px 20px)}
+.sv-back > *{position:relative}
+.sv-card.tier-legend .sv-back{color:#2a1a00}
+.sv-tier{font-family:var(--f-mono);font-size:13px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;opacity:.9}
+.sv-bname{font-size:24px;font-weight:800;letter-spacing:-.02em;line-height:1.1}
+.sv-date{font-size:16px;line-height:1.4;background:rgba(0,0,0,.22);border-radius:14px;padding:12px 16px}
+.sv-date b{font-size:19px}
+.sv-rep{font-size:14px;font-weight:700;opacity:.9}
+.sv-num{font-family:var(--f-mono);font-size:13px;opacity:.85}
+.sv-acts{display:grid;grid-template-columns:1fr auto;gap:10px;width:min(80vw,320px)}
+.sv-acts .softbtn{padding:0 18px}
+@media (prefers-reduced-motion:reduce){ .sv-card{animation:none} }
 .giftnote{font-size:15px;font-weight:600;color:var(--markdeep);text-align:center}
 .goal.done .wd i{background:var(--card)}
 .goal.done .wd.on i{background:var(--mark)}
@@ -2463,14 +2538,14 @@ const LASTKEY="cuaderno-arcade-last";
 function skey(){ return "cuaderno-arcade-v3-"+PROFILE; }
 function blank(){
   return {xp:0, tokens:3, lvl:0, ex:{}, wrong:[], resume:{}, answers:{}, days:{}, bestDays:0, gifts:{},
-    shields:{}, stickers:{}, themes:[], accent:"", titles:[], prizes:[], ach:{}, flags:{}, boostDay:"",
+    shields:{}, stickers:{}, stickerAt:{}, themes:[], accent:"", titles:[], prizes:[], ach:{}, flags:{}, boostDay:"",
     stats:{answers:0, correct:0, bestStreak:0, bestMult:1, saves:0, tokensSpent:0, fixed:0, shieldsUsed:0,
            byUnit:{}, sessions:[], selfmarks:[]}};
 }
 let S=blank();
 function hydrate(o){
   const b=blank();
-  return Object.assign(b, o, {stats:Object.assign(b.stats, (o&&o.stats)||{})});
+  return migrateStickers(Object.assign(b, o, {stats:Object.assign(b.stats, (o&&o.stats)||{})}));
 }
 function useProfile(id){
   PROFILE=id;
@@ -2634,7 +2709,7 @@ function testAct(k){
   else if(k==="goal19"){ S.days=S.days||{}; S.days[dayKey()]=DAY_GOAL-1; msg=`Hoy ${DAY_GOAL-1}/${DAY_GOAL}: una pregunta más cumple la meta`; }
   else if(k==="shield"){ S.days={}; S.shields={}; for(let i=2;i<=6;i++) S.days[dayKey(dayShift(-i))]=DAY_GOAL; S.tokens=Math.max(S.tokens,SHIELD_COST); save(); go({name:"home"}); return; }
   else if(k==="colors"){ S.themes=ACCENTS.map(a=>a.id).filter(id=>id!=="azul"); msg="Todos los colores desbloqueados (elígelos en Progreso)"; }
-  else if(k==="stickers"){ S.stickers={}; Object.values(STICKERS).flat().forEach(e=>S.stickers[e]=1); msg="Álbum completo"; }
+  else if(k==="stickers"){ S.stickers={}; S.stickerAt={}; STICKER_ORDER.forEach((id,i)=>{ S.stickers[id]=1+(i%5===0?1:0); S.stickerAt[id]=Date.now()-i*86400000; }); msg="Álbum completo"; }
   else if(k==="ach"){ S.ach={}; ACH.forEach(a=>S.ach[a.id]=Date.now()); msg="Todos los logros"; }
   else if(k==="reset"){ S=blank(); msg="Perfil de prueba a cero"; }
   else if(k==="out"){ leave(); return; }
@@ -2767,19 +2842,49 @@ function seasonMap(){
 }
 
 /* pegatinas: cada regalo da una de su categoría (primero las que faltan) */
-const STICKERS={
+/* Pegatinas del álbum: imágenes en stickers/<id>.webp, hechas con Gemini. */
+const STICKER_DEFS={
+  common:[["balon","Balón"],["botas","Botas de fútbol"],["guantes","Guantes de portero"],["silbato","Silbato"],["mando","Mando"],
+          ["cascos","Cascos gaming"],["skate","Monopatín"],["baloncesto","Balón de baloncesto"],["zapatillas","Zapatillas"],["movil","Móvil"]],
+  rare:  [["estadio","Estadio de noche"],["gol","¡Gol!"],["tarjetas","Amarilla y roja"],["arcade","Máquina recreativa"],
+          ["portatil","Consola portátil"],["teclado","Teclado y ratón"],["vr","Gafas de realidad virtual"],["dron","Dron"]],
+  epic:  [["chilena","Chilena"],["pc","PC gaming"],["medalla","Medalla de campeón"],["fuego","Balón en llamas"],["espada","Espada y escudo"],["coche","Deportivo"]],
+  legend:[["copa","Copa de oro"],["balon-dorado","Balón dorado"],["mando-dorado","Mando dorado"],["bota-dorada","Bota dorada"]]
+};
+const STICKERS={}, STICKER_INFO={};
+Object.entries(STICKER_DEFS).forEach(([t,l])=>{ STICKERS[t]=l.map(x=>x[0]); l.forEach(([id,name])=>STICKER_INFO[id]={id,name,tier:t}); });
+const STICKER_ORDER=Object.values(STICKERS).flat();
+const STICKER_TOTAL=STICKER_ORDER.length;
+/* Antes las pegatinas eran emojis: cada uno pasa a la pegatina nueva que
+   ocupa su misma posición dentro de su categoría. No se pierde ninguna. */
+const OLD_STICKERS={
   common:["🐶","🐱","🐰","🦊","🐼","🐨","🐸","🐵","🐧","🐢"],
   rare:  ["🏰","🚌","☕","🎡","☂️","🫖","⛵","💂"],
   epic:  ["🦁","🐉","🦄","🦅","🐳","🚀"],
   legend:["👑","🏆","💎","🌟"]
 };
-const STICKER_TOTAL=Object.values(STICKERS).reduce((a,l)=>a+l.length,0);
+function migrateStickers(st){
+  if(!st||!st.stickers) return st;
+  let changed=false; const out={};
+  Object.entries(st.stickers).forEach(([k,v])=>{
+    let id=k;
+    for(const t in OLD_STICKERS){ const i=OLD_STICKERS[t].indexOf(k); if(i>=0){ id=STICKERS[t][i]; changed=true; break; } }
+    out[id]=(out[id]||0)+v;
+  });
+  if(changed) st.stickers=out;
+  return st;
+}
 function drawSticker(t){
   const own=S.stickers=S.stickers||{}, pool=STICKERS[t];
   const fresh=pool.filter(e=>!own[e]), from=fresh.length?fresh:pool;
-  const e=from[Math.floor(Math.random()*from.length)];
-  own[e]=(own[e]||0)+1;
-  return {e, isNew:fresh.length>0};
+  const id=from[Math.floor(Math.random()*from.length)];
+  own[id]=(own[id]||0)+1;
+  S.stickerAt=S.stickerAt||{}; if(!S.stickerAt[id]) S.stickerAt[id]=Date.now();
+  return {id, isNew:fresh.length>0};
+}
+function stickerImg(id,cls){
+  const i=STICKER_INFO[id];
+  return `<img class="${cls||""}" src="stickers/${id}.webp" alt="${esc(i?i.name:id)}" loading="lazy" decoding="async" draggable="false">`;
 }
 /* colores de la app: los épicos desbloquean uno nuevo y el legendario, el dorado */
 const ACCENTS=[
@@ -2803,7 +2908,7 @@ function openGift(t,n){
   const g=GIFTS[t], lines=[];
   S.gifts=S.gifts||{}; S.gifts[t]=(S.gifts[t]||0)+1;
   S.tokens+=g.tok; lines.push(`+${g.tok} 🎟️`);
-  const st=drawSticker(t); lines.push(`Pegatina ${st.e}${st.isNew?" (¡nueva!)":""}`);
+  const st=drawSticker(t); lines.sticker=st.id; lines.push(`Pegatina «${STICKER_INFO[st.id].name}»${st.isNew?" (¡nueva!)":" (repetida)"}`);
   if(t==="rare"){ S.boostDay=dayKey(dayShift(1)); lines.push("⚡ XP doble todo el día de mañana"); }
   if(t==="epic"){
     S.themes=S.themes||[];
@@ -2844,6 +2949,7 @@ function showGift(t,n,lines){
     <div class="gp-tier">${g.label}</div>
     <h2 id="gp-t">¡${g.name}!</h2>
     <p>${n} días seguidos cumpliendo la meta.</p>
+    ${lines&&lines.sticker?`<div class="gp-stk tier-${t}">${stickerImg(lines.sticker)}<i class="foil" style="${maskFor(lines.sticker)}"></i></div>`:""}
     <ul class="gp-list">${(lines||[]).map(l=>`<li>${esc(l)}</li>`).join("")}</ul>
     <button class="bigbtn white" id="gp-ok">¡Genial!</button>
   </div>`;
@@ -2863,13 +2969,75 @@ function giftShelf(st){
     `<span class="gchip g-${t} ${g[t]?"":"none"}" title="${GIFTS[t].name}: ${g[t]||0}"><i aria-hidden="true">🎁</i><b>${g[t]||0}</b><small>${GIFTS[t].label}</small></span>`).join("")}</div>`
     +(st===S?`<div class="f15" style="color:var(--soft)">Próximos: raro el día ${nextTierDay(ds,"rare")}, épico el ${nextTierDay(ds,"epic")} y legendario el ${nextTierDay(ds,"legend")} de racha.</div>`:"");
 }
+function maskFor(id){ const u=`url(stickers/${id}.webp)`; return `-webkit-mask-image:${u};mask-image:${u}`; }
 function stickerAlbum(st){
   st=st||S; const own=st.stickers||{};
-  const got=Object.keys(own).length;
-  return `<div class="f15" style="color:var(--soft)">${got} de ${STICKER_TOTAL} pegatinas. Cada regalo trae una de su color.</div>
-  ${["common","rare","epic","legend"].map(t=>`<div class="album g-${t}">${STICKERS[t].map(e=>
-    own[e]?`<span class="stk" title="${GIFTS[t].label}${own[e]>1?" · repetida ×"+own[e]:""}">${e}${own[e]>1?`<small>×${own[e]}</small>`:""}</span>`
-          :`<span class="stk empty" title="${GIFTS[t].label}: por conseguir">?</span>`).join("")}</div>`).join("")}`;
+  const got=STICKER_ORDER.filter(id=>own[id]).length;
+  return `<div class="f15" style="color:var(--soft)">${got} de ${STICKER_TOTAL} pegatinas. Toca una para verla en grande y darle la vuelta.</div>
+  ${["common","rare","epic","legend"].map(t=>`<div class="album-h g-${t}">${GIFTS[t].label} · ${STICKERS[t].filter(id=>own[id]).length}/${STICKERS[t].length}</div>
+  <div class="album g-${t}">${STICKERS[t].map(id=>
+    own[id]?`<button class="stk tier-${t}" data-stk="${id}" aria-label="${esc(STICKER_INFO[id].name)}${own[id]>1?", repetida ×"+own[id]:""}">${stickerImg(id)}<i class="foil" style="${maskFor(id)}"></i>${own[id]>1?`<small>×${own[id]}</small>`:""}</button>`
+           :`<span class="stk empty" title="${GIFTS[t].label}: por conseguir">?</span>`).join("")}</div>`).join("")}`;
+}
+/* La pegatina en grande: una carta en 3D que se inclina al mover el dedo o el
+   ratón (o el móvil) y que se da la vuelta para ver cuándo se consiguió. */
+function openSticker(id){
+  const info=STICKER_INFO[id]; if(!info) return;
+  const t=info.tier, n=(S.stickers||{})[id]||0, at=(S.stickerAt||{})[id];
+  const fecha=at?new Date(at).toLocaleDateString("es-ES",{day:"numeric",month:"long",year:"numeric"}):null;
+  const num=STICKER_ORDER.indexOf(id)+1;
+  const old=document.getElementById("stkview"); if(old) old.remove();
+  const el=document.createElement("div");
+  el.id="stkview"; el.className="stkview";
+  el.innerHTML=`<div class="sv-scene" id="sv-scene">
+      <div class="sv-card tier-${t}" id="sv-card" role="img" aria-label="${esc(info.name)}">
+        <div class="sv-face sv-front">
+          <div class="sv-art">${stickerImg(id)}<i class="foil" style="${maskFor(id)}"></i></div>
+          <div class="sv-name">${esc(info.name)}</div>
+          <i class="sv-glare"></i>
+        </div>
+        <div class="sv-face sv-back">
+          <div class="sv-tier">${GIFTS[t].label}</div>
+          <div class="sv-bname">${esc(info.name)}</div>
+          <div class="sv-date">${fecha?`Conseguida el<br><b>${fecha}</b>`:`Conseguida antes de que<br>el álbum guardara la fecha`}</div>
+          ${n>1?`<div class="sv-rep">La tienes repetida ×${n}</div>`:""}
+          <div class="sv-num">Nº ${num} de ${STICKER_TOTAL}</div>
+        </div>
+      </div>
+    </div>
+    <div class="sv-acts">
+      <button class="bigbtn white" id="sv-flip">↻ Dar la vuelta</button>
+      <button class="softbtn" id="sv-close">Cerrar</button>
+    </div>`;
+  document.body.appendChild(el);
+  const card=el.querySelector("#sv-card"), scene=el.querySelector("#sv-scene");
+  let flipped=false;
+  const flip=()=>{ flipped=!flipped; card.classList.toggle("flipped",flipped); SFX.play("swoosh"); };
+  const tilt=(x,y)=>{   /* x, y entre 0 y 1 */
+    card.style.setProperty("--rx",((0.5-y)*26).toFixed(1)+"deg");
+    card.style.setProperty("--ry",((x-0.5)*30).toFixed(1)+"deg");
+    card.style.setProperty("--mx",(x*100).toFixed(1)+"%");
+    card.style.setProperty("--my",(y*100).toFixed(1)+"%");
+  };
+  const rest=()=>{ card.classList.remove("live"); tilt(0.5,0.5); };
+  scene.addEventListener("pointermove",e=>{ const r=scene.getBoundingClientRect(); card.classList.add("live");
+    tilt(Math.min(1,Math.max(0,(e.clientX-r.left)/r.width)),Math.min(1,Math.max(0,(e.clientY-r.top)/r.height))); });
+  scene.addEventListener("pointerleave",rest);
+  let moved=0;
+  scene.addEventListener("pointerdown",()=>{ moved=0; });
+  scene.addEventListener("pointermove",()=>{ moved++; });
+  scene.addEventListener("click",()=>{ if(moved<6) flip(); });
+  /* en el móvil, al inclinarlo (donde el navegador lo permite sin pedir permiso) */
+  const orient=e=>{ if(e.gamma==null) return; card.classList.add("live");
+    tilt(Math.min(1,Math.max(0,0.5+e.gamma/50)),Math.min(1,Math.max(0,0.5+(e.beta-40)/50))); };
+  window.addEventListener("deviceorientation",orient);
+  const close=()=>{ window.removeEventListener("deviceorientation",orient); el.remove(); };
+  el.querySelector("#sv-flip").onclick=flip;
+  el.querySelector("#sv-close").onclick=close;
+  el.addEventListener("click",e=>{ if(e.target===el) close(); });
+  el.addEventListener("keydown",e=>{ if(e.key==="Escape") close(); });
+  rest(); el.querySelector("#sv-flip").focus({preventScroll:true});
+  SFX.play("pick");
 }
 
 /* ---------- logros: premios que no dependen de la racha ---------- */
@@ -4866,6 +5034,7 @@ function renderStats(){
   document.getElementById("st-snd").onclick=()=>{ SFX.toggle(); toast(SFX.isOn()?"Sonido activado":"Sonido silenciado"); renderStats(); };
   document.getElementById("st-theme").onclick=()=>{ toggleTheme(); renderStats(); };
   document.getElementById("st-out").onclick=()=>leave();
+  app.querySelectorAll("[data-stk]").forEach(b=>b.onclick=()=>openSticker(b.dataset.stk));
   app.querySelectorAll("[data-acc]").forEach(b=>b.onclick=()=>{ S.accent=b.dataset.acc; save(); applyAccent(); renderStats(); });
   const dl=document.getElementById("dlbtn");
   if(dl){
