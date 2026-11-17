@@ -1253,6 +1253,11 @@ body.has-nav .testfab{bottom:calc(env(safe-area-inset-bottom,0px) + 96px)}
 .tbtns .ghostbtn{min-height:48px;padding:0 10px;font-size:15px;color:var(--ink);background:var(--card)}
 .qsheet .readit{font-size:16px;line-height:1.4;background:var(--marksoft);color:var(--ink);border-radius:12px;padding:10px 12px}
 .qsheet .readit b{color:var(--markdeep)}
+.srcnote{font-size:14px;opacity:.9}
+.srcwarn{font-size:14px;line-height:1.4;background:#FFF3C4;color:#3a2a00;border-radius:12px;padding:10px 12px}
+.srcwarn b{word-break:break-all}
+.syncwarn{border-radius:16px;padding:12px 14px;background:#FFF3C4;color:#3a2a00;font-weight:600;font-size:15px;line-height:1.4}
+.sec.home > .syncwarn{grid-column:1 / -1}
 .giftnote{font-size:15px;font-weight:600;color:var(--markdeep);text-align:center}
 .goal.done .wd i{background:var(--card)}
 .goal.done .wd.on i{background:var(--mark)}
@@ -2215,6 +2220,7 @@ function save(){
 let cloudState="…", pushT=null;
 function setCloud(st){
   cloudState=st;
+  paintSyncWarn();
   const c=document.getElementById("cloudline"); if(!c) return;
   const map={ok:["☁︎","Guardado en la nube","var(--green)"],
               wait:["⟳","Guardando…","var(--ink-faint)"],
@@ -2223,6 +2229,14 @@ function setCloud(st){
               none:["☁︎","Solo en este dispositivo","var(--ink-faint)"]};
   const [ico,title,col]=map[st]||map.none;
   c.textContent=ico+" "+title; c.style.color=col;
+}
+/* aviso grande en Inicio cuando el progreso no se está guardando en la nube */
+function paintSyncWarn(){
+  const w=document.getElementById("syncwarn"); if(!w) return;
+  const txt=cloudState==="deny"?"🔒 Tu progreso no se está guardando en la nube (sin permiso). Sal con «⇄ Salir» en Progreso, vuelve a entrar y, si sigue, avisa a tu profe."
+    :cloudState==="off"?"⚠️ Sin conexión: tu progreso se guarda en este dispositivo y se subirá a la nube cuando vuelva internet."
+    :"";
+  w.hidden=!txt; w.textContent=txt;
 }
 async function syncDown(id){
   if(!window.CLOUD || id===TEST.id) return setCloud("none");
@@ -2818,11 +2832,35 @@ async function leave(){
 /* =====================================================================
    PANEL DEL PROFESOR
    ===================================================================== */
+/* De dónde salen los datos de cada alumno en el panel: de la nube o, si la
+   nube falla o no tiene nada, de la copia de este navegador (que puede ser
+   vieja). Se apunta para avisarlo en la tarjeta. */
+let LOADINFO={};
 async function loadStudent(id){
-  let d=null;
-  if(window.CLOUD && id!==TEST.id){ try{ d=await CLOUD.load(id); }catch(e){} }
-  if(!d){ try{ const raw=localStorage.getItem("cuaderno-arcade-v3-"+id); if(raw) d=JSON.parse(raw); }catch(e){} }
+  let d=null, src="none", err="";
+  if(window.CLOUD && id!==TEST.id){
+    try{ d=await CLOUD.load(id); src=d?"cloud":"cloud-empty"; }
+    catch(e){ err=(e&&e.code)||"error"; console.warn("Panel del profe: no se pudo leer "+id+" de la nube:",e); }
+  }
+  if(!d){ try{ const raw=localStorage.getItem("cuaderno-arcade-v3-"+id); if(raw){ d=JSON.parse(raw); src=src==="cloud-empty"?"cloud-empty-local":"local"; } }catch(e){} }
+  LOADINFO[id]={src, err, at:Date.now()};
   return d?hydrate(d):null;
+}
+function sourceNote(p,d){
+  const i=LOADINFO[p.id]||{}, hora=new Date(i.at||Date.now()).toLocaleTimeString("es-ES",{hour:"2-digit",minute:"2-digit"});
+  const copia=d&&d.updatedAt?" (la copia es del "+fecha(d.updatedAt)+")":"";
+  if(p.id===TEST.id) return `<div class="srcnote">🧪 Solo en este navegador</div>`;
+  if(i.src==="cloud") return `<div class="srcnote">☁︎ Datos de la nube, leídos a las ${hora}</div>`;
+  if(!window.CLOUD) return `<div class="srcwarn">⚠️ No hay conexión con la nube: ${d?"lo que ves es una copia guardada en este navegador"+copia+", puede estar desactualizada":"no se puede ver su progreso"}.</div>`;
+  if(i.err==="permission-denied"){
+    const em=(CLOUD.email&&CLOUD.email())||"(sin sesión)";
+    return `<div class="srcwarn">⚠️ La nube no te deja leer el progreso de ${p.name} (permiso denegado). ${d?"Lo que ves es una copia vieja de este navegador"+copia+".":""}
+      Revisa en Firebase → Firestore → Reglas que el correo del profe sea exactamente <b>${esc(em)}</b>, en minúsculas.</div>`;
+  }
+  if(i.err) return `<div class="srcwarn">⚠️ No se ha podido leer de la nube (${esc(i.err)}). ${d?"Lo que ves es una copia de este navegador"+copia+", puede estar desactualizada.":""} Prueba con 🔄.</div>`;
+  if(i.src==="cloud-empty-local") return `<div class="srcwarn">⚠️ La nube no tiene datos de ${p.name}: no se ha guardado nada desde su dispositivo. Lo que ves es una copia de este navegador${copia}.</div>`;
+  if(i.src==="cloud-empty") return `<div class="srcnote">☁︎ La nube todavía no tiene datos de ${p.name}.</div>`;
+  return "";
 }
 function statsFor(p, d){
   const units=UNITS.filter(u=>p.id===TEST.id||u.owner===p.id);
@@ -2842,6 +2880,7 @@ function teacherHead(){
   return `<div class="thead2">
     <div class="grow"><span class="eyebrow2">Panel del profe</span><span class="h28">Cómo van</span></div>
     <button class="pillbtn" id="t-theme" aria-label="Cambiar entre tema claro y oscuro">${isDark()?"☀️":"🌙"}</button>
+    <button class="pillbtn" id="t-reload" title="Volver a leer los datos de la nube" aria-label="Actualizar">🔄</button>
     <button class="pillbtn" id="t-test" title="Entrar al perfil de prueba" aria-label="Entrar al perfil de prueba">🧪</button>
     <button class="pillbtn" id="t-out">Salir</button>
   </div>`;
@@ -2855,6 +2894,7 @@ function pendingPrizes(id,d){ const l=delivered(); return (d.prizes||[]).filter(
 function bindTeacherHead(){
   document.getElementById("t-out").onclick=()=>leave();
   document.getElementById("t-test").onclick=enterTest;
+  document.getElementById("t-reload").onclick=()=>{ TDATA={}; LOADINFO={}; renderTeacher(); };
   app.querySelectorAll("[data-test]").forEach(b=>b.onclick=enterTest);
   const tb=document.getElementById("t-theme");
   tb.onclick=()=>{ toggleTheme(); tb.textContent=isDark()?"☀️":"🌙"; };
@@ -2878,6 +2918,7 @@ async function renderTeacher(){
         <div class="grow"><span class="nm">${p.name}</span><span class="f15">${d&&d.updatedAt?"Última vez: "+fecha(d.updatedAt):"Sin actividad todavía"}</span>${d?`<span class="f15">🔥 ${dayStreak(d)} día${dayStreak(d)===1?"":"s"} seguido${dayStreak(d)===1?"":"s"} · hoy ${todayCount(d)}/${DAY_GOAL}</span>`:""}</div>
         <span class="xpbig" style="font-size:17px">${d?d.xp:0} XP</span>
       </div>
+      ${sourceNote(p,d)}
       <div class="trio">
         <div class="stat"><b>${s.acc}%</b><span>Precisión</span></div>
         <div class="stat"><b>${s.ok}</b><span>Dominadas</span></div>
@@ -2920,7 +2961,7 @@ async function renderTeacher(){
       </div>
     </details>`:`<p class="empty2">${p.name} todavía no ha practicado nada.</p>`}</div>`;
   }).join("")}
-  <p class="footnote">${window.CLOUD?"Datos en vivo desde la nube.":"Sin conexión con la nube: viendo solo lo guardado en este dispositivo."}</p>
+  <p class="footnote">${window.CLOUD?"Sesión del profe: "+esc((CLOUD.email&&CLOUD.email())||"sin iniciar")+". Pulsa 🔄 para volver a leer la nube.":"Sin conexión con la nube: viendo solo lo guardado en este dispositivo."}</p>
   </div></div>`;
 
   bindTeacherHead();
@@ -3203,6 +3244,7 @@ function renderHome(){
   </header>
 
   <div class="sec home">
+    <div class="syncwarn" id="syncwarn" role="status" hidden></div>
     ${goalCard()}
     ${pend?`<button class="resume" data-act="resume">
       <span class="txt">
@@ -3224,7 +3266,7 @@ function renderHome(){
   </div>
   ${navHTML("home")}`;
 
-  bindNav(); bindUnitRows();
+  bindNav(); bindUnitRows(); paintSyncWarn();
   const rs=app.querySelector('[data-act="resume"]'); if(rs&&pend) rs.onclick=()=>resumeRun(pend.key);
   app.querySelector('[data-act="quick"]').onclick=()=>startQuick(quickSize());
   app.querySelector('[data-act="exam"]').onclick=startExam;
