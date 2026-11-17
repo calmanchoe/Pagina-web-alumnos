@@ -2,7 +2,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#2547B8">
-<meta name="description" content="Ejercicios de inglés con corrección automática para Álvaro y Marcos.">
+<meta name="description" content="Ejercicios de inglés con corrección automática para Álvaro y Marco.">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon-192.png" sizes="192x192" type="image/png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -1529,7 +1529,7 @@ document.addEventListener("click",e=>{
 
 const PROFILES=[
   {id:"alvaro", name:"Álvaro", level:"6.º de Primaria", initial:"Á", hue:"var(--pen)",  bg:"#2547B8"},
-  {id:"marcos", name:"Marcos", level:"3.º de ESO",      initial:"M", hue:"var(--viol)", bg:"#5A3BB0"}
+  {id:"marcos", name:"Marco", level:"3.º de ESO",      initial:"M", hue:"var(--viol)", bg:"#5A3BB0"}
 ];
 /* Acceso con Firebase Authentication. La contraseña la comprueba el servidor
    de Firebase; aquí no hay ninguna guardada.
@@ -2614,7 +2614,7 @@ const TEST_ACTS=[
 function openTestTools(){
   document.getElementById("dr-eyebrow").textContent="Perfil de prueba";
   document.getElementById("dr-title").textContent="🧪 Herramientas";
-  document.getElementById("dr-body").innerHTML=`<p class="f15" style="color:var(--soft);margin:0">Cambian solo el progreso de «Prueba», guardado en este navegador. Álvaro y Marcos no se tocan.</p>
+  document.getElementById("dr-body").innerHTML=`<p class="f15" style="color:var(--soft);margin:0">Cambian solo el progreso de «Prueba», guardado en este navegador. Álvaro y Marco no se tocan.</p>
     <p class="f15" style="margin:0">Ahora: ${S.xp} XP · ${S.tokens} 🎟️ · 🔥 ${dayStreak()} días · hoy ${todayCount()}/${DAY_GOAL}</p>
     ${TEST_ACTS.map(([h,acts])=>`<div class="tgroup">${h?`<h4>${h}</h4>`:""}<div class="tbtns">${acts.map(([k,l])=>`<button class="ghostbtn" data-ta="${k}">${l}</button>`).join("")}</div></div>`).join("")}`;
   document.querySelectorAll("[data-ta]").forEach(b=>b.onclick=()=>testAct(b.dataset.ta));
