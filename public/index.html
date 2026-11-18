@@ -2588,9 +2588,13 @@ function save(){
 }
 
 /* ---------- nube ---------- */
-let cloudState="…", pushT=null;
-function setCloud(st){
+let cloudState="…", pushT=null, cloudErr="", retryT=null;
+function setCloud(st, err){
   cloudState=st;
+  cloudErr=st==="off"||st==="deny" ? (err&&(err.code||err.message)||"") : "";
+  /* si falla, se reintenta solo cada 20 s (y al volver internet o la pestaña) */
+  clearTimeout(retryT);
+  if(st==="off") retryT=setTimeout(retryCloud, 20000);
   paintSyncWarn();
   const c=document.getElementById("cloudline"); if(!c) return;
   const map={ok:["☁︎","Guardado en la nube","var(--green)"],
@@ -2599,13 +2603,13 @@ function setCloud(st){
               deny:["🔒","Sin permiso para guardar: cierra sesión y vuelve a entrar","var(--red)"],
               none:["☁︎","Solo en este dispositivo","var(--ink-faint)"]};
   const [ico,title,col]=map[st]||map.none;
-  c.textContent=ico+" "+title; c.style.color=col;
+  c.textContent=ico+" "+title+(cloudErr?" ("+cloudErr+")":""); c.style.color=col;
 }
 /* aviso grande en Inicio cuando el progreso no se está guardando en la nube */
 function paintSyncWarn(){
   const w=document.getElementById("syncwarn"); if(!w) return;
   const txt=cloudState==="deny"?"🔒 Tu progreso no se está guardando en la nube (sin permiso). Sal con «⇄ Salir» en Progreso, vuelve a entrar y, si sigue, avisa a tu profe."
-    :cloudState==="off"?"⚠️ Sin conexión: tu progreso se guarda en este dispositivo y se subirá a la nube cuando vuelva internet."
+    :cloudState==="off"?"⚠️ Sin conexión: tu progreso se guarda en este dispositivo y se subirá a la nube cuando vuelva internet."+(cloudErr?" ("+cloudErr+")":"")
     :"";
   w.hidden=!txt; w.textContent=txt;
 }
@@ -2622,8 +2626,14 @@ async function syncDown(id){
     } else if(!remote || (S.updatedAt||0) > (remote.updatedAt||0)){
       await pushUp();
     } else setCloud("ok");
-  }catch(e){ setCloud(e&&e.code==="permission-denied"?"deny":"off"); }
+  }catch(e){ console.warn("Nube (bajar):", e); setCloud(e&&e.code==="permission-denied"?"deny":"off", e); }
 }
+function retryCloud(){
+  if(cloudState!=="off" || !PROFILE || !window.CLOUD) return;
+  syncDown(PROFILE);
+}
+window.addEventListener("online", retryCloud);
+document.addEventListener("visibilitychange", ()=>{ if(!document.hidden) retryCloud(); });
 function schedulePush(){
   if(!window.CLOUD || isTest()) return setCloud("none");
   setCloud("wait");
@@ -2634,7 +2644,7 @@ async function pushUp(){
   if(!window.CLOUD || !PROFILE || isTest()) return;
   clearTimeout(pushT);
   try{ await CLOUD.save(PROFILE, JSON.parse(JSON.stringify(S))); setCloud("ok"); }
-  catch(e){ setCloud(e&&e.code==="permission-denied"?"deny":"off"); }
+  catch(e){ console.warn("Nube (subir):", e); setCloud(e&&e.code==="permission-denied"?"deny":"off", e); }
 }
 window.addEventListener("cloud-ready",()=>{ if(PROFILE) syncDown(PROFILE); else setCloud("none"); });
 
@@ -5253,7 +5263,7 @@ initDownloads();
    esta capa lo sube a la nube y lo baja al entrar desde otro dispositivo.
    ===================================================================== */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+import { initializeFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
 
 const firebaseConfig = {
@@ -5268,7 +5278,10 @@ const CLASE = "5c96aa91a9d5";
 
 try{
   const app = initializeApp(firebaseConfig);
-  const db  = getFirestore(app);
+  /* Long polling en vez de WebChannel: en iPad/Safari y en redes con filtro
+     (colegio, control parental) la conexión normal a veces no llega y la web
+     creía estar «sin conexión» aunque hubiera internet. */
+  const db  = initializeFirestore(app, { experimentalForceLongPolling: true });
   const auth = getAuth(app);
   const ref = id => doc(db, "clases", CLASE, "progreso", id);
   window.CLOUD = {
