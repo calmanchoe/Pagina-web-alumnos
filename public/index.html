@@ -2779,7 +2779,7 @@ function save(){
 let cloudState="…", pushT=null, cloudErr="", retryT=null;
 function setCloud(st, err){
   cloudState=st;
-  cloudErr=st==="off"||st==="deny" ? (err&&(err.code||err.message)||"") : "";
+  cloudErr=st==="off"||st==="deny" ? [err&&(err.code||err.message)||"sin código", navigator.onLine?"online":"offline", "v37"].join(" · ") : "";
   /* si falla, se reintenta solo cada 20 s (y al volver internet o la pestaña) */
   clearTimeout(retryT);
   if(st==="off") retryT=setTimeout(retryCloud, 20000);
