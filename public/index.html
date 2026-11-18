@@ -2031,6 +2031,194 @@ const ALL_UNITS = [
  ]
 },
 {
+ id:"a2", short:"U2", owner:"alvaro", num:"Unidad 2", title:"Grammar test 2 · Golden Minute", icon:"🎤",
+ desc:"Examen de gramática (3 de diciembre): verbos con gerundio o infinitivo, oraciones de huecos con los seis tiempos verbales, afirmativa/negativa/interrogativa y reading tipo PET. Y la exposición oral Golden Minute (9 de diciembre) sobre un pueblo de España.",
+ gram:["Verbos + gerundio / infinitivo","6 tiempos verbales","Afirmativa · negativa · interrogativa"],
+ lex:["Reading tipo PET","Golden Minute: un pueblo de España"],
+ theory:[
+  {h:"Verbos + gerundio (-ing)", p:"Después de estos verbos, el segundo verbo va en <b>-ing</b>: <i>I <b>enjoy playing</b> football.</i> · <i>She <b>finished doing</b> her homework.</i>", dl:[
+    ["enjoy","disfrutar"],["finish","terminar"],["mind","importar (<i>I don't mind…</i>)"],["avoid","evitar"],
+    ["practise","practicar"],["keep","seguir, no parar de"],["give up","dejar de, rendirse"],["can't stand","no soportar"],
+    ["spend time","pasar tiempo"],["go + deporte","<i>go swimming, go skiing, go shopping</i>"]
+  ]},
+  {h:"Verbos + infinitivo (to + verbo)", p:"Después de estos verbos va <b>to + verbo</b>: <i>I <b>want to be</b> a footballer.</i> · <i>We <b>decided to go</b> to the beach.</i>", dl:[
+    ["want","querer"],["would like","me gustaría"],["decide","decidir"],["hope","esperar (desear)"],
+    ["need","necesitar"],["learn","aprender"],["plan","planear"],["promise","prometer"],
+    ["agree","estar de acuerdo, acordar"],["forget","olvidarse de"],["try","intentar"],["offer","ofrecerse a"]
+  ]},
+  {h:"Los dos valen · y otras reglas", p:"<b>like, love, hate, start, begin</b> aceptan las dos formas casi sin cambio: <i>I like <b>swimming</b> / I like <b>to swim</b></i>.<br><b>Ojo con stop:</b> <i>stop <b>eating</b></i> = dejar de comer · <i>stop <b>to eat</b></i> = pararse para comer.<br><b>Después de preposición, siempre -ing:</b> <i>good <b>at</b> drawing, interested <b>in</b> reading, <b>before</b> going, <b>without</b> saying</i>.<br><b>Como sujeto de la frase, -ing:</b> <i><b>Swimming</b> is good for you.</i><br><b>Para expresar finalidad, to:</b> <i>I went to the shop <b>to buy</b> bread.</i>"},
+  {h:"Los seis tiempos: ¿cuál toca?", dl:[
+    ["Present simple","rutinas: <i>every day, usually, always, never</i> · <code>play / plays</code>"],
+    ["Present continuous","ahora: <i>now, at the moment, Look!, Listen!</i> · <code>am/is/are + -ing</code>"],
+    ["Past simple","pasado terminado con fecha: <i>yesterday, last…, ago, in 2020</i> · <code>played / went</code>"],
+    ["Past continuous","en curso en el pasado: <i>while, when…, at 9 pm yesterday</i> · <code>was/were + -ing</code>"],
+    ["Present perfect","sin fecha: <i>ever, never, just, already, yet, for, since</i> · <code>have/has + participio</code>"],
+    ["Future simple","predicción o decisión: <i>tomorrow, next…, I think, probably</i> · <code>will + verbo</code>"]
+  ]},
+  {h:"Afirmativa, negativa e interrogativa", p:"Busca el <b>auxiliar</b> de cada tiempo: <code>do/does</code> · <code>am/is/are</code> · <code>did</code> · <code>was/were</code> · <code>have/has</code> · <code>will</code>.<br><b>Negativa:</b> auxiliar + <b>not</b> → <i>She <b>doesn't</b> like fish.</i><br><b>Interrogativa:</b> el auxiliar <b>va delante</b> del sujeto → <i><b>Did</b> you see it?</i><br>Con <b>do/does/did</b> el verbo vuelve al <b>infinitivo</b>: <i>He didn't <b>go</b></i>, nunca <i>didn't went</i>."},
+  {h:"Reading tipo PET: trucos", p:"<b>1)</b> Lee primero las <b>preguntas</b> y luego el texto. <b>2)</b> La respuesta correcta casi nunca usa las mismas palabras que el texto: busca la <b>misma idea</b> dicha de otra forma. <b>3)</b> Desconfía de las opciones que repiten palabras exactas del texto. <b>4)</b> En los carteles y mensajes cortos, pregúntate: <i>¿quién lo escribe y para qué?</i> <b>5)</b> En los huecos, mira la palabra de <b>después</b> (preposiciones, <i>to</i>, <i>-ing</i>)."},
+  {h:"Golden Minute: tu exposición sobre un pueblo", p:"Un minuto hablando, sencillo y ordenado. Sigue estos pasos:<br><b>1. Saludo:</b> <i>Hello everyone! Today I'm going to talk about…</i><br><b>2. Dónde está:</b> <i>It is a small town in the north/south/east/west of Spain. It is in the province of…</i><br><b>3. Cómo es:</b> <i>About 2,000 people live there. It has got narrow streets, old houses and a beautiful church.</i><br><b>4. Por qué es famoso:</b> <i>It is famous for its castle / its cheese / its festival.</i><br><b>5. Qué se puede hacer:</b> <i>You can visit…, go hiking…, try the local food…</i><br><b>6. Tu experiencia:</b> <i>I went there last summer with my family. I loved it because…</i><br><b>7. Cierre:</b> <i>I think you should visit it. Thank you for listening!</i>"},
+  {h:"Golden Minute: palabras útiles", vocab:1, dl:[
+    ["town / village","pueblo (grande / pequeño)"],["is located in","está situado en"],["province","provincia"],
+    ["the mountains / the coast","la montaña / la costa"],["river","río"],["castle","castillo"],
+    ["church","iglesia"],["square","plaza"],["narrow streets","calles estrechas"],["bridge","puente"],
+    ["walls","murallas"],["festival","fiestas"],["local food","comida típica"],["people","gente, habitantes"],
+    ["is famous for","es famoso por"],["you can","se puede"],["it's worth visiting","merece la pena visitarlo"]
+  ]}
+ ],
+ exercises:[
+  /* ------------------------------ NIVEL 1 ------------------------------ */
+  {n:1, lvl:1, no:1, title:"¿Gerundio o infinitivo?", instr:"Elige la forma correcta del verbo.", items:[
+   {t:"choice", q:"I enjoy ___ video games with my friends.", opts:["playing","to play"], a:[0], why:"<i>enjoy</i> + <b>-ing</b>."},
+   {t:"choice", q:"We want ___ a new bike for my birthday.", opts:["to get","getting"], a:[0], why:"<i>want</i> + <b>to</b> + verbo."},
+   {t:"choice", q:"She finished ___ her homework at seven.", opts:["doing","to do"], a:[0], why:"<i>finish</i> + <b>-ing</b>."},
+   {t:"choice", q:"My dad decided ___ a dog.", opts:["to buy","buying"], a:[0], why:"<i>decide</i> + <b>to</b> + verbo."},
+   {t:"choice", q:"I don't mind ___ the dishes.", opts:["washing","to wash"], a:[0], why:"<i>mind</i> + <b>-ing</b>."},
+   {t:"choice", q:"They hope ___ the match on Saturday.", opts:["to win","winning"], a:[0], why:"<i>hope</i> + <b>to</b> + verbo."},
+   {t:"choice", q:"He practises ___ the ball every day.", opts:["kicking","to kick"], a:[0], why:"<i>practise</i> + <b>-ing</b>."},
+   {t:"choice", q:"I need ___ more water.", opts:["to drink","drinking"], a:[0], why:"<i>need</i> + <b>to</b> + verbo."},
+   {t:"choice", q:"My mum can't stand ___ in the rain.", opts:["walking","to walk"], a:[0], why:"<i>can't stand</i> + <b>-ing</b>."},
+   {t:"choice", q:"We are learning ___ the guitar.", opts:["to play","playing"], a:[0], why:"<i>learn</i> + <b>to</b> + verbo."}
+  ]},
+  {n:2, lvl:1, no:2, title:"Gerundio o infinitivo: completa", instr:"Escribe el verbo entre paréntesis en -ing o con to.", items:[
+   {t:"fill", q:"I'd like ___ to Disneyland.", hint:"go", a:[["to go"]], why:"<i>would like</i> + <b>to</b>."},
+   {t:"fill", q:"Let's go ___ on Sunday!", hint:"swim", a:[["swimming"]], why:"<i>go</i> + deporte en <b>-ing</b>: <i>go swimming</i>."},
+   {t:"fill", q:"She promised ___ me with my project.", hint:"help", a:[["to help"]], why:"<i>promise</i> + <b>to</b>."},
+   {t:"fill", q:"Please stop ___! I'm trying to sleep.", hint:"shout", a:[["shouting"]], why:"<i>stop</i> + <b>-ing</b> = dejar de hacer algo."},
+   {t:"fill", q:"He is very good at ___.", hint:"draw", a:[["drawing"]], why:"Después de preposición (<i>at</i>) → <b>-ing</b>."},
+   {t:"fill", q:"Don't forget ___ your grandma.", hint:"call", a:[["to call"]], why:"<i>forget</i> + <b>to</b> = olvidarse de hacer algo."},
+   {t:"fill", q:"___ is my favourite sport.", hint:"ski", a:[["Skiing","skiing"]], why:"Verbo como sujeto de la frase → <b>-ing</b>."},
+   {t:"fill", q:"They avoid ___ sweets before dinner.", hint:"eat", a:[["eating"]], why:"<i>avoid</i> + <b>-ing</b>."},
+   {t:"fill", q:"I went to the library ___ a book.", hint:"borrow", a:[["to borrow"]], why:"Finalidad (para qué) → <b>to</b> + verbo."},
+   {t:"fill", q:"My brother keeps ___ my phone!", hint:"take", a:[["taking"]], why:"<i>keep</i> + <b>-ing</b> = no parar de."}
+  ]},
+  {n:3, lvl:1, no:3, title:"Los seis tiempos: elige", instr:"Elige el tiempo verbal que pide la frase. Fíjate en las pistas (yesterday, now, ever…).", items:[
+   {t:"choice", q:"We usually ___ pasta on Mondays.", opts:["eat","are eating","ate"], a:[0], why:"<i>usually</i> → <b>present simple</b>."},
+   {t:"choice", q:"Be quiet! The baby ___.", opts:["is sleeping","sleeps","slept"], a:[0], why:"Algo que pasa ahora mismo → <b>present continuous</b>."},
+   {t:"choice", q:"I ___ my cousins two weeks ago.", opts:["visited","have visited","visit"], a:[0], why:"<i>ago</i> → <b>past simple</b>."},
+   {t:"choice", q:"At 9 o'clock last night I ___ a film.", opts:["was watching","watched","am watching"], a:[0], why:"Hora concreta del pasado, acción en curso → <b>past continuous</b>."},
+   {t:"choice", q:"___ you ever ___ to Paris?", opts:["Have / been","Did / go","Are / going"], a:[0], why:"<i>ever</i> → <b>present perfect</b>: <i>Have you ever been…?</i>"},
+   {t:"choice", q:"I think Spain ___ the next World Cup.", opts:["will win","wins","won"], a:[0], why:"Predicción con <i>I think</i> → <b>will</b>."},
+   {t:"choice", q:"She ___ her homework yet.", opts:["hasn't finished","didn't finish","doesn't finish"], a:[0], why:"<i>yet</i> → <b>present perfect</b> negativo."},
+   {t:"choice", q:"While we ___ football, it started to rain.", opts:["were playing","played","have played"], a:[0], why:"<i>while</i> + acción larga → <b>past continuous</b>."},
+   {t:"choice", q:"My grandad ___ a newspaper every morning.", opts:["reads","is reading","has read"], a:[0], why:"<i>every morning</i> → <b>present simple</b> con -s."},
+   {t:"choice", q:"Tomorrow it ___ sunny and warm.", opts:["will be","is","was"], a:[0], why:"<i>Tomorrow</i> + predicción → <b>will be</b>."}
+  ]},
+  {n:4, lvl:1, no:4, title:"Oraciones de huecos: tiempos verbales", instr:"Escribe el verbo entre paréntesis en el tiempo correcto.", items:[
+   {t:"fill", q:"My sister ___ the piano every Tuesday.", hint:"play", a:[["plays"]], why:"Rutina + tercera persona → <b>plays</b>."},
+   {t:"fill", q:"Shh! I ___ to the radio.", hint:"listen", a:[["am listening","'m listening"]], why:"Ahora mismo → <b>am listening</b>."},
+   {t:"fill", q:"We ___ a castle last weekend.", hint:"visit", a:[["visited"]], why:"<i>last weekend</i> → <b>visited</b>."},
+   {t:"fill", q:"I ___ never ___ snow.", hint:"see", a:[["have","'ve"],["seen"]], why:"<i>never</i> + experiencia → <b>have never seen</b>."},
+   {t:"fill", q:"They ___ dinner when the phone rang.", hint:"have", a:[["were having"]], why:"Acción en curso interrumpida → <b>were having</b>."},
+   {t:"fill", q:"Don't worry. I ___ you with your bag.", hint:"help", a:[["will help","'ll help"]], why:"Decisión del momento / ofrecimiento → <b>will help</b>."},
+   {t:"fill", q:"He ___ his leg yesterday.", hint:"break", a:[["broke"]], why:"Pasado irregular de <i>break</i>: <b>broke</b>."},
+   {t:"fill", q:"We ___ here since 2019.", hint:"live", a:[["have lived","'ve lived"]], why:"<i>since</i> → <b>present perfect</b>."},
+   {t:"fill", q:"Next year my brother ___ twelve.", hint:"be", a:[["will be","'ll be"]], why:"Futuro → <b>will be</b>."},
+   {t:"fill", q:"She ___ TV right now, she's reading.", hint:"not watch", a:[["{isn't|is not} watching","'s not watching"]], why:"Present continuous negativo → <b>isn't watching</b>."}
+  ]},
+  {n:5, lvl:1, no:5, title:"Afirmativa, negativa e interrogativa", instr:"Transforma la frase como se pide entre paréntesis.", items:[
+   {t:"write", q:"My dog likes carrots. (negativa)", a:["my dog {doesn't|does not} like carrots"], why:"<b>doesn't</b> + infinitivo sin -s."},
+   {t:"write", q:"You are coming to the party. (interrogativa)", a:["are you coming to the party"], why:"Se adelanta <b>are</b>."},
+   {t:"write", q:"They won the match. (negativa)", a:["they {didn't|did not} win the match"], why:"<b>didn't</b> + <i>win</i> (infinitivo)."},
+   {t:"write", q:"She has finished her book. (interrogativa)", a:["has she finished her book"], why:"Se adelanta <b>has</b>."},
+   {t:"write", q:"We will go to the cinema. (negativa)", a:["we {won't|will not} go to the cinema"], why:"<b>won't</b> = will not."},
+   {t:"write", q:"He was sleeping. (interrogativa)", a:["was he sleeping"], why:"Se adelanta <b>was</b>."},
+   {t:"write", q:"Your brother plays basketball. (interrogativa)", a:["does your brother play basketball"], why:"<b>Does</b> se lleva la -s: <i>play</i> sin -s."},
+   {t:"write", q:"I am wearing a jacket. (negativa)", a:["i{ am not|'m not} wearing a jacket"], why:"<b>am not</b> (no existe <i>amn't</i>)."}
+  ]},
+  {n:6, lvl:1, no:6, title:"Reading PET: carteles y mensajes", instr:"Lee el cartel o mensaje y elige qué quiere decir.", items:[
+   {t:"choice", q:"📌 SWIMMING POOL\nChildren under 10 must be with an adult.\n\nWhat does the notice say?", opts:["Young children can't swim alone","Adults can't use the pool","The pool is only for children"], a:[0], why:"<i>Must be with an adult</i>: los menores de 10 <b>no pueden ir solos</b>."},
+   {t:"choice", q:"💬 Hi Leo! Football practice is at 5 today, not 4. Bring your boots! – Coach\n\nWhat does the coach want?", opts:["Leo should arrive one hour later","Leo should buy new boots","Practice is cancelled"], a:[0], why:"Es <b>a las 5, no a las 4</b>: una hora más tarde."},
+   {t:"choice", q:"📌 LIBRARY\nPlease do not eat or drink near the computers.\n\nWhat does the notice say?", opts:["You can't have food next to the computers","The computers are broken","You can eat in the library café only at lunch"], a:[0], why:"<i>Do not eat or drink near the computers</i> = <b>nada de comida junto a los ordenadores</b>."},
+   {t:"choice", q:"💬 Mum, I've finished my homework. Can I go to Hugo's house? I'll be back by 8. – Álvaro\n\nWhy has Álvaro written this message?", opts:["To ask for permission","To say he is at Hugo's house","To ask for help with his homework"], a:[0], why:"<i>Can I go…?</i> → está <b>pidiendo permiso</b>."},
+   {t:"choice", q:"📌 SALE! Buy one T-shirt, get the second one free.\n\nWhat does the notice say?", opts:["You get two T-shirts for the price of one","All T-shirts are free","T-shirts are half price only today"], a:[0], why:"<i>Buy one, get the second free</i> = <b>dos por el precio de una</b>."},
+   {t:"choice", q:"💬 Sara, the school trip is on Friday. Don't forget to bring a packed lunch and a coat. – Ms Lara\n\nWhat must Sara do?", opts:["Take food and warm clothes","Buy lunch at the museum","Come to school on Saturday"], a:[0], why:"<i>packed lunch and a coat</i> → <b>comida y ropa de abrigo</b>."}
+  ]},
+  {n:7, lvl:1, no:7, vocab:1, title:"Golden Minute: completa la exposición", instr:"Completa la exposición con las palabras del banco. Sobra una.",
+   bank:["talk about","located","famous for","people","can","went","narrow","Thank you","worth","bridge"], items:[
+   {t:"fill", q:"Hello everyone! Today I'm going to ___ Albarracín. It's a small town ___ in the province of Teruel.", a:[["talk about"],["located"]], why:"<b>talk about</b> (hablar de) · <b>located</b> (situado)."},
+   {t:"fill", q:"About 1,000 ___ live there. It has got ___ streets and old pink houses.", a:[["people"],["narrow"]], why:"<b>people</b> (habitantes) · <b>narrow</b> (estrechas)."},
+   {t:"fill", q:"It is ___ its old walls. You ___ walk along them and see the whole town.", a:[["famous for"],["can"]], why:"<b>famous for</b> (famoso por) · <b>can</b> (se puede)."},
+   {t:"fill", q:"I ___ there last summer with my family. I think it's ___ visiting. ___ for listening!", a:[["went"],["worth"],["Thank you","thank you"]], why:"<b>went</b> (fui, pasado de <i>go</i>) · <b>worth</b> visiting (merece la pena) · <b>Thank you</b> for listening."}
+  ]},
+  {n:8, lvl:1, no:8, title:"Golden Minute: frases útiles", instr:"Relaciona cada frase en español con la frase en inglés.", items:[
+   {t:"match", q:"Relaciona cada frase en español con la frase en inglés.", pairs:[["Hoy voy a hablar de…","Today I'm going to talk about…"],["Está en el norte de España.","It's in the north of Spain."],["Es famoso por su castillo.","It's famous for its castle."],["Se puede probar la comida típica.","You can try the local food."],["Fui allí el verano pasado.","I went there last summer."],["Gracias por escuchar.","Thank you for listening."]], why:"Son las frases que ordenan tu minuto: saludo → dónde está → por qué es famoso → qué hacer → tu experiencia → cierre."},
+   {t:"match", q:"Relaciona cada palabra con su traducción.", pairs:[["castle","castillo"],["church","iglesia"],["square","plaza"],["bridge","puente"],["walls","murallas"],["river","río"]], why:"castle → castillo · church → iglesia · square → plaza · bridge → puente · walls → murallas · river → río."}
+  ]},
+
+  /* ------------------------------ NIVEL 2 ------------------------------ */
+  {n:9, lvl:2, no:1, nogloss:1, title:"Gerundio o infinitivo: el reto", instr:"Elige la forma correcta. Ojo con stop, las preposiciones y la finalidad.", items:[
+   {t:"choice", q:"We stopped ___ an ice cream on the way home.", opts:["to buy","buying"], a:[0], why:"<b>stop + to</b> = pararse <i>para</i> hacer algo."},
+   {t:"choice", q:"My dad stopped ___ two years ago. Now he runs every day.", opts:["smoking","to smoke"], a:[0], why:"<b>stop + -ing</b> = <i>dejar de</i> hacer algo."},
+   {t:"choice", q:"She left without ___ goodbye.", opts:["saying","to say"], a:[0], why:"Después de preposición (<i>without</i>) → <b>-ing</b>."},
+   {t:"choice", q:"I'm interested in ___ how to cook.", opts:["learning","to learn"], a:[0], why:"<i>interested <b>in</b></i> → <b>-ing</b>."},
+   {t:"choice", q:"He gave up ___ the piano because it was too hard.", opts:["playing","to play"], a:[0], why:"<i>give up</i> + <b>-ing</b>."},
+   {t:"choice", q:"They agreed ___ the room together.", opts:["to paint","painting"], a:[0], why:"<i>agree</i> + <b>to</b>."},
+   {t:"choice", q:"Before ___ to bed, I brush my teeth.", opts:["going","to go"], a:[0], why:"<i>before</i> es preposición → <b>-ing</b>."},
+   {t:"choice", q:"My friend offered ___ me his skateboard.", opts:["to lend","lending"], a:[0], why:"<i>offer</i> + <b>to</b>."},
+   {t:"choice", q:"I spend a lot of time ___ with my cousins.", opts:["chatting","to chat"], a:[0], why:"<i>spend time</i> + <b>-ing</b>."},
+   {t:"choice", q:"I like ___ in the sea. (Las dos valen: ¿cuál NO es correcta?)", opts:["swim","swimming","to swim"], a:[0], why:"<i>like</i> acepta <b>swimming</b> y <b>to swim</b>; lo incorrecto es <i>like swim</i>."}
+  ]},
+  {n:10, lvl:2, no:2, nogloss:1, title:"Gerundio o infinitivo: corrige el error", instr:"Cada frase tiene un error. Escribe la frase corregida.", items:[
+   {t:"write", q:"I enjoy to read comics.", a:["i enjoy reading comics"], why:"<i>enjoy</i> + <b>-ing</b>: <i>enjoy reading</i>."},
+   {t:"write", q:"She wants buying a new phone.", a:["she wants to buy a new phone"], why:"<i>want</i> + <b>to</b>: <i>wants to buy</i>."},
+   {t:"write", q:"We decided going to the beach.", a:["we decided to go to the beach"], why:"<i>decide</i> + <b>to</b>."},
+   {t:"write", q:"He is good at play tennis.", a:["he{ is|'s} good at playing tennis"], why:"Después de <i>at</i> → <b>playing</b>."},
+   {t:"write", q:"Do you mind to close the window?", a:["do you mind closing the window"], why:"<i>mind</i> + <b>-ing</b>."},
+   {t:"write", q:"I need finishing this today.", a:["i need to finish this today"], why:"<i>need</i> + <b>to</b>."},
+   {t:"write", q:"Read is my favourite hobby.", a:["reading is my favourite hobby"], why:"Verbo como sujeto → <b>Reading</b>."},
+   {t:"write", q:"They went to the park for play football.", a:["they went to the park to play football"], why:"Finalidad en inglés → <b>to + verbo</b>, nunca <i>for play</i>."}
+  ]},
+  {n:11, lvl:2, no:3, title:"Tiempos verbales: completa el texto", instr:"Completa el texto con los verbos entre paréntesis en el tiempo correcto.", items:[
+   {t:"fill", q:"My name is Hugo. I ___ (live) in Madrid and I ___ (go) to school by bike every day. Right now I ___ (write) this email in my room.", a:[["live"],["go"],["am writing","'m writing"]], why:"Rutinas → <b>live, go</b> · ahora → <b>am writing</b>."},
+   {t:"fill", q:"Last Saturday we ___ (go) to Segovia. While we ___ (walk) near the aqueduct, my sister ___ (fall) over!", a:[["went"],["were walking"],["fell"]], why:"<b>went</b> (pasado) · <b>were walking</b> (acción larga) · <b>fell</b> (acción corta que interrumpe)."},
+   {t:"fill", q:"I ___ (never / eat) such good food. I think we ___ (come) back next year.", a:[["have never eaten","'ve never eaten"],["will come","'ll come"]], why:"Experiencia → <b>have never eaten</b> · predicción con <i>I think</i> → <b>will come</b>."},
+   {t:"fill", q:"My parents ___ (not / like) long trips, but they ___ (already / book) a hotel for the summer.", a:[["{don't|do not} like"],["have already booked","'ve already booked"]], why:"<b>don't like</b> (gusto general) · <i>already</i> → <b>have already booked</b>."}
+  ]},
+  {n:12, lvl:2, no:4, nogloss:1, title:"Preguntas y negativas: escríbelas tú", instr:"Escribe la pregunta para la respuesta subrayada, o la frase en negativa, según se pida.", items:[
+   {t:"write", q:"Pregunta: ___? → I went to Toledo. (Where…)", a:["where did you go"], why:"Past simple → <b>Where did you go?</b> (<i>go</i> en infinitivo)."},
+   {t:"write", q:"Pregunta: ___? → She is reading a comic. (What…)", a:["what is she reading","what's she reading"], why:"Present continuous → <b>What is she reading?</b>"},
+   {t:"write", q:"Pregunta: ___? → He gets up at seven. (What time…)", a:["what time does he get up"], why:"Present simple 3ª persona → <b>does</b> + <i>get</i>."},
+   {t:"write", q:"Pregunta: ___? → Yes, I have been to London. (Have…)", a:["have you {ever |}been to london"], why:"Present perfect → <b>Have you (ever) been to London?</b>"},
+   {t:"write", q:"Pregunta: ___? → They were playing chess. (What…)", a:["what were they doing","what were they playing"], why:"Past continuous → <b>What were they doing/playing?</b>"},
+   {t:"write", q:"Negativa: We have seen the new film.", a:["we {haven't|have not} seen the new film"], why:"<b>haven't seen</b>."},
+   {t:"write", q:"Negativa: My brother broke the window.", a:["my brother {didn't|did not} break the window"], why:"<b>didn't break</b>: el verbo vuelve al infinitivo."},
+   {t:"write", q:"Pregunta: ___? → I will be at home. (Where…)", a:["where will you be"], why:"Futuro → <b>Where will you be?</b>"}
+  ]},
+  {n:13, lvl:2, no:5, title:"Reading PET: texto largo", instr:"Lee el texto y elige la mejor respuesta.", items:[
+   {t:"choice", q:"Last summer, Marta, 12, spent two weeks in a small village in the Pyrenees with her grandparents. 'At first I was bored because there was no Wi-Fi,' she says. 'But then I started helping my grandad with the animals and I made friends with some kids from the village. We went swimming in the river almost every day.' Marta has decided to go back next summer. 'I didn't miss my phone at all in the end!'\n\nWhy was Marta bored at the beginning?", opts:["She couldn't use the internet","She didn't like animals","Her grandparents were busy"], a:[0], why:"<i>There was no Wi-Fi</i> → <b>no podía usar internet</b>."},
+   {t:"choice", q:"Last summer, Marta, 12, spent two weeks in a small village in the Pyrenees with her grandparents. 'At first I was bored because there was no Wi-Fi,' she says. 'But then I started helping my grandad with the animals and I made friends with some kids from the village. We went swimming in the river almost every day.' Marta has decided to go back next summer. 'I didn't miss my phone at all in the end!'\n\nWhat did Marta do almost every day?", opts:["She swam in the river","She fed the animals alone","She phoned her friends"], a:[0], why:"<i>We went swimming in the river almost every day</i>."},
+   {t:"choice", q:"Last summer, Marta, 12, spent two weeks in a small village in the Pyrenees with her grandparents. 'At first I was bored because there was no Wi-Fi,' she says. 'But then I started helping my grandad with the animals and I made friends with some kids from the village. We went swimming in the river almost every day.' Marta has decided to go back next summer. 'I didn't miss my phone at all in the end!'\n\nHow does Marta feel about the trip now?", opts:["She enjoyed it and wants to repeat it","She never wants to go back","She was happy only because of her phone"], a:[0], why:"<i>Marta has decided to go back next summer</i> → le gustó y <b>quiere repetir</b>."},
+   {t:"choice", q:"Last summer, Marta, 12, spent two weeks in a small village in the Pyrenees with her grandparents. 'At first I was bored because there was no Wi-Fi,' she says. 'But then I started helping my grandad with the animals and I made friends with some kids from the village. We went swimming in the river almost every day.' Marta has decided to go back next summer. 'I didn't miss my phone at all in the end!'\n\nWhat is the best title for the text?", opts:["A summer without Wi-Fi","How to look after animals","The best phones for holidays"], a:[0], why:"El texto trata de un verano <b>sin internet</b> que acabó saliendo bien."}
+  ]},
+  {n:14, lvl:2, no:6, title:"Reading PET: elige la palabra (cloze)", instr:"Elige la palabra que completa cada hueco del texto.", items:[
+   {t:"choice", q:"Cuenca is a beautiful town in the centre ___ Spain.", opts:["of","in","at"], a:[0], why:"<i>the centre <b>of</b> Spain</i>."},
+   {t:"choice", q:"It is famous ___ its 'hanging houses', which are built on the edge of a cliff.", opts:["for","of","by"], a:[0], why:"<b>famous for</b>."},
+   {t:"choice", q:"Every year, thousands of tourists come ___ see them.", opts:["to","for","and"], a:[0], why:"Finalidad → <b>to</b> + verbo."},
+   {t:"choice", q:"You can also ___ a walk along the river.", opts:["take","make","do"], a:[0], why:"<b>take a walk</b> = dar un paseo."},
+   {t:"choice", q:"If you are interested in ___, the museums are great.", opts:["art","arts","artist"], a:[0], why:"<i>interested in <b>art</b></i>: el arte en general."},
+   {t:"choice", q:"I have ___ there twice and I want to go again.", opts:["been","gone","went"], a:[0], why:"<i>have <b>been</b></i> = he estado (y he vuelto)."}
+  ]},
+  {n:15, lvl:2, no:7, title:"Reading PET: una palabra por hueco", instr:"Escribe UNA palabra en cada hueco.", items:[
+   {t:"fill", q:"My favourite town ___ Spain is Santillana del Mar.", a:[["in"]], why:"<b>in</b> Spain."},
+   {t:"fill", q:"___ you ever been there? It's amazing!", a:[["Have","have"]], why:"Present perfect: <b>Have</b> you ever been…?"},
+   {t:"fill", q:"The streets are very old ___ the houses are made of stone.", a:[["and"]], why:"Une dos ideas → <b>and</b>."},
+   {t:"fill", q:"We went there ___ summer and stayed for three days.", a:[["last"]], why:"<b>last</b> summer."},
+   {t:"fill", q:"My sister enjoyed ___ the caves near the town.", a:[["visiting","seeing","exploring"]], why:"<i>enjoy</i> + <b>-ing</b>: <i>visiting</i>."},
+   {t:"fill", q:"I think we ___ go back next year.", a:[["will"]], why:"Predicción con <i>I think</i> → <b>will</b>."}
+  ]},
+  {n:16, lvl:2, no:8, nogloss:1, title:"Golden Minute: dilo en inglés", instr:"Traduce cada frase de tu exposición al inglés.", items:[
+   {t:"write", q:"Hoy voy a hablar de Albarracín.", a:["today i{ am|'m} going to talk about albarracin","today i{ am|'m} going to talk about albarracín"], why:"<b>Today I'm going to talk about…</b>"},
+   {t:"write", q:"Es un pueblo pequeño en el este de España.", a:["it{ is|'s} a small {town|village} in the east of spain"], why:"<b>It's a small town in the east of Spain.</b> El adjetivo va delante del nombre."},
+   {t:"write", q:"Es famoso por sus murallas.", a:["it{ is|'s} famous for its walls"], why:"<b>famous for</b> + <b>its</b> (sin apóstrofo: «su»)."},
+   {t:"write", q:"Se pueden visitar el castillo y la catedral.", a:["you can visit the castle and the cathedral"], why:"«Se puede» = <b>you can</b>."},
+   {t:"write", q:"Fui allí el verano pasado con mi familia.", a:["i went there last summer with my family"], why:"Past simple de <i>go</i>: <b>went</b>. <i>last summer</i> sin <i>the</i>."},
+   {t:"write", q:"Me encantó porque las calles son muy bonitas.", a:["i loved it because the streets are very {beautiful|pretty|nice}"], why:"<b>I loved it because…</b> — no olvides el <i>it</i>."},
+   {t:"write", q:"Gracias por escuchar.", a:["thank you for listening","thanks for listening"], why:"<b>for</b> + <b>-ing</b>: <i>for listening</i>."}
+  ]}
+ ]
+},
+{
  id:"m1", short:"U1", owner:"marcos", num:"Unidad 1", title:"All Fun and Games", icon:"🎮",
  desc:"Módulo 1 del libro: vocabulario de música y baile, videojuegos y ocio; present perfect continuous, present perfect simple frente a continuous, formación de palabras, conectores y comprensión lectora.",
  gram:["Present perfect continuous","Present perfect simple vs continuous","Formación de palabras"],
