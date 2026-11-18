@@ -2752,8 +2752,17 @@ function blank(){
            byUnit:{}, sessions:[], selfmarks:[]}};
 }
 let S=blank();
+/* Firestore no admite listas dentro de listas: los fallos al emparejar se
+   guardan como "i-j". pairOf lee también el formato antiguo [i,j]. */
+function pairOf(w){ return Array.isArray(w)?w:String(w).split("-").map(Number); }
+function noNestedArrays(x){
+  if(Array.isArray(x)) return x.map(v=>Array.isArray(v)?v.join("-"):noNestedArrays(v));
+  if(x&&typeof x==="object"){ const o={}; for(const k in x) o[k]=noNestedArrays(x[k]); return o; }
+  return x;
+}
 function hydrate(o){
   const b=blank();
+  o=noNestedArrays(o||{});
   return migrateStickers(Object.assign(b, o, {stats:Object.assign(b.stats, (o&&o.stats)||{})}));
 }
 function useProfile(id){
@@ -2779,7 +2788,7 @@ function save(){
 let cloudState="…", pushT=null, cloudErr="", retryT=null;
 function setCloud(st, err){
   cloudState=st;
-  cloudErr=st==="off"||st==="deny" ? [err&&(err.code||err.message)||"sin código", navigator.onLine?"online":"offline", "v37"].join(" · ") : "";
+  cloudErr=st==="off"||st==="deny" ? [err&&(err.code||err.message)||"sin código", navigator.onLine?"online":"offline", "v38"].join(" · ") : "";
   /* si falla, se reintenta solo cada 20 s (y al volver internet o la pestaña) */
   clearTimeout(retryT);
   if(st==="off") retryT=setTimeout(retryCloud, 20000);
@@ -2831,7 +2840,7 @@ function schedulePush(){
 async function pushUp(){
   if(!window.CLOUD || !PROFILE || isTest()) return;
   clearTimeout(pushT);
-  try{ await CLOUD.save(PROFILE, JSON.parse(JSON.stringify(S))); setCloud("ok"); }
+  try{ await CLOUD.save(PROFILE, noNestedArrays(JSON.parse(JSON.stringify(S)))); setCloud("ok"); }
   catch(e){ console.warn("Nube (subir):", e); setCloud(e&&e.code==="permission-denied"?"deny":"off", e); }
 }
 window.addEventListener("cloud-ready",()=>{ if(PROFILE) syncDown(PROFILE); else setCloud("none"); });
@@ -3942,7 +3951,7 @@ function reviewBody(it,att){
   /* match */
   return `<div class="stem" style="font-size:16px">${esc(it.q)}</div>
     <div class="mcol" style="margin-top:14px">${it.pairs.map((q,k)=>`<div class="mitem done"><span class="tag">${k+1}</span>${esc(q[0])} <b>→</b> ${esc(q[1])}</div>`).join("")}</div>
-    ${has&&!rev?(att.e?`<p class="fb-note" style="margin-top:12px;display:block;line-height:1.55">Fallos al emparejar (${att.e}): ${(att.w||[]).map(w=>esc(it.pairs[w[0]][0])+" ↔ "+esc(it.pairs[w[1]][1])).join(" · ")}</p>`
+    ${has&&!rev?(att.e?`<p class="fb-note" style="margin-top:12px;display:block;line-height:1.55">Fallos al emparejar (${att.e}): ${(att.w||[]).map(pairOf).filter(w=>it.pairs[w[0]]&&it.pairs[w[1]]).map(w=>esc(it.pairs[w[0]][0])+" ↔ "+esc(it.pairs[w[1]][1])).join(" · ")}</p>`
         :`<p class="fb-note" style="margin-top:12px;display:block">Lo emparejó todo a la primera.</p>`):""}`;
 }
 function reviewFeedback(it,att,d){
@@ -4948,7 +4957,7 @@ function setupMatch(it,card){
       if(left>0) SFX.play("matchOk");   /* la última pareja suena como acierto de la pregunta */
       if(left===0) finish(it,errs===0,"Todas emparejadas",errs+" fallo(s) por el camino",false,false,false,{e:errs,w:wrongs});
     } else {
-      errs++; wrongs.push(sel.dataset.side==="L"?[+sel.dataset.i,+b.dataset.i]:[+b.dataset.i,+sel.dataset.i]);
+      errs++; wrongs.push(sel.dataset.side==="L"?sel.dataset.i+"-"+b.dataset.i:b.dataset.i+"-"+sel.dataset.i);
       SFX.play("matchBad"); b.classList.add("shake"); sel.classList.add("shake");
       const a=sel; setTimeout(()=>{a.classList.remove("shake","sel");b.classList.remove("shake");},320);
       sel=null;
@@ -5046,7 +5055,7 @@ function finish(it,ok,model,given,near,selfmarkable,revealed,ans){
   /* relacionar con fallos: se pierde la parte proporcional de los 10 XP
      (las parejas que costaron algún intento) y la racha no se corta */
   const pairs=it.t==="match"?it.pairs.length:0;
-  const badPairs=it.t==="match"&&ans?Math.min(pairs,new Set((ans.w||[]).map(w=>w[0])).size||(ans.e?1:0)):0;
+  const badPairs=it.t==="match"&&ans?Math.min(pairs,new Set((ans.w||[]).map(w=>pairOf(w)[0])).size||(ans.e?1:0)):0;
   const partial=!ok && !revealed && it.t==="match" && badPairs<pairs;
   const base=partial?Math.round(10*(pairs-badPairs)/pairs):second?5:10;
   if(partial){
