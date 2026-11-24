@@ -1,7 +1,7 @@
 /* Service worker: deja usar la app sin conexión.
    Sube el número de CACHE en cada publicación para que los alumnos
    reciban la versión nueva. */
-const CACHE = "cuaderno-v38";
+const CACHE = "cuaderno-v39";
 const SHELL = [
   "./",
   "./index.html",

@@ -2788,7 +2788,7 @@ function save(){
 let cloudState="…", pushT=null, cloudErr="", retryT=null;
 function setCloud(st, err){
   cloudState=st;
-  cloudErr=st==="off"||st==="deny" ? [err&&(err.code||err.message)||"sin código", navigator.onLine?"online":"offline", "v38"].join(" · ") : "";
+  cloudErr=st==="off"||st==="deny" ? [err&&(err.code||err.message)||"sin código", navigator.onLine?"online":"offline", "v39"].join(" · ") : "";
   /* si falla, se reintenta solo cada 20 s (y al volver internet o la pestaña) */
   clearTimeout(retryT);
   if(st==="off") retryT=setTimeout(retryCloud, 20000);
@@ -2823,7 +2823,29 @@ async function syncDown(id){
     } else if(!remote || (S.updatedAt||0) > (remote.updatedAt||0)){
       await pushUp();
     } else setCloud("ok");
+    if(PROFILE===id) streakGift1124();
   }catch(e){ console.warn("Nube (bajar):", e); setCloud(e&&e.code==="permission-denied"?"deny":"off", e); }
+}
+/* Ajuste puntual (24-nov-2026): a Marco se le deja la racha a un día del
+   regalo, para que al completar hoy las 20 preguntas lo consiga. Solo se
+   aplica ese día, una vez, y después de sincronizar con la nube. */
+function streakGift1124(){
+  if(PROFILE!=="marcos" || dayKey()!=="2026-11-24") return;
+  S.flags=S.flags||{}; if(S.flags.racha1124) return;
+  S.flags.racha1124=1;
+  S.days=S.days||{}; const sh=S.shields||{};
+  if((S.days[dayKey()]||0)<DAY_GOAL){
+    const fromYesterday=()=>{ let n=0; for(let k=-1;k>-4000;k--){ const key=dayKey(dayShift(k));
+      if((S.days[key]||0)>=DAY_GOAL) n++; else if(!sh[key]) break; } return n; };
+    let guard=0;
+    while(fromYesterday()%7!==6 && guard++<400){
+      for(let k=-1;k>-4000;k--){ const key=dayKey(dayShift(k));
+        if((S.days[key]||0)<DAY_GOAL && !sh[key]){ S.days[key]=DAY_GOAL; break; } }
+    }
+    S.bestDays=Math.max(S.bestDays||0,fromYesterday());
+  }
+  save();
+  if(view.name!=="play") render();
 }
 function retryCloud(){
   if(cloudState!=="off" || !PROFILE || !window.CLOUD) return;
